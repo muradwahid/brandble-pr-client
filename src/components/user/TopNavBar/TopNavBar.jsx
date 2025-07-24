@@ -7,7 +7,7 @@ import userImage from "../../../assets/profile.png";
 const TopNavBar = () => {
   return (
     <nav className="w-full py-5 border-b-[1px] border-b-[#171819]">
-      <div className="xl:w-[1440px] lg:w-4/5 md:w-5/6 w-[90%] mx-auto flex items-center justify-between">
+      <div className="xl:w-[1400px] lg:w-4/5 md:w-5/6 w-[90%] mx-auto flex items-center justify-between">
         <div>
           <img className="w-[116px] h-[52px]" src={siteLogo} alt="" />
         </div>
