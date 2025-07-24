@@ -1,6 +1,6 @@
 import { useState } from "react";
-import profileImg from "../../../assets/profile2.png";
-import { PenIcon } from "../../../utils/icons";
+import profileImg from "../../../../assets/profile2.png";
+import { PenIcon } from "../../../../utils/icons";
 import { RxCross2 } from "react-icons/rx";
 import { Link } from "react-router";
 
@@ -8,15 +8,15 @@ const Profile = () => {
   const [general, setGeneral] = useState(true);
   const [security, setSecurity] = useState(true);
   return (
-    <div className="w-[650px]">
+    <div className="xl:w-[650px] lg:w-full 2xl:ml-52 xl:ml-48 lg:ml-32 md:ml-6 ">
       <div className="border-b-[1px] border-[#b2b5b8] pb-5">
         <h3 className="text-[#222425] text-2xl">Profile</h3>
       </div>
       <form className="mt-4">
         {/* profile image */}
-        <div className="flex">
+        <div className="lg:flex">
           <h4 className="text-[#36383A] text-[20px] flex-1">Image</h4>
-          <div className="flex-[1.5] w-fit">
+          <div className="flex-[1.5] w-fit mt-3 lg:mt-0">
             <label
               className="w-fit flex relative cursor-pointer"
               htmlFor="profileImage"
@@ -37,12 +37,10 @@ const Profile = () => {
           </div>
         </div>
         {/* general Information */}
-        <div className="flex items-start mt-16">
-          <h4 className="text-[#36383A] text-[20px] flex-1">
+        <div className="lg:flex  items-start mt-16">
+          <h4 className="text-[#36383A] text-[20px] flex-1 flex justify-between">
             General Information
-          </h4>
-          <div className="flex-[1.5]">
-            <div className="flex justify-end">
+            <div className="block lg:hidden">
               <p
                 onClick={() => setGeneral(!general)}
                 className="text-[15px] text-[#5F6368] border-[1px] border-[#DCDEDF] px-1.5 py-0.5 cursor-pointer flex items-center gap-1"
@@ -50,6 +48,19 @@ const Profile = () => {
                 Edit
                 {!general ? <RxCross2 /> : null}
               </p>
+            </div>
+          </h4>
+          <div className="flex-[1.5]">
+            <div className="hidden lg:block">
+              <div className="flex justify-end">
+                <p
+                  onClick={() => setGeneral(!general)}
+                  className="text-[15px] text-[#5F6368] border-[1px] border-[#DCDEDF] px-1.5 py-0.5 cursor-pointer flex items-center gap-1"
+                >
+                  Edit
+                  {!general ? <RxCross2 /> : null}
+                </p>
+              </div>
             </div>
             <div className="flex flex-col gap-1.5 mt-5">
               <label
@@ -119,10 +130,10 @@ const Profile = () => {
           </div>
         </div>
         {/* security Information */}
-        <div className="flex items-start mt-16">
-          <h4 className="text-[#36383A] text-[20px] flex-1">Security</h4>
-          <div className="flex-[1.5]">
-            <div className="flex justify-end">
+        <div className="lg:flex items-start mt-16">
+          <h4 className="text-[#36383A] text-[20px] flex-1 flex justify-between">
+            Security
+            <div className="block lg:hidden">
               <p
                 onClick={() => setSecurity(!security)}
                 className="text-[15px] text-[#5F6368] border-[1px] border-[#DCDEDF] px-1.5 py-0.5 cursor-pointer flex items-center gap-1"
@@ -130,6 +141,19 @@ const Profile = () => {
                 Edit
                 {!security ? <RxCross2 /> : null}
               </p>
+            </div>
+          </h4>
+          <div className="flex-[1.5]">
+            <div className="hidden lg:block">
+              <div className="flex justify-end">
+                <p
+                  onClick={() => setSecurity(!security)}
+                  className="text-[15px] text-[#5F6368] border-[1px] border-[#DCDEDF] px-1.5 py-0.5 cursor-pointer flex items-center gap-1"
+                >
+                  Edit
+                  {!security ? <RxCross2 /> : null}
+                </p>
+              </div>
             </div>
             <div className="flex flex-col gap-1.5 mt-5">
               <label

@@ -10,7 +10,7 @@ const UserParentLayout = () => {
       <TopNavBar />
       {/* main */}
       <main className="flex-1 flex my-10">
-        <div className="flex xl:w-[1440px] mx-auto 2xl:gap-52 xl:gap-48 lg:gap-32 md:gap-24 sm:gap-16 gap-10">
+        <div className="flex xl:w-[1440px] lg:w-4/5 md:w-5/6 w-[90%] mx-auto gap-6">
           {/* sidebar */}
           <UserSidebar />
           <div className="flex-1">
