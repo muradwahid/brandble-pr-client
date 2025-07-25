@@ -7,7 +7,7 @@ import Favorite from "../components/user/Pages/Favorite/Favorite";
 import MyMessages from "../components/user/Pages/MyMessages/MyMessages";
 import Notification from "../components/user/Pages/Notification/Notification";
 
-export const router = createBrowserRouter([
+const Router = createBrowserRouter([
   {
     path: "/",
     element: <UserLayout />,
@@ -43,3 +43,5 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+
+export default Router;
