@@ -6,11 +6,18 @@ import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
 
 const UserSidebar = () => {
   const [toggle, setToggle] = useState(true);
+
+  const handleToggle = () => {
+    setTimeout(() => {
+      setToggle(!toggle);
+    }, 300);
+  };
+
   return (
     <div>
       {toggle && (
         <div
-          onClick={() => setToggle(!toggle)}
+          onClick={() => handleToggle()}
           className="block md:hidden cursor-pointer mt-2"
         >
           {toggle && <RxHamburgerMenu />}
@@ -22,7 +29,7 @@ const UserSidebar = () => {
         } `}
       >
         <RxCross2
-          onClick={() => setToggle(!toggle)}
+          onClick={() => handleToggle()}
           className="absolute top-2 right-2 cursor-pointer block md:hidden"
         />
         <div className="p-5 h-full flex flex-col justify-between">

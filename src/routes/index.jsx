@@ -1,11 +1,12 @@
 import { createBrowserRouter } from "react-router";
-import Profile from "../components/user/Pages/Profile/Profile";
-import UserLayout from "../layout/UserLayout";
 import DashboardPage from "../components/user/Pages/DashboardPage/DashboardPage";
-import Publications from "../components/user/Pages/Publications/Publications";
 import Favorite from "../components/user/Pages/Favorite/Favorite";
 import MyMessages from "../components/user/Pages/MyMessages/MyMessages";
 import Notification from "../components/user/Pages/Notification/Notification";
+import OrderHistory from "../components/user/Pages/OrderHistory/OrderHistory";
+import Profile from "../components/user/Pages/Profile/Profile";
+import Publications from "../components/user/Pages/Publications/Publications";
+import UserLayout from "../layout/UserLayout";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "/notifications", // This will render at /publications
         element: <Notification />,
+      },
+      {
+        path: "order-history", // This will render at //order-history
+        element: <OrderHistory />,
       },
     ],
   },
