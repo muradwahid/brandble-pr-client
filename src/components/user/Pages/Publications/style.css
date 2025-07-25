@@ -1,0 +1,35 @@
+.custom-slider-track {
+  height: 6px;
+  background-color: #e0e7ff;
+  /* Light blue for the track */
+  border-radius: 9999px;
+  /* Full rounded */
+  position: relative;
+}
+
+.custom-slider-thumb {
+  width: 16px;
+  height: 16px;
+  background-color: #3b82f6;
+  /* Blue for the thumb */
+  border-radius: 9999px;
+  /* Full rounded */
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.custom-slider-thumb.right {
+  background-color: #1a202c;
+  /* Dark blue/black for the right thumb */
+}
+
+.custom-dropdown-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}

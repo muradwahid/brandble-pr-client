@@ -22,8 +22,14 @@ const DashboardPage = () => {
       <div className="lg:flex justify-between items-center border-b border-[#DCDEDF] pb-4">
         <div className="md:flex gap-8 items-center">
           <h3 className="text-2xl font-semibold text-[#222425]">Dashboard</h3>
-          <select className="text-[#878C91] text-[14px] border border-[#B2B5B8] lg:w-[180px] lg:h-[34px] w-[120px] h-[26px] px-2 rounded-[4px] focus:outline-2 focus:outline-[#004A87] md:mt-0 mt-1.5">
-            <option className="text-[#878C91]" disabled selected value="status">
+          <select
+            className="text-[#878C91] text-[14px] border border-[#B2B5B8] lg:w-[180px] lg:h-[34px] w-[120px] h-[26px] px-2 rounded-[4px] focus:outline-2 focus:outline-[#004A87] md:mt-0 mt-1.5"
+          >
+            <option
+              className="text-[#878C91]"
+              disabled
+              defaultValue="status"
+            >
               Status
             </option>
             <option value="published">Published</option>
@@ -48,20 +54,23 @@ const DashboardPage = () => {
       </div>
       <Table />
       <div className="sm:flex items-center justify-end md:gap-28 sm:gap-10 my-8">
-        <select className="text-[#878C91] text-[14px] border border-[#B2B5B8] px-2 py-[5.5px] focus:outline-2 focus:outline-[#004A87] md:mt-0 mt-1.5 sm:mb-0 mb-5 ">
-          <option value="5" selected>
+        <select
+          defaultValue="10"
+          className="text-[#878C91] text-[14px] border border-[#B2B5B8] px-2 py-[5.5px] focus:outline-2 focus:outline-[#004A87] md:mt-0 mt-1.5 sm:mb-0 mb-5 "
+        >
+          <option value="5" defaultValue="5">
             5 Result
           </option>
-          <option value="10" selected>
+          <option value="10" >
             10 Result
           </option>
-          <option value="15" selected>
+          <option value="15" >
             15 Result
           </option>
-          <option value="20" selected>
+          <option value="20" >
             20 Result
           </option>
-          <option value="30" selected>
+          <option value="30">
             30 Result
           </option>
         </select>

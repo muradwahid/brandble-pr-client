@@ -1,24 +1,26 @@
-import { LuCheckCheck } from "react-icons/lu";
-import { CheckIcon } from "../../../../utils/icons";
-import "./chatStyle.css";
-import { GoPaperAirplane } from "react-icons/go";
 import { FcManager } from "react-icons/fc";
+import { GoPaperAirplane } from "react-icons/go";
+import { LuCheckCheck } from "react-icons/lu";
+import "./style.css"
+
 const Chat = () => {
   return (
     <div>
-      <div className="chat-container">
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white rounded-t-xl md:rounded-t-lg">
+      <div className="message-chat-container border-l-2 border-[#D1DADB]">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-100 rounded-full">
               <FcManager />
             </div>
             <span className="font-semibold text-lg text-gray-800">Admin</span>
           </div>
-          <span className="text-sm text-gray-500">Unread</span>
+          <span className="text-sm text-gray-500">#653BSBE2-11</span>
         </div>
 
         <div className="chat-messages flex flex-col">
-          <div className="text-center text-xs text-gray-400 my-4">19 August</div>
+          <div className="text-center text-xs text-gray-400 my-4">
+            19 August
+          </div>
 
           <div className="flex items-start mb-2">
             <div className="message-bubble message-received">
@@ -97,7 +99,7 @@ const Chat = () => {
           </div>
         </div>
 
-        <div className="bg-transparent flex items-center gap-3 px-6 pb-6 relative">
+        <div className="bg-transparent flex items-center gap-3 px-6 pb-4 relative">
           <textarea
             className=" border border-[#DCDEDF] outline-none py-3 px-5 rounded-3xl w-full bg-white flex-1"
             type="text"
@@ -106,7 +108,7 @@ const Chat = () => {
             cols={30}
             rows={4}
           />
-          <button className="bg-[#006AC2] px-5 py-1.5 rounded-4xl flex items-center gap-2 text-white absolute right-[40px] bottom-[37px] cursor-pointer hover:bg-[#033f70] transition-all duration-200">
+          <button className="bg-[#006AC2] px-5 py-1.5 rounded-4xl flex items-center gap-2 text-white absolute right-[40px] bottom-[30px] cursor-pointer hover:bg-[#033f70] transition-all duration-200">
             <span>Send</span>
             <GoPaperAirplane />
           </button>

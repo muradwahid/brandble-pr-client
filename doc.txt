@@ -1,0 +1,20 @@
+
+
+blue- 1 #002747
+
+text #36383A
+
+gray- 2 #36383A
+gray- 3 #5F6368
+
+gray- 4 #878C91
+gray- 6 #DCDEDF
+
+gray- 7 #F2F2F3
+gray- 8 #F6F7F7
+
+gray- 40 #94A3B8
+gray- 80 #1E293B
+
+
+error color #FF5630

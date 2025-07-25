@@ -1,0 +1,1 @@
+export const back = window.navigation.back;

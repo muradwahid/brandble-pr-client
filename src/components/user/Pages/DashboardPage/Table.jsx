@@ -7,7 +7,6 @@ const Table = () => {
         Running Order
       </h5>
       <table
-        border
         className="w-full min-w-[750px] bg-[#F6F7F7] text-[16px] font-normal overflow-x-scroll table-fixed"
       >
         <thead className="w-full">
