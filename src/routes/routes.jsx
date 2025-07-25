@@ -5,6 +5,7 @@ import DashboardPage from "../components/user/Pages/DashboardPage/DashboardPage"
 import Publications from "../components/user/Pages/Publications/Publications";
 import Favorite from "../components/user/Pages/Favorite/Favorite";
 import MyMessages from "../components/user/Pages/MyMessages/MyMessages";
+import Notification from "../components/user/Pages/Notification/Notification";
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: "/favorite", // This will render at /publications
         element: <Favorite />,
+      },
+      {
+        path: "/notifications", // This will render at /publications
+        element: <Notification />,
       },
     ],
   },

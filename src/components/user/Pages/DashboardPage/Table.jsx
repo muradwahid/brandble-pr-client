@@ -11,7 +11,7 @@ const Table = () => {
       >
         <thead className="w-full">
           <tr className="text-left py-2">
-            <th className="px-3 py-3 text-[#222425]">SL</th>
+            <th className="px-3 py-3 text-[#222425] w-[5%]">SL</th>
             <th className="px-3 py-3 text-[#222425]">Order ID</th>
             <th className="px-3 py-3 text-[#222425]">Publication</th>
             <th className="px-3 py-3 text-[#222425]">Service</th>

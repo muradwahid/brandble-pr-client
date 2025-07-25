@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { PiMagnifyingGlassLight } from "react-icons/pi";
 import { ShieldIcon } from "../../../../utils/icons";
-import { chatList } from "./data";
 import Chat from "./Chat";
+import { chatList } from "./data";
 
 const MyMessages = () => {
   const [activeIdx, setActiveIdx] = useState(null);
   const activeCls = "bg-[#E6F4FF] border-l-[#008CFF] border-b-[#008CFF]";
   return (
-    <div className="xl:ml-24 lg:ml-12 md:ml-6 ">
+    <div className="xl:ml-[8%] lg:ml-[6%] md:ml-[4%] ml-[2%] ">
       <div className="h-full flex user-message-chat-shadow">
         {/* chat lists */}
         <div className="w-[220px] xl:w-[350px] lg:w-[280px] md:w-[220px] md:overflow-visible overflow-hidden h-full">

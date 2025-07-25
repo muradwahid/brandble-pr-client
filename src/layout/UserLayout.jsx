@@ -15,7 +15,8 @@ const UserParentLayout = () => {
         <div className="flex xl:w-[1400px] lg:w-4/5 md:w-5/6 w-[90%] mx-auto gap-6">
           {/* sidebar */}
           {!publication && <UserSidebar />}
-          <div className="flex-1">
+          {/* flex-1 */}
+          <div className={`${publication? "" : "w-[90%]"} `}>
             {/* outlet */}
             <Outlet />
           </div>

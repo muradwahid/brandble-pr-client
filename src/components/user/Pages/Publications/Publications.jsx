@@ -41,7 +41,7 @@ const Publications = () => {
     <div className="w-full">
       {/* back button */}
       <button
-        className="text-[#002747] text-[16px] flex items-center gap-2.5 cursor-pointer"
+        className="text-[#002747] hover:text-[#075ca1] hover:fill-[#075ca1] text-[16px] flex items-center gap-2.5 cursor-pointer"
         onClick={() => window.navigation.back()}
       >
         <LeftArrowIcon />
@@ -100,9 +100,11 @@ const Publications = () => {
                       onClick={() => setActiveIdx(index)}
                       className="absolute top-1 right-1 cursor-pointer"
                     >
-                      {index === activeIdx ?<IoMdHeart className="text-[#FF5630]" />:<IoIosHeartEmpty />}
-                      
-                      
+                      {index === activeIdx ? (
+                        <IoMdHeart className="text-[#FF5630]" />
+                      ) : (
+                        <IoIosHeartEmpty />
+                      )}
                     </div>
                     <div className="absolute flex bottom-2 bg-white p-0.5 shadow-sm gap-1.5 cursor-pointer">
                       <AdultIcon />
