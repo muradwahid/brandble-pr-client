@@ -1,1 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import "tailwindcss";
+
+body{
+  font-family: "Poppins", sans-serif;
+    font-style: normal;
+}
+
+/* src/assets/fonts/fonts.css */
+
+/* === PP Fragment Glare === */
+@font-face {
+  font-family: 'pp-fragment-glare';
+  src: url('./assets/fonts/PPFragment-GlareLight.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'pp-fragment-glare';
+  src: url('./assets/fonts/PPFragment-GlareRegular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'pp-fragment-glare';
+  src: url('./assets/fonts/PPFragment-GlareExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+/* === PP Fragment Serif === */
+@font-face {
+  font-family: 'pp-fragment-serif';
+  src: url('./assets/fonts/PPFragment-SerifLight.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'pp-fragment-serif';
+  src: url('./assets/fonts/PPFragment-SerifRegular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'pp-fragment-serif';
+  src: url('./assets/fonts/PPFragment-SerifExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+/* === PP Fragment Sans === */
+@font-face {
+  font-family: 'pp-fragment-sans';
+  src: url('./assets/fonts/PPFragment-SansLight.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'pp-fragment-sans';
+  src: url('./assets/fonts/PPFragment-SansRegular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'pp-fragment-sans';
+  src: url('./assets/fonts/PPFragment-SansExtraBold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+/* === Glare === */
+.font-glare {
+  font-family: 'pp-fragment-glare', sans-serif;
+}
+
+/* === Serif === */
+.font-serif {
+  font-family: 'pp-fragment-serif', serif;
+}
+
+/* === Sans === */
+.font-sans {
+  font-family: 'pp-fragment-sans', sans-serif;
+}

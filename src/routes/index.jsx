@@ -7,10 +7,13 @@ import OrderHistory from "../components/user/Pages/OrderHistory/OrderHistory";
 import Profile from "../components/user/Pages/Profile/Profile";
 import Publications from "../components/user/Pages/Publications/Publications";
 import UserLayout from "../layout/UserLayout";
+import MyArticles from "../components/user/Pages/MyArticles/MyArticles";
+import Payment from "../components/user/Pages/Payment/Payment";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    errorElement: <div>Error</div>,
     element: <UserLayout />,
     children: [
       {
@@ -44,6 +47,14 @@ const router = createBrowserRouter([
       {
         path: "order-history", // This will render at //order-history
         element: <OrderHistory />,
+      },
+      {
+        path: "articles", // This will render at //articles
+        element: <MyArticles />,
+      },
+      {
+        path: "payments", // This will render at //articles
+        element: <Payment />,
       },
     ],
   },

@@ -1,22 +1,22 @@
+import { useState } from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { CirclePen, CopyIcon } from "../../../../utils/icons";
-import { orderHistoryData } from "./data";
-import { useState } from "react";
 import Pagination from "../../../common/Pagination";
+import { orderHistoryData } from "./data";
 
 const OrderHistory = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const totalItems = 40; // Example: total number of items
-    const itemsPerPage = 10; // Example: items to display per page
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-  
-    const handlePageChange = (page) => {
-      if (page >= 1 && page <= totalPages) {
-        setCurrentPage(page);
-        // Here you would typically fetch new data based on the selected page
-        console.log(`Fetching data for page: ${page}`);
-      }
-    };
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalItems = 40; // Example: total number of items
+  const itemsPerPage = 10; // Example: items to display per page
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+      // Here you would typically fetch new data based on the selected page
+      console.log(`Fetching data for page: ${page}`);
+    }
+  };
   return (
     <div className="w-full max-w-3xl md:mx-auto">
       <div className="flex justify-between items-center mb-4  flex-wrap gap-1.5">
@@ -26,11 +26,11 @@ const OrderHistory = () => {
             type="text"
             id="orderSearch"
             placeholder="Search Here..."
-            className=" border border-[#B2B5B8] py-1 px-3 text-[14px] focus:outline-2 focus:outline-[#004A87] text-[#5F6368] placeholder-[#5F6368] bg-white rounded-sm"
+            className=" border border-[#DCDEDF] py-1 px-3 text-[14px] focus:outline-2 focus:outline-[#004A87] text-[#5F6368] placeholder-[#5F6368] bg-white rounded-sm"
           />
-          <button className="border border-[#B2B5B8] px-2 rounded-sm cursor-pointer">
+          <button className="border border-[#DCDEDF] px-2 rounded-sm cursor-pointer">
             <label htmlFor="orderSearch">
-              <FaMagnifyingGlass className="cursor-pointer" />
+              <FaMagnifyingGlass className="cursor-pointer text-[#B2B5B8]" />
             </label>
           </button>
         </div>
