@@ -48,7 +48,7 @@ const Publications = () => {
         Back
       </button>
       <div className="my-8">
-        <h2 className="text-[#002747] text-3xl font-medium">
+        <h2 className="text-[#002747] text-3xl font-medium font-glare">
           Explore All of Our Publications
         </h2>
       </div>
@@ -150,13 +150,13 @@ const Publications = () => {
                   </div>
                 </div>
                 <div className=" flex md:grid md:content-between justify-between md:mt-0 mt-2">
-                  <p className="text-[20px] text-[#36383A]">
+                  <p className="md:text-[20px] text-[18px] text-[#36383A] font-glare">
                     <span>&#36;</span>
                     500
                   </p>
 
                   <div className="flex justify-end cursor-pointer">
-                    <CartIcon className="h-[30px] w-[30px] fill-[#36383A]" />
+                    <CartIcon className="md:h-[30px] md:w-[30px] h-[24px] w-[24px] fill-[#36383A]" />
                   </div>
                 </div>
               </div>

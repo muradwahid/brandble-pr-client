@@ -20,7 +20,9 @@ const OrderHistory = () => {
   return (
     <div className="w-full max-w-3xl md:mx-auto">
       <div className="flex justify-between items-center mb-4  flex-wrap gap-1.5">
-        <h2 className="md:text-2xl text-[20px] text-[#222425]">History</h2>
+        <h2 className="md:text-2xl text-[20px] text-[#222425] font-glare">
+          History
+        </h2>
         <div className="flex gap-1.5">
           <input
             type="text"
@@ -48,8 +50,10 @@ const OrderHistory = () => {
               </p>
             </div>
             <div className="flex gap-3">
-              <CirclePen className="mt-[7px]" />
-              <h4 className="text-[#36383A] text-[20px]">{item.title}</h4>
+              <CirclePen className="mt-[3px]" />
+              <h4 className="text-[#36383A] md:text-[20px] text-[18px] font-glare whitespace-nowrap overflow-hidden text-ellipsis">
+                {item.title}
+              </h4>
             </div>
             <div className="flex justify-between mt-3 flex-wrap gap-3">
               <div className="text-[#878C91] text-sm">

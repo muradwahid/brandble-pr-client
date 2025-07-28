@@ -10,6 +10,7 @@ gray- 2 #36383A
 gray- 3 #5F6368
 
 gray- 4 #878C91
+gray- 5 #B2B5B8
 gray- 6 #DCDEDF
 
 gray- 7 #F2F2F3

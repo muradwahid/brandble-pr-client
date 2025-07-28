@@ -81,7 +81,7 @@ export const PenIcon = (props) => (
 export const CheckIcon = (props) => {
   return (
     <svg
-      class="w-4 h-4 ml-1"
+      className="w-4 h-4 ml-1"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
@@ -114,7 +114,6 @@ export const LeftArrowIcon = (props) => (
   </svg>
 );
 
-
 export const AdultIcon = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +143,6 @@ export const AdultIcon = (props) => (
   </svg>
 );
 
-
 export const SpaIcon = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -160,7 +158,6 @@ export const SpaIcon = (props) => (
     />
   </svg>
 );
-
 
 export const BitcoinIcon = (props) => (
   <svg
@@ -210,7 +207,6 @@ export const CardiologyIcon = (props) => (
   </svg>
 );
 
-
 export const ShieldIcon = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -259,8 +255,7 @@ export const CopyIcon = (props) => (
   </svg>
 );
 
-
-export const DownloadIcon = (props) => { 
+export const DownloadIcon = (props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -273,7 +268,8 @@ export const DownloadIcon = (props) => {
       <path
         d="M6.9998 11.3886L2.93056 7.31935L3.85956 6.40985L6.34981 8.9001V0.100098H7.64981V8.9001L10.1401 6.40985L11.0691 7.31935L6.9998 11.3886ZM1.90055 14.7001C1.45005 14.7001 1.07064 14.5447 0.762305 14.2338C0.453971 13.923 0.299805 13.5425 0.299805 13.0923V11.5808H1.5998V13.0923C1.5998 13.1693 1.63189 13.2398 1.69605 13.3038C1.76005 13.368 1.83055 13.4001 1.90755 13.4001H12.0921C12.1691 13.4001 12.2396 13.368 12.3036 13.3038C12.3677 13.2398 12.3998 13.1693 12.3998 13.0923V11.5808H13.6998V13.0923C13.6998 13.5425 13.5443 13.923 13.2333 14.2338C12.9223 14.5447 12.5416 14.7001 12.0911 14.7001H1.90055Z"
         fill="#5F6368"
+        {...props}
       />
     </svg>
   );
-}
+};

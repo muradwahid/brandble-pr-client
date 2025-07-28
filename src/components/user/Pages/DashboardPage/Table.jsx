@@ -2,14 +2,12 @@ import { tableData } from "./data";
 
 const Table = () => {
   return (
-    <div className="mt-6 overflow-auto overflow-x-auto lg:w-full md:w-[600px] sm:w-[500px] w-[350px]">
-      <h5 className="text-[#222425] font-medium text-[18px] mb-4">
+    <div className="mt-6 overflow-x-auto">
+      <h5 className="text-[#222425] font-medium text-[18px] mb-4 font-glare">
         Running Order
       </h5>
-      <table
-        className="w-full min-w-[750px] bg-[#F6F7F7] text-[16px] font-normal overflow-x-scroll table-fixed"
-      >
-        <thead className="w-full">
+      <table className="min-w-full bg-[#F6F7F7] text-[16px] font-normal overflow-x-scroll table-fixed">
+        <thead className="">
           <tr className="text-left py-2">
             <th className="px-3 py-3 text-[#222425] w-[5%]">SL</th>
             <th className="px-3 py-3 text-[#222425]">Order ID</th>
@@ -20,7 +18,7 @@ const Table = () => {
             <th className="px-3 py-3 text-[#222425]">Status</th>
           </tr>
         </thead>
-        <tbody className="w-full text-[#36383A]">
+        <tbody className=" text-[#36383A]">
           {tableData.map((item, index) => (
             <tr
               key={index}

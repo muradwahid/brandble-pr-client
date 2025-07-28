@@ -15,7 +15,9 @@ const Profile = () => {
       <form className="mt-4">
         {/* profile image */}
         <div className="lg:flex">
-          <h4 className="text-[#36383A] text-[20px] flex-1">Image</h4>
+          <h4 className="text-[#36383A] text-[20px] flex-1 font-glare">
+            Image
+          </h4>
           <div className="flex-[1.5] w-fit mt-3 lg:mt-0">
             <label
               className="w-fit flex relative cursor-pointer"
@@ -38,7 +40,7 @@ const Profile = () => {
         </div>
         {/* general Information */}
         <div className="lg:flex  items-start mt-16">
-          <h4 className="text-[#36383A] text-[20px] flex-1 flex justify-between">
+          <h4 className="text-[#36383A] text-[20px] flex-1 flex justify-between font-glare">
             General Information
             <div className="block lg:hidden">
               <p
@@ -131,7 +133,7 @@ const Profile = () => {
         </div>
         {/* security Information */}
         <div className="lg:flex items-start mt-16">
-          <h4 className="text-[#36383A] text-[20px] flex-1 flex justify-between">
+          <h4 className="text-[#36383A] text-[20px] flex-1 flex justify-between font-glare">
             Security
             <div className="block lg:hidden">
               <p

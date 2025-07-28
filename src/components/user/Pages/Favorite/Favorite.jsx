@@ -7,26 +7,19 @@ const Favorite = () => {
   const cmCls = "text-[#878C91] text-[12px] font-[12px] flex items-center";
   return (
     <div>
-      <div className="mb-5 flex items-center justify-between">
-        <div>
-          <p className="text-[#002747] text-[14px] mb-2">Search Publication</p>
-          <input
-            type="text"
-            placeholder="Search Here..."
-            className="w-full lg:w-[498px] md:w-[250px] border border-[#B2B5B8] py-1.5 px-3 text-[14px] focus:outline-2 focus:outline-[#004A87] text-[#5F6368] placeholder-[#5F6368] bg-[#F6F7F7]"
-          />
-        </div>
-      </div>
-      <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-2 gap-4">
+      <h2 className="md:text-2xl text-[20px] text-[#222425] font-glare mb-6">
+        Favorites
+      </h2>
+      <div className="grid  xl:grid-cols-3 md:grid-cols-2 grid-cols-2 gap-4">
         {favoriteData.map((item, index) => (
           <div
             key={index}
-            className="md:flex gap-4 justify-between shadow-md p-3"
+            className="xl:flex justify-between shadow-md p-3"
           >
-            <div className="md:flex gap-3">
+            <div className="xl:flex gap-3">
               <div className="bg-[#F6F6F6] relative md:max-w-[143px] w-full flex items-center justify-center">
-                <div>
-                  <img src={img} alt="" />
+                <div className="w-full">
+                  <img src={img} alt="" className="w-full" />
                 </div>
                 <p className="bg-[#DCDEDF] text-[12px] text-[#878C91] font-medium absolute top-1 left-1 px-2 py-0.5">
                   Music
@@ -77,14 +70,14 @@ const Favorite = () => {
                 </div>
               </div>
             </div>
-            <div className=" flex md:grid md:content-between justify-between md:mt-0 mt-2">
-              <p className="text-[20px] text-[#36383A]">
+            <div className="flex xl:grid xl:content-between justify-between xl:mt-0 mt-2">
+              <p className="md:text-[20px] text-[18px] text-[#36383A] font-glare">
                 <span>&#36;</span>
                 500
               </p>
 
               <div className="flex justify-end cursor-pointer">
-                <CartIcon className="h-[30px] w-[30px] fill-[#36383A]" />
+                <CartIcon className="md:h-[30px] md:w-[30px] h-[24px] w-[24px] fill-[#36383A]" />
               </div>
             </div>
           </div>

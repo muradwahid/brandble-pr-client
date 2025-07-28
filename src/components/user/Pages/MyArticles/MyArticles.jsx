@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { CirclePen, CopyIcon, DownloadIcon } from "../../../../utils/icons";
+import { CopyIcon, DownloadIcon } from "../../../../utils/icons";
 import Pagination from "../../../common/Pagination";
 import { myArticles } from "./data";
 import wordfileXl from "../../../../assets/wordfileXl.png";
@@ -20,7 +20,9 @@ const MyArticles = () => {
   return (
     <div className="w-full max-w-3xl md:mx-auto">
       <div className="flex justify-between items-center mb-4  flex-wrap gap-1.5">
-        <h2 className="md:text-2xl text-[20px] text-[#222425]">My Article</h2>
+        <h2 className="md:text-2xl text-[20px] text-[#222425] font-glare">
+          My Article
+        </h2>
         <div className="flex gap-1.5">
           <input
             type="text"
@@ -38,8 +40,11 @@ const MyArticles = () => {
 
       <div>
         {myArticles.map((item, index) => (
-          <div key={index} className="border border-[#DCDEDF] p-2.5 mb-5 flex gap-4">
-            <div className="flex items-center bg-[#F2F2F3] p-3">
+          <div
+            key={index}
+            className="border border-[#DCDEDF] p-2.5 mb-5 flex gap-4"
+          >
+            <div className="flex md:block hidden items-center bg-[#F2F2F3] p-3">
               <img src={wordfileXl} alt="" className="w-[75px] h-[89px]" />
             </div>
             <div className="w-full">
@@ -57,7 +62,7 @@ const MyArticles = () => {
                 </div>
               </div>
               <div className="">
-                <div className="text-[#36383A] text-[20px] whitespace-nowrap overflow-hidden text-ellipsis">
+                <div className="md:text-[20px] text-[18px] font-glare whitespace-nowrap overflow-hidden text-ellipsis">
                   {item.title}
                 </div>
               </div>

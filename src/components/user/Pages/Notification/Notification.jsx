@@ -18,6 +18,9 @@ const Notification = () => {
     };
   return (
     <div className="w-full max-w-3xl md:mx-auto">
+      <h2 className="md:text-2xl text-[20px] text-[#222425] font-glare mb-6">
+        Notifications
+      </h2>
       <div className="bg-white border border-[#DCDEDF]">
         <div className="flex justify-end items-center p-4 ">
           <a

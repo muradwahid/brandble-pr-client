@@ -5,15 +5,15 @@ import Chat from "./Chat";
 import { chatList } from "./data";
 
 const MyMessages = () => {
-  const [activeIdx, setActiveIdx] = useState(null);
+  const [activeIdx, setActiveIdx] = useState("#653BSBE2-12");
   const activeCls = "bg-[#E6F4FF] border-l-[#008CFF] border-b-[#008CFF]";
   return (
     <div className="xl:ml-[8%] lg:ml-[6%] md:ml-[4%] ml-[2%] ">
       <div className="h-full flex user-message-chat-shadow">
         {/* chat lists */}
         <div className="w-[220px] xl:w-[350px] lg:w-[280px] md:w-[220px] md:overflow-visible overflow-hidden h-full">
-          <div className="px-3 lg:block hidden">
-            <h2 className="text-[#1E293B] text-2xl">Messages</h2>
+          <div className="px-3 mt-6 lg:block hidden">
+            <h2 className="text-[#1E293B] text-2xl font-glare">Messages</h2>
             <div className="text-[#5F6368] relative my-4">
               <input
                 type="text"

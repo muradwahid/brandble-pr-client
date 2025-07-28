@@ -1,0 +1,15 @@
+
+.payment-history-table th{
+  border-right:1px solid #B2B5B8;
+
+}
+.payment-history-table td {
+  border-right: 1px solid #DCDEDF;
+}
+.payment-history-table tr:nth-child(even) {
+  background-color: #F6F7F7;
+}
+
+.removeModal-icon-shadow{
+  box-shadow: 0px 0px 20px rgb(222 53 11 / 15%);
+}
