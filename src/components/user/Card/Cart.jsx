@@ -134,7 +134,9 @@ const Cart = ({ ref, setOpenCart }) => {
         <div className="font-normal text-[#222425]">
           Subtotal: <span id="subtotal-amount">${subtotal.toFixed(2)}</span>
         </div>
-        <Link to="/checkout" onClick={() => setOpenCart(false)} className="bg-[#222425] text-white py-2 px-8 hover:bg-gray-800 transition cursor-pointer">
+        <Link
+          // to="/checkout"
+          onClick={() => setOpenCart(false)} className="bg-[#222425] text-white py-2 px-8 hover:bg-gray-800 transition cursor-pointer">
           Checkout
         </Link>
       </div>
