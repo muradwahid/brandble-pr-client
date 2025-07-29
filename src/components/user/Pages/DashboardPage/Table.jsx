@@ -9,13 +9,17 @@ const Table = () => {
       <table className="min-w-full bg-[#F6F7F7] text-[16px] font-normal overflow-x-scroll table-fixed">
         <thead className="">
           <tr className="text-left py-2">
-            <th className="px-3 py-3 text-[#222425] w-[5%]">SL</th>
-            <th className="px-3 py-3 text-[#222425]">Order ID</th>
-            <th className="px-3 py-3 text-[#222425]">Publication</th>
-            <th className="px-3 py-3 text-[#222425]">Service</th>
-            <th className="px-3 py-3 text-[#222425]">Details Submitted</th>
-            <th className="px-3 py-3 text-[#222425]">Order Date</th>
-            <th className="px-3 py-3 text-[#222425]">Status</th>
+            <th className="px-3 py-3 text-[#222425] font-medium w-[5%]">SL</th>
+            <th className="px-3 py-3 text-[#222425] font-medium">Order ID</th>
+            <th className="px-3 py-3 text-[#222425] font-medium">
+              Publication
+            </th>
+            <th className="px-3 py-3 text-[#222425] font-medium">Service</th>
+            <th className="px-3 py-3 text-[#222425] font-medium">
+              Details Submitted
+            </th>
+            <th className="px-3 py-3 text-[#222425] font-medium">Order Date</th>
+            <th className="px-3 py-3 text-[#222425] font-medium">Status</th>
           </tr>
         </thead>
         <tbody className=" text-[#36383A]">

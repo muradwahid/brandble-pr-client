@@ -21,7 +21,7 @@ const DashboardPage = () => {
     <div className="w-full">
       <div className="lg:flex justify-between items-center border-b border-[#DCDEDF] pb-4">
         <div className="md:flex gap-8 items-center w-full">
-          <h3 className="text-2xl font-semibold text-[#222425] font-glare">
+          <h3 className="text-2xl text-[#222425] font-glare">
             Dashboard
           </h3>
           <div className="w-full flex items-center justify-between">
