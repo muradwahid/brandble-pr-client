@@ -40,7 +40,7 @@ const UserSidebar = () => {
                 <img className="w-full" src={userImage} alt="" />
               </div>
               <div className="flex flex-col">
-                <h4 className="text-[#222425] text-[20px] font-semibold font-glare ">
+                <h4 className="text-[#222425] text-[20px] font-glare ">
                   John Doe
                 </h4>
                 <small className="text-[#5F6368]">john.doe@gmail.com</small>

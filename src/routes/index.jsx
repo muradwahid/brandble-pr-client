@@ -9,6 +9,7 @@ import Publications from "../components/user/Pages/Publications/Publications";
 import UserLayout from "../layout/UserLayout";
 import MyArticles from "../components/user/Pages/MyArticles/MyArticles";
 import Payment from "../components/user/Pages/Payment/Payment";
+import Checkout from "../components/user/Pages/Checkout/Checkout";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "payments", // This will render at //articles
         element: <Payment />,
+      },
+      {
+        path: "checkout", // This will render at //articles
+        element: <Checkout />,
       },
     ],
   },
