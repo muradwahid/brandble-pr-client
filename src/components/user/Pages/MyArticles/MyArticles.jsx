@@ -28,7 +28,7 @@ const MyArticles = () => {
             type="text"
             id="orderSearch"
             placeholder="Search Here..."
-            className=" border border-[#DCDEDF] py-1 px-3 text-[14px] focus:outline-2 focus:outline-[#004A87] text-[#5F6368] placeholder-[#5F6368] bg-white rounded-sm"
+            className=" border border-[#DCDEDF] py-1 px-3 text-[14px] focus:outline-2 focus:outline-[#004A87] text-[#5F6368] placeholder-[#5F6368] bg-white rounded-sm w-full"
           />
           <button className="border border-[#DCDEDF] px-2 rounded-sm cursor-pointer">
             <label htmlFor="orderSearch">

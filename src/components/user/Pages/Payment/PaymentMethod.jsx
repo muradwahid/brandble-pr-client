@@ -1,6 +1,11 @@
 import { FaRegTrashAlt} from "react-icons/fa";
 
-const PaymentMethod = ({ activePayment, setActivePayment, setRemove }) => {
+const PaymentMethod = ({
+  activePayment,
+  setActivePayment,
+  setRemove,
+  setMakeDefault,
+}) => {
   return (
     <div className="w-full">
       <div className="bg-[#F6F7F7] md:flex gap-3.5 p-3.5 mt-10">
@@ -43,7 +48,7 @@ const PaymentMethod = ({ activePayment, setActivePayment, setRemove }) => {
                   />
                   <p className="text-[#5F6368] text-sm">******6615</p>
                 </div>
-                <button className="bg-[#36383A] text-sm font-medium text-white px-3 py-1 cursor-pointer hover:bg-[#222425] transition-all duration-200">
+                <button onClick={() => setMakeDefault(true)} className="bg-[#36383A] text-sm font-medium text-white px-3 py-1 cursor-pointer hover:bg-[#222425] transition-all duration-200">
                   Change
                 </button>
               </div>

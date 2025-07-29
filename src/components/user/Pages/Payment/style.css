@@ -11,5 +11,13 @@
 }
 
 .removeModal-icon-shadow{
-  box-shadow: 0px 0px 20px rgb(222 53 11 / 15%);
+  box-shadow: 0px 0px 20px #de350b26;
+}
+
+.makeDefault-icon-shadow{
+  box-shadow: 0px 0px 20px #22242540;
+
+}
+.default-payment-method-shadow{
+  box-shadow: 0px 0px 40px rgba(185, 185, 185, 0.25);
 }
