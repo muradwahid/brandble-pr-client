@@ -5,7 +5,7 @@ import { BellIcon, CartIcon } from "../../../utils/icons";
 import { useEffect, useRef, useState } from "react";
 import siteLogo from "../../../assets/logo.png";
 import userImage from "../../../assets/profile.png";
-import Cart from "../Card/Cart";
+import Cart from "../../ui/Card/Cart";
 const TopNavBar = () => {
   const btnRef = useRef();
   const [openCart, setOpenCart] = useState(false);

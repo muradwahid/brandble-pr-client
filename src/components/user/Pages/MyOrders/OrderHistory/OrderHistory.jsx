@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { CirclePen, CopyIcon } from "../../../../utils/icons";
-import Pagination from "../../../common/Pagination";
+import { CirclePen, CopyIcon } from "../../../../../utils/icons";
+import Pagination from "../../../../common/Pagination";
 import { orderHistoryData } from "./data";
 
 const OrderHistory = () => {

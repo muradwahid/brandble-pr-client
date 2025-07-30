@@ -1,16 +1,27 @@
-import { NavLink } from "react-router";
+import { NavLink, useLocation } from "react-router";
 import userImage from "../../../assets/profile.png";
 import { userNav } from "../../../utils/navData";
 import { useState } from "react";
-import { RxCross2, RxHamburgerMenu } from "react-icons/rx";
+import { RxChevronDown, RxChevronRight, RxCross2, RxHamburgerMenu } from "react-icons/rx";
 
 const UserSidebar = () => {
   const [toggle, setToggle] = useState(true);
+  const location = useLocation()
 
   const handleToggle = () => {
     setTimeout(() => {
       setToggle(!toggle);
     }, 300);
+  };
+
+  
+  // Check if a parent route is active
+  const isParentActive = (item) => {
+    return (
+      location.pathname === item.path ||
+      (item.subItems &&
+        item.subItems.some((subItem) => location.pathname.startsWith(subItem.path)))
+    );
   };
 
   return (
@@ -51,17 +62,36 @@ const UserSidebar = () => {
             <div className="mt-5">
               <div>
                 {userNav.map((item, index) => (
-                  <NavLink
-                    key={index}
-                    to={item.path}
-                    className={({ isActive }) =>
-                      `flex items-center text-[#222425] mt-1.5 gap-3 py-1.5 cursor-pointer transition-all duration-300 hover:bg-[#004A87] hover:pl-3 hover:text-white ${
-                        isActive ? "bg-[#004A87] text-white pl-3" : ""
-                      }`
-                    }
-                  >
-                    <p className="text-[15px] ">{item.title}</p>
-                  </NavLink>
+                  <div key={index}>
+                    <NavLink
+                      key={index}
+                      to={item.path}
+                      className={({ isActive }) =>
+                        `flex items-center text-[#222425] mt-1.5 gap-3 py-1.5 cursor-pointer transition-all duration-300 hover:bg-[#004A87] hover:pl-3 hover:text-white ${
+                          isActive ? "bg-[#004A87] text-white pl-3" : ""
+                        }`
+                      }
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <p className="text-[15px] ">{item.title}</p>
+                        {item.subItems && (isParentActive(item) ? <RxChevronDown className="mr-3" /> : <RxChevronRight className="mr-3" />)}
+                      </div>
+                    </NavLink>
+                    {item.subItems && isParentActive(item) &&
+                      item.subItems.map((subItem, subIndex) => (
+                        <NavLink
+                          key={subIndex}
+                          to={subItem.path}
+                          className={({ isActive }) =>
+                            `flex items-center text-sm text-[#222425] ml-3 mt-1.5 gap-3 py-1.5 cursor-pointer transition-all duration-300 hover:bg-[#006AC2] hover:pl-3 hover:text-white ${
+                              isActive ? "bg-[#006AC2] text-white pl-3" : ""
+                            }`
+                          }
+                        >
+                          <p className="text-sm ">{subItem.title}</p>
+                        </NavLink>
+                      ))}
+                  </div>
                 ))}
               </div>
             </div>

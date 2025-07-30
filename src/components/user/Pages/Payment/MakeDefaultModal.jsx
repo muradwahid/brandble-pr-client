@@ -39,7 +39,7 @@ const MakeDefaultModal = ({
           >
             <div className="max-w-20 grid content-center bg-[#F2F2F3] px-2.5 py-6">
               <img
-                src="public/assets/paypallogo.png"
+                src="/public/assets/paypallogo.png"
                 alt="VISA"
                 className="h-auto"
               />
@@ -58,7 +58,7 @@ const MakeDefaultModal = ({
                 <div className="w-full bg-white hover:bg-[#F6F7F7] transition flex p-1.5 border-b border-[#F2F2F3]">
                   <div className="max-w-20 grid content-center bg-[#F2F2F3] px-2.5 py-6">
                     <img
-                      src="public/assets/paypallogo.png"
+                      src="/public/assets/paypallogo.png"
                       alt="VISA"
                       className="h-auto"
                     />

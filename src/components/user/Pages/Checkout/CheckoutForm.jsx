@@ -1,307 +1,234 @@
-import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { GoShieldLock } from "react-icons/go";
+import "./style.css";
 
 const CheckoutForm = () => {
-  // Destructure methods from useForm hook
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm();
-  // State to manage submission status and messages
-  const [submissionStatus, setSubmissionStatus] = useState(null);
-  const [submissionMessage, setSubmissionMessage] = useState("");
+  const inputCls = ` px-3 py-2 bg-[#F6F7F7] border border-[#DCDEDF] outline-none text-[#5F6368] placeholder-[#B2B5B8] placeholder:font-normal w-full`;
+  const [selectedPaymentMethod, setSelectedPaymentMethod] =
+    useState("visa_card_1");
 
-  // Function to handle form submission
-  const onSubmit = async (data) => {
-    setSubmissionStatus("loading");
-    setSubmissionMessage("Submitting your billing information...");
-
-    try {
-      // Simulate API call
-      const response = await fetch("https://muradwahid.com/api/v1/billing", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        setSubmissionStatus("success");
-        setSubmissionMessage("Billing information submitted successfully!");
-        reset(); // Reset form fields on successful submission
-      } else {
-        const errorData = await response.json();
-        setSubmissionStatus("error");
-        setSubmissionMessage(
-          `Submission failed: ${errorData.message || "Unknown error"}`
-        );
-      }
-    } catch (error) {
-      setSubmissionStatus("error");
-      setSubmissionMessage(`An error occurred: ${error.message}`);
-    }
+  const handlePaymentMethodChange = (e) => {
+    setSelectedPaymentMethod(e.target.id);
   };
 
-  const inputCls = ``
   return (
-    <div>
-      <div className=" font-sans">
-        <div className="bg-white w-full max-w-md">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+    <div className="w-full flex-1">
+      <div className="bg-white w-full">
+        <div className="space-y-7">
+          {/* personal information */}
+          <div className="border border-[#F2F2F3] p-3.5">
+            <div className="border-b border-[#DCDEDF] pb-3">
+              <h3 className="text-[20px] text-[#222425] font-glare">
+                Personal Information
+              </h3>
+            </div>
             {/* Full Name */}
-            <div>
-              <label
-                htmlFor="fullName"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+            <div className="flex flex-col w-full mt-4">
+              <label htmlFor="fullName" className="text-sm text-[#5F6368] mb-1">
                 Full Name
               </label>
               <input
                 type="text"
                 id="fullName"
-                {...register("fullName", { required: "Full Name is required" })}
-                className={`${inputCls} ${
-                  errors.fullName ? "border-red-500" : "border-gray-300"
-                } rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                placeholder="John Doe"
+                className={`${inputCls}`}
+                value="John Doe"
+                readOnly
               />
-              {errors.fullName && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.fullName.message}
-                </p>
-              )}
             </div>
 
             {/* Email Address */}
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
+            <div className="flex flex-col w-full my-3.5">
+              <label htmlFor="email" className="text-sm text-[#5F6368] mb-1">
                 Email Address
               </label>
               <input
                 type="email"
                 id="email"
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                    message: "Invalid email address",
-                  },
-                })}
-                className={`mt-1 block w-full px-4 py-2 border ${
-                  errors.email ? "border-red-500" : "border-gray-300"
-                } rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                placeholder="you@example.com"
+                className={`${inputCls}`}
+                value="john.doe@example.com"
+                readOnly
               />
-              {errors.email && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.email.message}
-                </p>
-              )}
             </div>
 
-            {/* Address Line 1 */}
-            <div>
-              <label
-                htmlFor="address1"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Address Line 1
+            {/* Company Name */}
+            <div className="flex flex-col w-full">
+              <label htmlFor="address1" className="text-sm text-[#5F6368] mb-1">
+                Company Name
               </label>
               <input
                 type="text"
-                id="address1"
-                {...register("address1", {
-                  required: "Address Line 1 is required",
-                })}
-                className={`mt-1 block w-full px-4 py-2 border ${
-                  errors.address1 ? "border-red-500" : "border-gray-300"
-                } rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                placeholder="123 Main St"
+                id="companyName"
+                className={`${inputCls}`}
+                value="Brandable PR Inc."
+                readOnly
               />
-              {errors.address1 && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.address1.message}
-                </p>
-              )}
             </div>
+          </div>
 
-            {/* Address Line 2 (Optional) */}
-            <div>
-              <label
-                htmlFor="address2"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Address Line 2 (Optional)
+          {/* billing address */}
+          <div className="border border-[#F2F2F3] p-3.5">
+            <div className="border-b border-[#DCDEDF] pb-3">
+              <h3 className="text-[20px] text-[#222425] font-glare">
+                Billing Address
+              </h3>
+            </div>
+            {/* address */}
+            <div className="flex flex-col w-full mt-4">
+              <label htmlFor="fullName" className="text-sm text-[#5F6368] mb-1">
+                Address
               </label>
               <input
                 type="text"
-                id="address2"
-                {...register("address2")}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                placeholder="Apartment, Suite, etc."
+                id="address"
+                className={`${inputCls}`}
+                value="123 Main St, Anytown, USA"
+                readOnly
               />
             </div>
 
-            {/* City */}
-            <div>
-              <label
-                htmlFor="city"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                City
-              </label>
-              <input
-                type="text"
-                id="city"
-                {...register("city", { required: "City is required" })}
-                className={`mt-1 block w-full px-4 py-2 border ${
-                  errors.city ? "border-red-500" : "border-gray-300"
-                } rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                placeholder="New York"
-              />
-              {errors.city && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.city.message}
-                </p>
-              )}
+            <div className="w-full flex justify-between">
+              <div className="flex flex-col mt-4 w-[48%]">
+                <label
+                  htmlFor="country"
+                  className="text-sm text-[#5F6368] mb-1"
+                >
+                  Country
+                </label>
+                <input
+                  type="text"
+                  id="country"
+                  className={`${inputCls}`}
+                  value="United States"
+                  readOnly
+                />
+              </div>
+              <div className="flex flex-col mt-4 w-[48%]">
+                <label htmlFor="state" className="text-sm text-[#5F6368] mb-1">
+                  State/ Province/ Region
+                </label>
+                <input
+                  type="text"
+                  id="state"
+                  className={`${inputCls}`}
+                  value="California"
+                  readOnly
+                />
+              </div>
             </div>
-
-            {/* State/Province */}
-            <div>
-              <label
-                htmlFor="state"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                State/Province
-              </label>
-              <input
-                type="text"
-                id="state"
-                {...register("state", {
-                  required: "State/Province is required",
-                })}
-                className={`mt-1 block w-full px-4 py-2 border ${
-                  errors.state ? "border-red-500" : "border-gray-300"
-                } rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                placeholder="NY"
-              />
-              {errors.state && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.state.message}
-                </p>
-              )}
-            </div>
-
-            {/* Zip/Postal Code */}
-            <div>
-              <label
-                htmlFor="zipCode"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Zip/Postal Code
+            <div className="flex flex-col w-[48%] mt-4">
+              <label htmlFor="zipCode" className="text-sm text-[#5F6368] mb-1">
+                Postal/ Zip Code
               </label>
               <input
                 type="text"
                 id="zipCode"
-                {...register("zipCode", {
-                  required: "Zip/Postal Code is required",
-                })}
-                className={`mt-1 block w-full px-4 py-2 border ${
-                  errors.zipCode ? "border-red-500" : "border-gray-300"
-                } rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                placeholder="10001"
+                className={`${inputCls}`}
+                value="12345"
+                readOnly
               />
-              {errors.zipCode && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.zipCode.message}
-                </p>
-              )}
+            </div>
+          </div>
+
+          {/* payment method */}
+          <div className="border border-[#F2F2F3] p-3.5">
+            <div className="border-b border-[#DCDEDF] pb-3">
+              <h3 className="text-[20px] text-[#222425] font-glare">
+                Payment Method
+              </h3>
+            </div>
+            {/* payment method */}
+            <div className="flex items-center justify-between gap-1 mt-4">
+              <p className="text-[#5F6368] font-glare font-normal">
+                Default Method
+              </p>
+              <GoShieldLock className="text-[#5F6368] text-sm" />
+            </div>
+            <div className="flex flex-col w-full mt-4 border-b border-[#DCDEDF] pb-1.5">
+              <div className="w-full grid gap-2.5">
+                <label
+                  htmlFor="visa_card_1"
+                  className="flex items-center cursor-pointer gap-12 justify-start"
+                >
+                  <input
+                    type="radio"
+                    name="payment_card"
+                    id="visa_card_1"
+                    checked={selectedPaymentMethod === "visa_card_1"}
+                    onChange={handlePaymentMethodChange}
+                    className="cursor-pointer accent-[#008CFF]"
+                  />
+                  <p className="text-[#222425] text-sm">
+                    accountemail@gmail.com
+                  </p>
+                </label>
+                <div className="flex justify-between mt-1.5">
+                  <div className="flex items-center gap-2">
+                    <img
+                      src="https://shorturl.at/gHTiX"
+                      alt="VISA"
+                      className="w-14 h-auto mr-2"
+                    />
+                    <p className="text-[#5F6368] text-sm">******6615</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            {/* Country */}
-            <div>
-              <label
-                htmlFor="country"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Country
-              </label>
-              <input
-                type="text"
-                id="country"
-                {...register("country", { required: "Country is required" })}
-                className={`mt-1 block w-full px-4 py-2 border ${
-                  errors.country ? "border-red-500" : "border-gray-300"
-                } rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm`}
-                placeholder="USA"
-              />
-              {errors.country && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.country.message}
-                </p>
-              )}
+            {/* other payment methods */}
+            <div className="w-full space-y-7 mt-4">
+              <div className="w-1/2">
+                <div className="flex justify-between">
+                  <div className="flex items-center cursor-pointer gap-3 justify-start">
+                    <input
+                      type="radio"
+                      name="payment_card"
+                      id="visa_card_3"
+                      checked={selectedPaymentMethod === "visa_card_3"}
+                      onChange={handlePaymentMethodChange}
+                      className="cursor-pointer accent-[#008CFF]"
+                    />
+                    <img
+                      src="/public/assets/visalogo.png"
+                      alt="VISA"
+                      className="w-10 h-auto mr-2"
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-between mt-4">
+                  <p className="text-[#222425] text-sm">Card</p>
+                  <p className="text-[#5F6368] text-sm">******6615</p>
+                </div>
+              </div>
+              <div className="w-1/2">
+                <div className="flex justify-between">
+                  <div className="flex items-center cursor-pointer gap-3 justify-start">
+                    <input
+                      type="radio"
+                      name="payment_card"
+                      id="visa_card_4"
+                      checked={selectedPaymentMethod === "visa_card_4"}
+                      onChange={handlePaymentMethodChange}
+                      className="cursor-pointer accent-[#008CFF]"
+                    />
+                    <img
+                      src="/public/assets/visalogo.png"
+                      alt="VISA"
+                      className="w-10 h-auto mr-2"
+                    />
+                  </div>
+                </div>
+                <div className="flex justify-between mt-4">
+                  <p className="text-[#222425] text-sm">Card</p>
+                  <p className="text-[#5F6368] text-sm">******6615</p>
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <button className="text-sm text-[#36383A] bg-[#DCDEDF] px-8 py-2.5 cursor-pointer hover:bg-[#bebfc0] transition-all duration-200">
+                  New Payment Method
+                </button>
+              </div>
             </div>
-
-            {/* Phone Number (Optional) */}
-            <div>
-              <label
-                htmlFor="phone"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Phone Number (Optional)
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                {...register("phone", {
-                  pattern: {
-                    value:
-                      /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
-                    message: "Invalid phone number format",
-                  },
-                })}
-                className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                placeholder="+1 (555) 123-4567"
-              />
-              {errors.phone && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.phone.message}
-                </p>
-              )}
-            </div>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out"
-              disabled={submissionStatus === "loading"}
-            >
-              {submissionStatus === "loading"
-                ? "Submitting..."
-                : "Save Billing Information"}
-            </button>
-          </form>
-
-          {/* Submission Status Message */}
-          {submissionStatus && (
-            <div
-              className={`mt-6 p-3 rounded-md text-center text-sm ${
-                submissionStatus === "success"
-                  ? "bg-green-100 text-green-800"
-                  : submissionStatus === "error"
-                  ? "bg-red-100 text-red-800"
-                  : "bg-blue-100 text-blue-800"
-              }`}
-            >
-              {submissionMessage}
-            </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

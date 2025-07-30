@@ -6,6 +6,9 @@ body, #root{
     font-style: normal;
 }
 
+.font-poppins{
+  font-family: "Poppins", sans-serif;
+}
 /* src/assets/fonts/fonts.css */
 
 /* === PP Fragment Glare === */

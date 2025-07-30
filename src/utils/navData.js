@@ -1,38 +1,48 @@
 export const userNav = [
   {
     title: "My Profile",
-    path: "profile",
+    path: "/user/profile",
   },
   {
     title: "Dashboard",
-    path: "/dashboard",
+    path: "/user/dashboard",
   },
   {
     title: "All Publications",
-    path: "publications",
+    path: "/user/publications",
   },
   {
     title: "My Messages",
-    path: "messages",
+    path: "/user/messages",
   },
   {
     title: "My Favorites",
-    path: "favorite",
+    path: "/user/favorite",
   },
   {
     title: "Notification",
-    path: "notifications",
+    path: "/user/notifications",
   },
   {
-    title: "My Order History",
-    path: "order-history",
+    title: "My Orders",
+    path: "/user/orders",
+    subItems: [
+      {
+        title: "Running",
+        path: "/user/orders/running",
+      },
+      {
+        title: "History",
+        path: "/user/orders/history",
+      },
+    ],
   },
   {
     title: "My Articles",
-    path: "articles",
+    path: "/user/articles",
   },
   {
     title: "Payment",
-    path: "payments",
+    path: "/user/payments",
   },
 ];

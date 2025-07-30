@@ -1,0 +1,28 @@
+/* Custom scrollbar for the cart items */
+
+.add-card-container{
+  box-shadow:0px 0px 40px #dcdedf80;
+}
+.cart-items-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cart-items-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.cart-items-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.cart-items-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Custom checkbox styling for the specified color */
+.custom-checkbox:checked {
+  border-color:#171819;
+  /* border-color: #004A87; */
+}

@@ -4,7 +4,7 @@ import TopNavBar from "../components/user/TopNavBar/TopNavBar";
 
 const UserParentLayout = () => {
   const location = useLocation().pathname;
-  const publication = location == "/publications" || location == "/checkout";
+  const publication = location == "/user/publications" || location == "/user/checkout";
 
   return (
     <div className="flex flex-col h-screen">
