@@ -1,6 +1,6 @@
-import React from 'react';
-import { IoCheckmarkCircleOutline } from 'react-icons/io5';
-import { Link } from 'react-router';
+import React from "react";
+import { IoCheckmarkCircleOutline } from "react-icons/io5";
+import { Link } from "react-router";
 
 const PublishPopup = ({ setPublishPopup }) => {
   return (
@@ -25,8 +25,12 @@ const PublishPopup = ({ setPublishPopup }) => {
 
         <div className="flex justify-center space-x-4 mt-32">
           <Link
-            onClick={() => { 
+            onClick={() => {
               window.location.reload();
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
               setPublishPopup(false);
             }}
             to="/user/checkout/order-submit"
