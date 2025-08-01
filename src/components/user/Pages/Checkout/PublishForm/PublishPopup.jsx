@@ -1,8 +1,8 @@
-import React from "react";
-import { IoCheckmarkCircleOutline } from "react-icons/io5";
-import { Link } from "react-router";
+import React from 'react';
+import { IoCheckmarkCircleOutline } from 'react-icons/io5';
+import { Link } from 'react-router';
 
-const CheckoutPopup = ({ setCheckoutPopup }) => {
+const PublishPopup = ({ setPublishPopup }) => {
   return (
     <div className="fixed inset-0 bg-[#22242580] flex justify-center items-center p-4 backdrop-blur-[2px]">
       <div className="bg-white shadow-2xl px-20 pt-20 pb-7 w-full max-w-2xl relative">
@@ -17,22 +17,22 @@ const CheckoutPopup = ({ setCheckoutPopup }) => {
           </div>
         </div>
 
-        <div className="text-center mb-5">
+        <div className="text-center mt-16">
           <p className="text-3xl font-medium text-gray-800  font-glare leading-[140%]">
-            You’re Order Has Been Submitted Successfully!
-          </p>
-          <p className="text-[18px] text-[#222425] mt-16 px-3 font-poppins">
-            Please Submit the Required Information to Complete The Order.
+            You’re Order Information Has Been Submitted Successfully!
           </p>
         </div>
 
-        <div className="flex justify-center space-x-4">
+        <div className="flex justify-center space-x-4 mt-32">
           <Link
-            onClick={() => setCheckoutPopup(false)}
+            onClick={() => { 
+              window.location.reload();
+              setPublishPopup(false);
+            }}
             to="/user/checkout/order-submit"
             className="bg-[#002747] text-[18px] text-white py-2 px-8 hover:bg-[#002747]/90 transition cursor-pointer w-full inline-block text-center"
           >
-            Submit Information
+            Done
           </Link>
         </div>
       </div>
@@ -40,4 +40,4 @@ const CheckoutPopup = ({ setCheckoutPopup }) => {
   );
 };
 
-export default CheckoutPopup;
+export default PublishPopup;

@@ -5,6 +5,8 @@ import { cartData } from "./data";
 import "./style.css";
 import { Link } from "react-router";
 
+import hoodcriticImg from "../../../assets/hoodcriticImg.png"
+
 const Cart = ({ ref, setOpenCart }) => {
   // State to manage the cart items. Each item has an id, name, price, and checked status.
   const [cartItems, setCartItems] = useState(cartData);
@@ -67,9 +69,9 @@ const Cart = ({ ref, setOpenCart }) => {
                 onChange={() => handleCheckboxChange(item.id)}
                 className="custom-checkbox h-5 w-5 mr-2"
               />
-              <div className="md:mr-4 mr-2.5 md:max-w-32 w-24 relative">
+              <div className="md:mr-4 mr-2.5 md:w-32 w-24 relative">
                 <img
-                  src="./public/assets/hoodcriticImg.png"
+                  src={hoodcriticImg}
                   alt={item.name}
                   className="h-full w-full"
                 />
@@ -136,7 +138,9 @@ const Cart = ({ ref, setOpenCart }) => {
         </div>
         <Link
           to="/user/checkout"
-          onClick={() => setOpenCart(false)} className="bg-[#222425] text-white py-2 px-8 hover:bg-gray-800 transition cursor-pointer">
+          onClick={() => setOpenCart(false)}
+          className="bg-[#222425] text-white py-2 px-8 hover:bg-gray-800 transition cursor-pointer"
+        >
           Checkout
         </Link>
       </div>

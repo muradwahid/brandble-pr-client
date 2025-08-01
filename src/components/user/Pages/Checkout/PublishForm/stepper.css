@@ -1,0 +1,19 @@
+
+.orderStepperWrapper{
+  position: relative;
+  display: block;
+  height: fit-content;
+  padding:4px
+}
+.orderStepperWrapper .orderStepperList::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #F2F2F3;
+  width: 28px;
+  z-index: -1;
+  border-radius: 20px;
+}

@@ -3,32 +3,38 @@ import { BellIcon, CartIcon } from "../../../utils/icons";
 
 //images from assets folder
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router";
 import siteLogo from "../../../assets/logo.png";
 import userImage from "../../../assets/profile.png";
 import Cart from "../../ui/Card/Cart";
 const TopNavBar = () => {
   const btnRef = useRef();
   const [openCart, setOpenCart] = useState(false);
-  const cartRef = useRef()
+  const cartRef = useRef();
 
-    useEffect(() => {
-      function handleClick(event) {
-        if (cartRef.current && !cartRef.current.contains(event.target) && btnRef.current && !btnRef.current.contains(event.target) ) {
-          setOpenCart(false);
-        }
+  useEffect(() => {
+    function handleClick(event) {
+      if (
+        cartRef.current &&
+        !cartRef.current.contains(event.target) &&
+        btnRef.current &&
+        !btnRef.current.contains(event.target)
+      ) {
+        setOpenCart(false);
       }
+    }
 
-      document.addEventListener("mousedown", handleClick);
-      return () => {
-        document.removeEventListener("mousedown", handleClick);
-      };
-    }, [btnRef]);
+    document.addEventListener("mousedown", handleClick);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, [btnRef]);
   return (
     <nav className="w-full py-5 border-b-[1px] border-b-[#171819]">
       <div className="xl:w-[1400px] lg:w-4/5 md:w-5/6 w-[90%] mx-auto flex items-center justify-between relative">
-        <div>
+        <Link to="/user/profile">
           <img className="w-[116px] h-[52px]" src={siteLogo} alt="" />
-        </div>
+        </Link>
         <div className="hidden md:block">
           <div className="flex gap-12">
             <p className="text-[15px]">Publications</p>

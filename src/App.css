@@ -1,3 +1,6 @@
 .footer-icon-container {
   border-radius: 50% 50% 3px 50%;
 }
+.steperform-publish-formshadow{
+  box-shadow: 0px 0px 40px 0px rgba(144, 144, 144, 0.15);
+}

@@ -15,6 +15,7 @@ import UserMyOrderLayout from "../layout/UserMyOrderLayout";
 import RunningOrderLayout from "../layout/RunningOrderLayout";
 import Order from "../components/user/Pages/MyOrders/RunningOrder/Order/Order";
 import Details from "../components/user/Pages/MyOrders/RunningOrder/Order/Details/Details";
+import OrderSubmitForm from "../components/user/Pages/Checkout/PublishForm/OrderSubmitForm";
 
 const router = createBrowserRouter([
   {
@@ -100,6 +101,10 @@ const router = createBrowserRouter([
         element: <Details />,
       },
     ],
+  },
+  {
+    path: "/user/checkout/order-submit",
+    element: <OrderSubmitForm />,
   },
 ]);
 
