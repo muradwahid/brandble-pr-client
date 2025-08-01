@@ -1,7 +1,7 @@
 import React from "react";
-import { tableData } from "./data";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { Link } from "react-router";
+import { tableData } from "./data";
 
 const RunningOrder = () => {
   return (
@@ -52,22 +52,20 @@ const RunningOrder = () => {
                 className="border-t border-[#DCDEDF] hover:bg-[#DCDEDF] transition-all duration-300 "
               >
                 <td className="px-3 py-3">
-                  <Link to={`/user/my-orders/order-details/${item.id}`}>
+                  <Link to={`/user/orders/running/${item.id}`}>
                     {index + 1}
                   </Link>
                 </td>
                 <td className="px-3 py-3 text-[#006AC2] cursor-pointer">
-                  <Link to={`/user/my-orders/order-details/${item.id}`}>
-                    {item.id}
-                  </Link>
+                  <Link to={`/user/orders/running/${item.id}`}>{item.id}</Link>
                 </td>
-                  <td className="px-3 py-3 cursor-pointer">
-                    <Link to={`/user/my-orders/order-details/${item.id}`}>
-                      {item.publication}
+                <td className="px-3 py-3 cursor-pointer">
+                  <Link to={`/user/orders/running/${item.id}`}>
+                    {item.publication}
                   </Link>
                 </td>
                 <td className="px-3 py-3 cursor-pointer">
-                  <Link to={`/user/my-orders/order-details/${item.id}`}>
+                  <Link to={`/user/orders/running/${item.id}`}>
                     {item.service}
                   </Link>
                 </td>
@@ -76,12 +74,12 @@ const RunningOrder = () => {
                     item.submitted ? "text-[#00875A]" : "text-[#FF5630]"
                   }`}
                 >
-                  <Link to={`/user/my-orders/order-details/${item.id}`}>
+                  <Link to={`/user/orders/running/${item.id}`}>
                     {item.submitted ? "Submitted" : "Not Yet"}
                   </Link>
                 </td>
                 <td className="px-3 py-3">
-                  <Link to={`/user/my-orders/order-details/${item.id}`}>
+                  <Link to={`/user/orders/running/${item.id}`}>
                     {item.date}
                   </Link>
                 </td>

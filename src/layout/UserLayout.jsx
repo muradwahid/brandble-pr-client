@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from "react-router";
 import UserSidebar from "../components/user/Sidebar/UserSidebar";
 import TopNavBar from "../components/user/TopNavBar/TopNavBar";
+import Footer from "../components/ui/Footer/Footer";
 
 const UserParentLayout = () => {
   const location = useLocation().pathname;
@@ -23,7 +24,7 @@ const UserParentLayout = () => {
           </div>
         </div>
       </main>
-      <footer>Footer</footer>
+      <Footer />
     </div>
   );
 };

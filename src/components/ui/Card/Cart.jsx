@@ -69,7 +69,7 @@ const Cart = ({ ref, setOpenCart }) => {
               />
               <div className="md:mr-4 mr-2.5 md:max-w-32 w-24 relative">
                 <img
-                  src="public/assets/hoodcriticImg.png"
+                  src="./public/assets/hoodcriticImg.png"
                   alt={item.name}
                   className="h-full w-full"
                 />

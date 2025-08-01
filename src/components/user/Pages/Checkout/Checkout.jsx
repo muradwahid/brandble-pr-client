@@ -5,7 +5,7 @@ import { useState } from "react";
 import CheckoutPopup from "./CheckoutPopup";
 
 const Checkout = () => {
-  const [checkoutPopup, setCheckoutPopup] = useState(true);
+  const [checkoutPopup, setCheckoutPopup] = useState(false);
   return (
     <div className="w-full">
       <button

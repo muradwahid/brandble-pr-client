@@ -5,13 +5,16 @@ import Favorite from "../components/user/Pages/Favorite/Favorite";
 import MyArticles from "../components/user/Pages/MyArticles/MyArticles";
 import MyMessages from "../components/user/Pages/MyMessages/MyMessages";
 import OrderHistory from "../components/user/Pages/MyOrders/OrderHistory/OrderHistory";
+import RunningOrder from "../components/user/Pages/MyOrders/RunningOrder/RunningOrder";
 import Notification from "../components/user/Pages/Notification/Notification";
 import Payment from "../components/user/Pages/Payment/Payment";
 import Profile from "../components/user/Pages/Profile/Profile";
 import Publications from "../components/user/Pages/Publications/Publications";
 import UserLayout from "../layout/UserLayout";
 import UserMyOrderLayout from "../layout/UserMyOrderLayout";
-import RunningOrder from "../components/user/Pages/MyOrders/RunningOrder/RunningOrder";
+import RunningOrderLayout from "../layout/RunningOrderLayout";
+import Order from "../components/user/Pages/MyOrders/RunningOrder/Order/Order";
+import Details from "../components/user/Pages/MyOrders/RunningOrder/Order/Details/Details";
 
 const router = createBrowserRouter([
   {
@@ -52,7 +55,7 @@ const router = createBrowserRouter([
         element: <Notification />,
       },
       {
-        path: "/user/orders", // This will render at //order-history
+        path: "/user/orders", // This will render at //orders
         element: <UserMyOrderLayout />,
         children: [
           {
@@ -63,6 +66,7 @@ const router = createBrowserRouter([
             path: "/user/orders/running",
             element: <RunningOrder />,
           },
+
           {
             path: "/user/orders/history",
             element: <OrderHistory />,
@@ -70,20 +74,30 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/user/orders/running",
-        element: <p>Running</p>,
-      },
-      {
         path: "/user/articles", // This will render at //articles
         element: <MyArticles />,
       },
       {
-        path: "/user/payments", // This will render at //articles
+        path: "/user/payments", // This will render at //payments
         element: <Payment />,
       },
       {
-        path: "/user/checkout", // This will render at //articles
+        path: "/user/checkout", // This will render at //checkout
         element: <Checkout />,
+      },
+    ],
+  },
+  {
+    path: "/user/orders/running/:id",
+    element: <RunningOrderLayout />,
+    children: [
+      {
+        index: true,
+        element: <Order />,
+      },
+      {
+        path: "/user/orders/running/:id/details",
+        element: <Details />,
       },
     ],
   },
