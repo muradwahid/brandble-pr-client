@@ -5,7 +5,9 @@
 body, #root{
   font-family: "Poppins", sans-serif;
     font-style: normal;
-    background: #fff;
+}
+body{
+  background: #fff;
 }
 
 .font-poppins{
