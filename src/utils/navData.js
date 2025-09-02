@@ -46,3 +46,5 @@ export const userNav = [
     path: "/user/payments",
   },
 ];
+
+

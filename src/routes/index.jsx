@@ -1,21 +1,23 @@
 import { createBrowserRouter, Navigate } from "react-router";
 import Checkout from "../components/user/Pages/Checkout/Checkout";
+import OrderSubmitForm from "../components/user/Pages/Checkout/PublishForm/OrderSubmitForm";
 import DashboardPage from "../components/user/Pages/DashboardPage/DashboardPage";
 import Favorite from "../components/user/Pages/Favorite/Favorite";
 import MyArticles from "../components/user/Pages/MyArticles/MyArticles";
 import MyMessages from "../components/user/Pages/MyMessages/MyMessages";
 import OrderHistory from "../components/user/Pages/MyOrders/OrderHistory/OrderHistory";
+import Details from "../components/user/Pages/MyOrders/RunningOrder/Order/Details/Details";
+import Order from "../components/user/Pages/MyOrders/RunningOrder/Order/Order";
 import RunningOrder from "../components/user/Pages/MyOrders/RunningOrder/RunningOrder";
 import Notification from "../components/user/Pages/Notification/Notification";
 import Payment from "../components/user/Pages/Payment/Payment";
 import Profile from "../components/user/Pages/Profile/Profile";
 import Publications from "../components/user/Pages/Publications/Publications";
+import RunningOrderLayout from "../layout/RunningOrderLayout";
 import UserLayout from "../layout/UserLayout";
 import UserMyOrderLayout from "../layout/UserMyOrderLayout";
-import RunningOrderLayout from "../layout/RunningOrderLayout";
-import Order from "../components/user/Pages/MyOrders/RunningOrder/Order/Order";
-import Details from "../components/user/Pages/MyOrders/RunningOrder/Order/Details/Details";
-import OrderSubmitForm from "../components/user/Pages/Checkout/PublishForm/OrderSubmitForm";
+import AdminLayout from "../layout/AdminLayout";
+import Home from "../components/admin/Home/Home";
 
 const router = createBrowserRouter([
   {
@@ -105,6 +107,21 @@ const router = createBrowserRouter([
   {
     path: "/user/checkout/order-submit",
     element: <OrderSubmitForm />,
+  },
+  {
+    path: "/admin",
+    errorElement: <div>Error</div>,
+    element: <AdminLayout />,
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/dashboard" replace />,
+      },
+      {
+        path: "/admin/dashboard",
+        element: <Home />,
+      },
+    ],
   },
 ]);
 
