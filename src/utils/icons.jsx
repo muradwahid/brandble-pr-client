@@ -420,3 +420,51 @@ export const CurrencyIcon = (props) => (
     />
   </svg>
 );
+
+export const ArrowDown = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="10"
+    height="6"
+    viewBox="0 0 10 6"
+    fill="currentColor"
+    {...props}
+  >
+    <path
+      d="M5.00052 5.7735L0.289062 1.06204L1.06302 0.288086L5.00052 4.22559L8.93802 0.288086L9.71198 1.06204L5.00052 5.7735Z"
+      fill="#5F6368"
+    />
+  </svg>
+);
+
+export const TrendingDownIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="10"
+    viewBox="0 0 16 10"
+    fill="currentColor"
+    {...props}
+  >
+    <path
+      d="M10.9993 9.26953V8.1862H13.7414L8.98018 3.46182L5.81352 6.62849L0.416016 1.2312L1.18997 0.457031L5.81352 5.08057L8.98018 1.91391L14.4993 7.41224V4.6862H15.5827V9.26953H10.9993Z"
+      fill="#DE350B"
+    />
+  </svg>
+);
+
+export const TrendingUpIcon = (props) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="9"
+    height="9"
+    viewBox="0 0 9 9"
+    fill="currentColor"
+    {...props}
+  >
+    <path
+      d="M1.15237 8.66654L0.533203 8.04737L7.1807 1.39987H3.39987V0.533203H8.66654V5.79987H7.79987V2.01904L1.15237 8.66654Z"
+      fill="#36B37E"
+    />
+  </svg>
+);

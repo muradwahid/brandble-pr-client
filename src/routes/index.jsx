@@ -17,7 +17,8 @@ import RunningOrderLayout from "../layout/RunningOrderLayout";
 import UserLayout from "../layout/UserLayout";
 import UserMyOrderLayout from "../layout/UserMyOrderLayout";
 import AdminLayout from "../layout/AdminLayout";
-import Home from "../components/admin/Home/Home";
+import Home from "../components/admin/Pages/Home/Home";
+
 
 const router = createBrowserRouter([
   {

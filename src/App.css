@@ -4,3 +4,19 @@
 .steperform-publish-formshadow{
   box-shadow: 0px 0px 40px 0px rgba(144, 144, 144, 0.15);
 }
+
+.w-fill-available{
+  width: -webkit-fill-available;
+  width: fill-available;
+
+}
+
+.home-publication-rechart-wrapper .recharts-responsive-container>div {
+  min-height: 200px;
+  min-width: 200px;
+}
+
+.home-publication-rechart-wrapper .recharts-responsive-container .recharts-wrapper{
+  width: 180px !important;
+  height: 180px !important;
+}

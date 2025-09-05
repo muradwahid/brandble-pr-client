@@ -3,6 +3,8 @@
 blue- 1 #002747
 blue- 2 #006AC2
 
+black - #171819
+
 text #36383A
 
 gray- 1 #222425
