@@ -13,7 +13,7 @@ const HBarChart = () => {
   const [data] = useState([
     {
       name: "Sat",
-      uv: 4000,
+      uv: 3000,
       pv: 2400,
       amt: 2400,
     },
@@ -30,7 +30,7 @@ const HBarChart = () => {
       amt: 2290,
     },
     {
-      name: "Tues",
+      name: "Tue",
       uv: 2780,
       pv: 3908,
       amt: 2000,
@@ -68,22 +68,29 @@ const HBarChart = () => {
   };
 
   return (
-    <div>
-      <ResponsiveContainer width="100%" height={100}>
+    <div className="revenue-statistic-barChart">
+      <ResponsiveContainer width="100%" height={250}>
         <BarChart width={150} height={40} data={data}>
-          <Bar dataKey="uv" onMouseOver={handleClick} >
+          <Bar dataKey="uv" onMouseOver={handleClick}>
             {data.map((entry, index) => (
               <Cell
                 cursor="pointer"
-                fill={index === activeIndex ? "#36B37E" : "#F2F2F3"}
+                radius={[4, 4, 4, 4]}
+                fill={
+                  index === activeIndex
+                    ? "#36B37E"
+                    : index === data.length - 1
+                    ? "#222425" // Color for last index
+                    : "#F2F2F3"
+                }
                 key={`cell-${index}`}
               />
             ))}
           </Bar>
-          <YAxis tickFormatter={500000} />
+          <YAxis tickFormatter={yAxisFormatter} dataKey="uv" />
           <CartesianGrid strokeDasharray="3" />
           <XAxis dataKey="name" />
-          {/* <Tooltip /> */}
+          <Tooltip />
         </BarChart>
       </ResponsiveContainer>
     </div>

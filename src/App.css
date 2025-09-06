@@ -1,11 +1,12 @@
 .footer-icon-container {
   border-radius: 50% 50% 3px 50%;
 }
-.steperform-publish-formshadow{
+
+.steperform-publish-formshadow {
   box-shadow: 0px 0px 40px 0px rgba(144, 144, 144, 0.15);
 }
 
-.w-fill-available{
+.w-fill-available {
   width: -webkit-fill-available;
   width: fill-available;
 
@@ -16,7 +17,45 @@
   min-width: 200px;
 }
 
-.home-publication-rechart-wrapper .recharts-responsive-container .recharts-wrapper{
+.home-publication-rechart-wrapper .recharts-responsive-container .recharts-wrapper {
   width: 180px !important;
   height: 180px !important;
+}
+
+.revenue-statistic-barChart .recharts-responsive-container .recharts-cartesian-grid-vertical {
+  display: none;
+}
+
+.revenue-statistic-barChart .recharts-responsive-container .recharts-cartesian-axis-line {
+  display: none;
+}
+
+.revenue-statistic-barChart .recharts-responsive-container .recharts-layer .recharts-cartesian-axis-tick .recharts-cartesian-axis-tick-line {
+  display: none;
+}
+
+.revenue-statistic-barChart .recharts-responsive-container .recharts-tooltip-cursor {
+  display: none;
+}
+
+.revenue-statistic-barChart .recharts-responsive-container .recharts-layer.recharts-bar-rectangle path {
+  z-index: 10 !important;
+  position: relative;
+}
+
+.revenue-statistic-barChart .recharts-responsive-container .recharts-cartesian-grid-horizontal line {
+  z-index: -10 !important;
+  position: relative;
+}
+
+.revenue-statistic-barChart .recharts-responsive-container .recharts-layer g path {
+  border-radius: 8px !important;
+  rx: 8px !important;
+  ry: 8px !important;
+}
+
+.recharts-responsive-container .recharts-surface,
+.recharts-sector {
+  border: none;
+  outline: none;
 }
