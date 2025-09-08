@@ -4,9 +4,9 @@ import AdminSidebar from "../components/admin/AdminSidebar/AdminSidebar";
 
 const AdminLayout = () => {
   return (
-    <div className="bg-white flex gap-10 w-full max-w-[1440px] mx-auto">
+    <div className="bg-white flex w-full max-w-[1440px] mx-auto">
       <AdminSidebar />
-      <div className="mr-10 mt-5 w-fill-available">
+      <div className="mr-10 w-fill-available maxHeightdvh overflow-y-scroll px-10">
         <AdminHeader />
         <Outlet />
       </div>

@@ -1,0 +1,16 @@
+.adminHomeTableWrapper{
+  overflow-x: auto;
+}
+
+.adminHomeTableWrapper>table {
+  min-width: max-content;
+}
+
+
+@media screen and (min-width: 980px) {
+  .adminHomeTableWrapper>table {
+      min-width: max-content; 
+      width: -webkit-fill-available;
+      width: fill-available;
+    }
+}

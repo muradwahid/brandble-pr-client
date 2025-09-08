@@ -1,10 +1,17 @@
+import OrderLists from "./OrderLists";
 import OrderStatus from "./OrderStatus";
+import PublicationStatistic from "./PublicationStatistic";
 import RevenueStatistic from "./RevenueStatistic";
 
+import './style.css';
+import TopPublication from "./TopPublication";
+
 const Home = () => {
-  return  <div className="w-full">
+  return <div className="w-full">
     <OrderStatus />
     <RevenueStatistic />
+    <OrderLists />
+    <TopPublication/>
     </div>
 };
 

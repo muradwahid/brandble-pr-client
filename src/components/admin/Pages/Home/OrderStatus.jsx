@@ -1,21 +1,43 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowDown,
   TrendingDownIcon,
   TrendingUpIcon,
 } from "../../../../utils/icons";
+import Tooltip from "../../../ui/Tooltip";
 import HChart from "./HChart";
+import PublicationStatistic from "./PublicationStatistic";
 
 const OrderStatus = () => {
   const [filter, setFilter] = useState("today");
   const [toggle, setToggle] = useState(false);
+  const [isStatistic, setIsStatistic] = useState(false);
+  const statisticRef = useRef();
+  const viewRef = useRef();
+
   const newClient = 11;
   const repeated = 4;
   const totalOrders = newClient + repeated;
   const percent = parseInt((repeated / totalOrders) * 100);
 
   const totalMainOrder = 22;
+  useEffect(() => {
+    function handleClick(event) {
+      if (
+        statisticRef.current &&
+        !statisticRef.current.contains(event.target) &&
+        viewRef.current &&
+        !viewRef.current.contains(event.target)
+      ) {
+        setIsStatistic(false);
+      }
+    }
 
+    document.addEventListener("mousedown", handleClick);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, [viewRef]);
   return (
     <div className="w-full">
       <div>
@@ -49,8 +71,8 @@ const OrderStatus = () => {
         </div>
       </div>
       <div className="w-fill-available font-poppins border-y border-[#DCDEDF] py-8 ">
-        <div className="flex flex-1 w-full lg:flex-row flex-col">
-          <div className="grid md:grid-cols-2 grid-cols-1 w-full lg:border-0 md:border-b border-[#DCDEDF] lg:pb-0 md:pb-8 pb-0 ">
+        <div className="flex w-full lg:flex-row flex-col">
+          <div className="grid md:grid-cols-2 flex12 grid-cols-1 w-full lg:border-0 md:border-b border-[#DCDEDF] lg:pb-0 md:pb-8 pb-0 ">
             {/* total orders */}
             <div className="md:border-r md:border-b-0 border-b border-[#DCDEDF] pr-6 flex-1 md:pb-0 pb-5">
               <div className="flex items-center mb-11 justify-between">
@@ -139,7 +161,7 @@ const OrderStatus = () => {
             </div>
           </div>
           {/* publication */}
-          <div className="flex flex-1 w-full lg:flex-row flex-col justify-between gap-6 lg:mt-0 mt-5">
+          <div className="flex w-full flex1 lg:flex-row flex-col justify-between gap-6 lg:mt-0 mt-5">
             <div className="pl-6 w-full">
               <div className="grid content-between h-full">
                 <div className="flex items-center mb-11 justify-between">
@@ -156,21 +178,42 @@ const OrderStatus = () => {
                     <div className="w-full grid gap-1">
                       <div className="w-full flex items-center justify-between">
                         <p className="text-[#5F6368] text-sm">Hood Critic</p>
-                        <p className="text-[#5F6368] text-sm">15</p>
+                        <span className="text-[#5F6368] group text-sm relative transition-all duration-200">
+                          15
+                          <Tooltip
+                            className={`absolute bg-white border w-[150px] border-[#F2F2F3] `}
+                          >
+                            15 Order placed this month
+                          </Tooltip>
+                        </span>
                         <p className="text-[#36b37e] text-sm flex items-center gap-1">
                           7.5 % <TrendingUpIcon />
                         </p>
                       </div>
                       <div className="w-full flex items-center justify-between">
                         <p className="text-[#5F6368] text-sm">Hood Critic</p>
-                        <p className="text-[#5F6368] text-sm">15</p>
+                        <span className="text-[#5F6368] group text-sm relative transition-all duration-200">
+                          15
+                          <Tooltip
+                            className={`absolute bg-white border w-[150px] border-[#F2F2F3] `}
+                          >
+                            15 Order placed this month
+                          </Tooltip>
+                        </span>
                         <p className="text-[#36b37e] text-sm flex items-center gap-1">
                           7.5 % <TrendingUpIcon />
                         </p>
                       </div>
                       <div className="w-full flex items-center justify-between">
                         <p className="text-[#5F6368] text-sm">Hood Critic</p>
-                        <p className="text-[#5F6368] text-sm">15</p>
+                        <span className="text-[#5F6368] group text-sm relative transition-all duration-200">
+                          15
+                          <Tooltip
+                            className={`absolute bg-white border w-[150px] border-[#F2F2F3] `}
+                          >
+                            15 Order placed this month
+                          </Tooltip>
+                        </span>
                         <p className="text-[#36b37e] text-sm flex items-center gap-1">
                           7.5 % <TrendingUpIcon />
                         </p>
@@ -182,9 +225,14 @@ const OrderStatus = () => {
             </div>
             <div className="home-publication-rechart-wrapper">
               <HChart />
-              <p className="text-[#5F6368] text-sm text-end underline cursor-pointer">
+              <div
+                className="text-[#5F6368] text-sm text-end underline cursor-pointer relative left-0"
+                onClick={() => setIsStatistic(true)}
+                ref={viewRef}
+              >
                 view all
-              </p>
+                {isStatistic && <PublicationStatistic ref={statisticRef} />}
+              </div>
             </div>
           </div>
         </div>

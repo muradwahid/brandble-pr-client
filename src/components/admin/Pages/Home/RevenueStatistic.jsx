@@ -18,7 +18,7 @@ const RevenueStatistic = () => {
         </div>
         <HBarChart />
       </div>
-      <div className="flex-1 pl-4 lg:mt-0 mt-6">
+      <div className="flex-1 md:pl-4 lg:mt-0 mt-6">
         <div className="mb-3.5">
           <p className="font-poppins text-[#5F6368] ">
             Revenue Statistics (next 3 days)
