@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import {
   AccountCircle,
   ArrowDownIcon,
@@ -10,8 +11,30 @@ import {
   SwapVertical,
 } from "../../../../utils/icons";
 import { tableData } from "../../../user/Pages/MyOrders/RunningOrder/data";
+import OrderSortFilter from "./OrderSortFilter";
 
 const OrderLists = () => {
+  const [toggle, setToggle] = useState(false);
+  const sortRef = useRef(null);
+  const sortBtnRef = useRef(null);
+
+  useEffect(() => {
+    function handleClick(event) {
+      if (
+        sortRef.current &&
+        !sortRef.current.contains(event.target) &&
+        sortBtnRef.current &&
+        !sortBtnRef.current.contains(event.target)
+      ) {
+        setToggle(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClick);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, [sortBtnRef]);
   return (
     <div className="mt-10 pt-10 border-t border-[#DCDEDF]">
       <div className="mb-2.5 flex justify-between items-center">
@@ -19,10 +42,23 @@ const OrderLists = () => {
           <p className="font-poppins text-[#5F6368] font-poppins ">
             Today’s Orders
           </p>
-          <div className="flex gap-2 items-center border border-[#DCDEDF] py-1 px-2.5 rounded-md cursor-pointer">
-            <SwapVertical />
-            <p className="text-[#878C91] text-sm">Sort by</p>
-            <ArrowDownIcon className="ml-2.5" />
+          <div className="relative">
+            <div
+              className="flex gap-2 items-center border border-[#DCDEDF] py-1 px-2.5 rounded-md cursor-pointer"
+              onClick={() => setToggle(!toggle)}
+              ref={sortBtnRef}
+            >
+              <SwapVertical />
+              <p className="text-[#878C91] text-sm">Sort by</p>
+              <ArrowDownIcon className="ml-2.5" />
+            </div>
+            <OrderSortFilter
+              className={`top-8 left-0 transition-all ${
+                toggle ? "visible" : "hidden"
+              } `}
+              ref={sortRef}
+              setToggle={setToggle}
+            />
           </div>
         </div>
         <p className="text-[#5F6368] text-sm underline cursor-pointer">
