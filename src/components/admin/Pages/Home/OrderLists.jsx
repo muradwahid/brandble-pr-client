@@ -44,7 +44,7 @@ const OrderLists = () => {
           </p>
           <div className="relative">
             <div
-              className="flex gap-2 items-center border border-[#DCDEDF] py-1 px-2.5 rounded-md cursor-pointer"
+              className="flex gap-2 items-center border border-[#DCDEDF] py-1 px-2.5 rounded-sm cursor-pointer"
               onClick={() => setToggle(!toggle)}
               ref={sortBtnRef}
             >

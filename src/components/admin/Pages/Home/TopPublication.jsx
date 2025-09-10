@@ -1,15 +1,20 @@
 import { publicationData } from "../../../user/Pages/Publications/data";
 
 import {
+  AdultIcon,
   AmericaIcon,
   AVTimer,
+  BitcoinIcon,
   CampaignIcon,
+  CardiologyIcon,
+  CasinoIcon,
   CurrencyIcon,
   FollowHumanIcon,
   GenreIcon,
   HolidayVillageIcon,
   ListIcon,
   PublicationBadgeIcon,
+  SpaIcon,
   StarHalf,
   StartCircleIcon,
 } from "../../../../utils/icons";
@@ -19,7 +24,7 @@ const TopPublication = () => {
     <div>
       <div className="mb-5 mt-11 flex justify-between items-center border-t border-[#DCDEDF] pt-11">
         <p className="font-poppins text-[#5F6368] font-poppins ">
-          Today’s Orders
+          Top Publication
         </p>
         <p className="text-[#5F6368] text-sm underline cursor-pointer">
           view all
@@ -102,14 +107,16 @@ const TopPublication = () => {
                 </td>
                 <td className="px-3 py-3 text-nowrap">{item.title}</td>
                 <td className="px-3 py-3 text-nowrap">{item.title}</td>
-                <td className="px-3 py-3 text-nowrap">{item.doFollow}</td>
+                <td className="px-3 py-3 text-nowrap text-center">{item.doFollow}</td>
                 <td className="px-3 py-3 text-nowrap">{item.region}</td>
                 <td className="pr-2.5">
-                  <button
-                    className={` text-white cursor-pointer px-1 py-1 rounded-sm capitalize font-normal w-28 bg-[#FFAB00]`}
-                  >
-                    Pending
-                  </button>
+                  <span className="flex items-center gap-1">
+                    <AdultIcon />
+                    <CardiologyIcon />
+                    <SpaIcon />
+                    <BitcoinIcon />
+                    <CasinoIcon />
+                  </span>
                 </td>
               </tr>
             ))}

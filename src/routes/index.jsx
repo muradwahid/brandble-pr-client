@@ -18,6 +18,8 @@ import UserLayout from "../layout/UserLayout";
 import UserMyOrderLayout from "../layout/UserMyOrderLayout";
 import AdminLayout from "../layout/AdminLayout";
 import Home from "../components/admin/Pages/Home/Home";
+import AdminPublication from "../components/admin/Pages/AdminPublication/AdminPublication";
+import SinglePublication from "../components/admin/Pages/SinglePublication/SinglePublication";
 
 
 const router = createBrowserRouter([
@@ -121,6 +123,14 @@ const router = createBrowserRouter([
       {
         path: "/admin/dashboard",
         element: <Home />,
+      },
+      {
+        path: "/admin/publications",
+        element: <AdminPublication />,
+      },
+      {
+        path: "/admin/publications/:id",
+        element: <SinglePublication/>
       },
     ],
   },
