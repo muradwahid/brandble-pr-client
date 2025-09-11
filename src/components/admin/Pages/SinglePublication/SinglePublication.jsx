@@ -7,17 +7,33 @@ import {
   DeleteIcon,
   SpaIcon,
 } from "../../../../utils/icons";
+import { useOutsideClick } from "../../../../hooks/useOutsideClick";
+import { useState } from "react";
+import RemoveModal from "./RemoveModal";
 
 const SinglePublication = () => {
+
+    const [remove,setRemove] = useState(false);
+
+    const ref=useOutsideClick(() => { 
+      setRemove(false);
+    })
   return (
     <div>
-      <div>
-        <div className="relative">
-          <div className="flex gap-8 absolute right-0">
-            <div className="bg-[rgba(255,143,115,0.2)] px-4 py-2.5 rounded-3xl w-[52px] h-9 flex items-center justify-center cursor-pointer">
+      <div className="border border-[#F2F2F3] p-6 w-4/5 mx-auto singlePublicationAdmin">
+        {remove && <RemoveModal onChange={setRemove} ref={ref} />}
+        <div className="relative border-b border-[#DCDEDF] pb-5">
+          <div className="flex md:gap-8 gap-3 absolute right-0">
+            <div
+              className="bg-[rgba(255,143,115,0.2)] px-4 py-2.5 rounded-3xl w-[52px] h-9 flex items-center justify-center cursor-pointer"
+              onClick={() => setRemove(true)}
+            >
               <DeleteIcon />
             </div>
-            <Link className="bg-[#F6F7F7] px-4 py-2.5 rounded-3xl text-[#5F6368] text-sm w-[52px] h-9 flex items-center justify-center cursor-pointer">
+            <Link
+              to="/admin/publications/:id/edit"
+              className="bg-[#F6F7F7] px-4 py-2.5 rounded-3xl text-[#5F6368] text-sm w-[52px] h-9 flex items-center justify-center cursor-pointer"
+            >
               Edit
             </Link>
           </div>
@@ -26,10 +42,10 @@ const SinglePublication = () => {
               <img src="" alt="" />
             </div>
             <div className="">
-              <h2 className="text-[#36383A] font-glare text-[32px] mb-5">
+              <h2 className="text-[#36383A] font-glare md:text-[32px] text-2xl mb-5 leading-[140%]">
                 New York Times
               </h2>
-              <div className="flex flex-wrap gap-10">
+              <div className="flex flex-wrap md:gap-10 gap-2.5">
                 <div className="flex gap-2">
                   <p className="p-1 bg-[#F2F2F3] text-[#5F6368] font-popping font-medium text-[11px] flex items-center ">
                     DA: 95
@@ -55,7 +71,52 @@ const SinglePublication = () => {
             </div>
           </div>
         </div>
-        <div></div>
+        <div className="space-y-5 pt-6">
+          <div className="flex items-center gap-4">
+            <div className="text-[#5F6368] font-glare font-normal flex items-center w-24 justify-between">
+              <p>Genre</p>
+              <p>:</p>
+            </div>
+            <p className="text-[#5F6368] font-glare font-normal">
+              Health & Fitness
+            </p>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="text-[#5F6368] font-glare font-normal flex items-center w-24 justify-between">
+              <p>Price</p>
+              <p>:</p>
+            </div>
+            <p className="text-[#5F6368] font-glare font-normal">$ 175</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="text-[#5F6368] font-glare font-normal flex items-center w-24 justify-between">
+              <p>Sponsored</p>
+              <p>:</p>
+            </div>
+            <p className="text-[#5F6368] font-glare font-normal">Yes</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="text-[#5F6368] font-glare font-normal flex items-center w-24 justify-between">
+              <p>Indexed</p>
+              <p>:</p>
+            </div>
+            <p className="text-[#5F6368] font-glare font-normal">Yes</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="text-[#5F6368] font-glare font-normal flex items-center w-24 justify-between">
+              <p>Do Follow</p>
+              <p>:</p>
+            </div>
+            <p className="text-[#5F6368] font-glare font-normal">Yes</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="text-[#5F6368] font-glare font-normal flex items-center w-24 justify-between">
+              <p>Region</p>
+              <p>:</p>
+            </div>
+            <p className="text-[#5F6368] font-glare font-normal">Yes</p>
+          </div>
+        </div>
       </div>
     </div>
   );

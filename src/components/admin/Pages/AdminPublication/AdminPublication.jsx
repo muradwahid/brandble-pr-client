@@ -299,7 +299,7 @@ const AdminPublication = () => {
                       <CasinoIcon />
                     </span>
                   </td>
-                  <td className="px-3 py-3 text-nowrap cursor-pointer text-center [writing-mode:vertical-rl]">
+                  <td className="px-3 py-3 text-nowrap cursor-pointer text-center [writing-mode:vertical-rl] ">
                     <Link to="/admin/publications/:id">...</Link>
                   </td>
                 </tr>

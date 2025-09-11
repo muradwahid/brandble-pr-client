@@ -20,6 +20,7 @@ import AdminLayout from "../layout/AdminLayout";
 import Home from "../components/admin/Pages/Home/Home";
 import AdminPublication from "../components/admin/Pages/AdminPublication/AdminPublication";
 import SinglePublication from "../components/admin/Pages/SinglePublication/SinglePublication";
+import EditPublication from "../components/admin/Pages/EditPublication/EditPublication";
 
 
 const router = createBrowserRouter([
@@ -131,6 +132,10 @@ const router = createBrowserRouter([
       {
         path: "/admin/publications/:id",
         element: <SinglePublication/>
+      },
+      {
+        path: "/admin/publications/:id/edit",
+        element: <EditPublication/>
       },
     ],
   },
