@@ -4,6 +4,7 @@ import { NavLink } from 'react-router';
 import { CurrencyIcon, HomeIcon, OrderIcon, PublicationIcon, UserIcon } from '../../../utils/icons';
 
 import sitelogo from "../../../assets/siteLogo/logo.png"
+import { MdOutlineMessage } from 'react-icons/md';
 
 
 const adminNav = [
@@ -31,6 +32,11 @@ const adminNav = [
     title: "Payments",
     icon: <CurrencyIcon />,
     path: "/admin/payments",
+  },
+  {
+    title: "Message",
+    icon: <MdOutlineMessage className="text-[#878C91]" />,
+    path: "/admin/messages",
   },
 ];
 const AdminSidebar = () => {

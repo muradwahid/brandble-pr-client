@@ -164,7 +164,7 @@ const OrderStatus = () => {
           <div className="flex w-full flex1 lg:flex-row flex-col justify-between gap-6 lg:mt-0 mt-5">
             <div className="pl-6 w-full">
               <div className="grid content-between h-full">
-                <div className="flex items-center mb-11 justify-between">
+                <div className="flex mb-11 justify-between">
                   <p className="text-[#5F6368]">Publication</p>
                   <div>
                     <p className="text-xl text-[#171819] font-medium">2024</p>

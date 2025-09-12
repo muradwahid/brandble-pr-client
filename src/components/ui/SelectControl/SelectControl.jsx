@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { ArrowDownIcon, CheckMarkIcon } from "../../../utils/icons";
+import { useEffect, useRef, useState } from 'react';
+import { ArrowDownIcon, CheckMarkIcon } from '../../../utils/icons';
 
-const MultiSelectToken = ({ options, value, onClick,readOnly=false }) => {
+const SelectControl = ({ options, value, onClick, name,inputType='checkbox',label='Niche',readOnly=false }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isAddNiche,setIsAddNiche] = useState(false)
+  const [isAddValue, setIsAddValue] = useState(false);
   const componentRef = useRef(null);
+  const [selectedOption, setSelectedOption] = useState(value);
 
   // Effect to handle clicks outside the component to close the dropdown
   useEffect(() => {
@@ -24,18 +25,13 @@ const MultiSelectToken = ({ options, value, onClick,readOnly=false }) => {
   }, []);
 
   const handleSelectOption = (option) => {
-    if (!value.includes(option)) {
-      onClick([...value, option]);
-    }
-    // setIsOpen(false);
+    setSelectedOption(option);
+    onClick(option);
+    setIsOpen(false);
   };
 
-  // const handleRemoveToken = (tokenToRemove) => {
-  //   onClick(value.filter((token) => token !== tokenToRemove));
-  // };
 
   // const availableOptions = options.filter((option) => !value.includes(option));
-
   return (
     <div className="relative" ref={componentRef}>
       {/* The main component input-like area */}
@@ -48,7 +44,7 @@ const MultiSelectToken = ({ options, value, onClick,readOnly=false }) => {
         {/* Rendered Tokens */}
         <div className="flex flex-wrap items-center gap-2">
           <div className="">
-            <span>{value.join(", ")}</span>
+            <span>{selectedOption}</span>
           </div>
         </div>
         <ArrowDownIcon className="ml-2.5 absolute right-3 top-1/2 -translate-y-1/2" />
@@ -61,24 +57,36 @@ const MultiSelectToken = ({ options, value, onClick,readOnly=false }) => {
             {options.map((option, index) => (
               <label
                 key={index}
-                htmlFor={option}
-                className={`px-4 py-2 cursor-pointer hover:bg-slate-100 flex item-center gap-2.5 text-[#878C91] ${
-                  index + 1 == 1 ? "" : "border-t border-[#B2B5B8]"
+                htmlFor={`${name}-${option}`}
+                className={`px-4 py-2 cursor-pointer hover:bg-slate-100 flex items-center gap-2.5 ${
+                  index === 0 ? "" : "border-t border-[#B2B5B8]"
+                } ${
+                  selectedOption === option
+                    ? "bg-blue-50 text-blue-600"
+                    : "text-[#878C91]"
                 }`}
                 onClick={() => handleSelectOption(option)}
               >
-                <input type="checkbox" name={option} id={option} />
+                <input
+                  type={inputType}
+                  name={name}
+                  id={`${name}-${option}`}
+                  value={option}
+                  checked={selectedOption === option}
+                  onChange={() => handleSelectOption(option)}
+                />
                 {option}
               </label>
             ))}
+
             <p
               className={`px-4 py-2 border-t border-[#B2B5B8] cursor-pointer hover:bg-slate-100 flex item-center gap-2.5 text-[#36383A] }`}
-              onClick={() => setIsAddNiche(!isAddNiche)}
+              onClick={() => setIsAddValue(!isAddValue)}
             >
-              + Add Niche
+              + Add {label}
             </p>
           </div>
-          {isAddNiche && (
+          {isAddValue && (
             <div className="p-2 w-full bg-white shadow-lg mt-2 flex items-center gap-1">
               <input
                 type="text"
@@ -95,4 +103,4 @@ const MultiSelectToken = ({ options, value, onClick,readOnly=false }) => {
   );
 };
 
-export default MultiSelectToken;
+export default SelectControl;

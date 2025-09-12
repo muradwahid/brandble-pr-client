@@ -21,6 +21,12 @@ import Home from "../components/admin/Pages/Home/Home";
 import AdminPublication from "../components/admin/Pages/AdminPublication/AdminPublication";
 import SinglePublication from "../components/admin/Pages/SinglePublication/SinglePublication";
 import EditPublication from "../components/admin/Pages/EditPublication/EditPublication";
+import AddPublication from "../components/admin/Pages/AddPublication/AddPublication";
+import UserManagement from "../components/admin/Pages/UserManagement/UserManagement";
+import SingleUser from "../components/admin/Pages/SingleUser/SingleUser";
+import TotalOrders from "../components/admin/Pages/TotalOrders/TotalOrders";
+import Messages from "../components/admin/Pages/Messages/Messages";
+import Payments from "../components/admin/Pages/Payments/Payments";
 
 
 const router = createBrowserRouter([
@@ -136,6 +142,30 @@ const router = createBrowserRouter([
       {
         path: "/admin/publications/:id/edit",
         element: <EditPublication/>
+      },
+      {
+        path: "/admin/publications/add-new-publication",
+        element: <AddPublication/>
+      },
+      {
+        path: "/admin/users",
+        element: <UserManagement/>
+      },
+      {
+        path: "/admin/users/:id",
+        element: <SingleUser/>
+      },
+      {
+        path: "/admin/all-orders",
+        element: <TotalOrders/>
+      },
+      {
+        path: "/admin/payments",
+        element: <Payments/>
+      },
+      {
+        path: "/admin/messages",
+        element: <Messages/>
       },
     ],
   },

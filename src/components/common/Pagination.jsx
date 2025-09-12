@@ -120,7 +120,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
-          aria-hidden="true"
+          ariaHidden="true"
         >
           <path
             fillRule="evenodd"
@@ -188,7 +188,7 @@ const Pagination = ({ totalPages, currentPage, onPageChange }) => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
-          aria-hidden="true"
+          ariaHidden="true"
         >
           <path
             fillRule="evenodd"

@@ -2,30 +2,27 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import {
   AdultIcon,
-  AmericaIcon,
   ArrowDownIcon,
-  AVTimer,
+  ArrowUploadCircleIcon,
   BitcoinIcon,
   CampaignIcon,
   CardiologyIcon,
   CasinoIcon,
-  CirclePlusIcon,
+  ClearAllIcon,
   CurrencyIcon,
   DownloadDownIcon,
-  FollowHumanIcon,
   GenreIcon,
-  HolidayVillageIcon,
-  ListIcon,
+  OrderIconCalender,
   PublicationBadgeIcon,
+  ServicesIcon,
   SpaIcon,
-  StarHalf,
-  StartCircleIcon,
+  UserIcon,
 } from "../../../../utils/icons";
 import AdminPagination from "../../../common/AdminPagination";
 import { publicationData } from "../../../user/Pages/Publications/data";
 import Dropdown from "./Dropdown";
 
-const AdminPublication = () => {
+const TotalOrders = () => {
   const [queryParams, setQueryParams] = useState({});
   const [activeFilter, setActiveFilter] = useState({
     publication: false,
@@ -35,7 +32,7 @@ const AdminPublication = () => {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const totalItems = 90; // Example: total number of items
+  const totalItems = 1; // Example: total number of items
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const targetRef = useRef(null);
@@ -71,7 +68,6 @@ const AdminPublication = () => {
       document.removeEventListener("mousedown", handleClick);
     };
   }, [targetRef]);
-
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
@@ -179,16 +175,6 @@ const AdminPublication = () => {
         </div>
 
         <div className="flex gap-3">
-          <Link to="/admin/publications/add-new-publication">
-            <div
-              className="flex gap-2 items-center border border-[#DCDEDF] py-2 px-2.5 pl-4 rounded-[8px] cursor-pointer h-9"
-              onClick={() => setActiveFilter(!activeFilter)}
-              // ref={sortBtnRef}
-            >
-              <CirclePlusIcon />
-              <p className="text-[#878C91] text-sm">Publication</p>
-            </div>
-          </Link>
           <div
             className="flex gap-3 items-center py-2 px-2.5 pl-4 rounded-[8px] cursor-pointer bg-[#36B37E]  h-9"
             // onClick={() => setToggle(!toggle)}
@@ -201,12 +187,28 @@ const AdminPublication = () => {
       </div>
       <div className=" w-full overflow-x-auto pb-3">
         <div className="rounded-md  border border-[#DCDEDF] w-fit">
-          <table className="min-w-max text-sm font-normal overflow-x-scroll table-fixed overflow-hidden">
+          <table className="min-w-[1055px] text-sm font-normal overflow-x-scroll table-fixed overflow-hidden">
             <thead className="bg-[#F6F7F7]">
               <tr className="text-left py-2">
                 <th className="px-3 py-2 text-[#5F6368] font-normal">
                   <span className=" flex items-center gap-1.5 text-nowrap">
                     SL
+                  </span>
+                </th>
+                <th className="px-3 py-2 text-[#5F6368] font-normal">
+                  <span className=" flex items-center gap-1.5 text-nowrap">
+                    <ClearAllIcon /> Order ID
+                  </span>
+                </th>
+                <th className="px-3 py-2 text-[#5F6368] font-normal">
+                  <span className=" flex items-center gap-1.5 text-nowrap">
+                    <UserIcon />
+                    User Name
+                  </span>
+                </th>
+                <th className="px-3 py-2 text-[#5F6368] font-normal">
+                  <span className=" flex items-center gap-1.5 text-nowrap">
+                    <ServicesIcon /> Services
                   </span>
                 </th>
                 <th className="px-3 py-2 text-[#5F6368] font-normal">
@@ -222,87 +224,43 @@ const AdminPublication = () => {
                 </th>
                 <th className="px-3 py-2 text-[#5F6368] font-normal">
                   <span className=" flex items-center gap-1.5 text-nowrap">
-                    <StartCircleIcon /> DA
+                    <CurrencyIcon /> Amount
                   </span>
                 </th>
                 <th className="px-3 py-2 text-[#5F6368] font-normal">
                   <span className=" flex items-center gap-1.5 text-nowrap">
-                    <StarHalf /> DR
+                    <OrderIconCalender /> Order Date
                   </span>
                 </th>
                 <th className="px-3 py-2 text-[#5F6368] font-normal">
                   <span className=" flex items-center gap-1.5 text-nowrap">
-                    <AVTimer /> TAT
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <CurrencyIcon /> Price
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <CampaignIcon /> Sponsored
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <ListIcon /> Indexed
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <FollowHumanIcon /> Do Follow
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <AmericaIcon /> Region
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <HolidayVillageIcon /> Niche
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    Edit
+                    <ArrowUploadCircleIcon />
+                    Status
                   </span>
                 </th>
               </tr>
             </thead>
-            <tbody className=" text-[#36383A]">
+            <tbody className=" text-[#5F6368] text-sm">
               {publicationData.slice(0, 1).map((item, index) => (
                 <tr key={index} className="border-t border-[#DCDEDF]">
                   <td className="px-3 py-3 text-nowrap">{index + 1}</td>
-                  <td className="px-3 py-3 text-nowrap">{item.title}</td>
-                  <td className="px-3 py-3 text-nowrap">{item.genre}</td>
-                  <td className="px-3 py-3 text-nowrap">{item.da}</td>
-                  <td className="px-3 py-3 text-nowrap">{item.dr}</td>
-                  <td className="px-3 py-3 text-nowrap">
-                    {item.tat || "1-3 days"}
+                  <td className="px-3 py-3 text-nowrap">90987657</td>
+                  <td className="px-3 py-3 text-nowrap">Lee</td>
+                  <td className="px-3 py-3 text-nowrap text-[#222425]">
+                    Publish my own article
+                  </td>
+                  <td className="px-3 py-3 text-nowrap">Hood Critic</td>
+                  <td className="px-3 py-3 text-nowrap overflow-hidden whitespace-nowrap text-ellipsis w-[92px]">
+                    Health & Fitness
                   </td>
                   <td className="px-3 py-3 text-nowrap">
                     ${item.price || "1500"}
                   </td>
-                  <td className="px-3 py-3 text-nowrap">{item.title}</td>
-                  <td className="px-3 py-3 text-nowrap">{item.title}</td>
-                  <td className="px-3 py-3 text-nowrap text-center capitalize">
-                    {item.doFollow}
-                  </td>
-                  <td className="px-3 py-3 text-nowrap">{item.region}</td>
-                  <td className="pr-2.5">
-                    <span className="flex items-center gap-1">
-                      <AdultIcon />
-                      <CardiologyIcon />
-                      <SpaIcon />
-                      <BitcoinIcon />
-                      <CasinoIcon />
-                    </span>
-                  </td>
-                  <td className="px-3 py-3 text-nowrap cursor-pointer text-center [writing-mode:vertical-rl] ">
-                    <Link to="/admin/publications/:id">...</Link>
+                  <td className="px-3 py-3 text-nowrap">03/03/2025</td>
+                  <td className="px-3 py-3 text-nowrap">
+                    <button className="bg-[#FFAB00] rounded-sm px-3 py-1 text-white">
+                      Pending
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -332,4 +290,4 @@ const AdminPublication = () => {
   );
 };
 
-export default AdminPublication;
+export default TotalOrders;

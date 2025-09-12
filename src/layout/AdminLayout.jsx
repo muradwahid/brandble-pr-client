@@ -6,7 +6,7 @@ const AdminLayout = () => {
   return (
     <div className="bg-white flex w-full max-w-[1440px] mx-auto">
       <AdminSidebar />
-      <div className="mr-10 w-fill-available maxHeightdvh overflow-y-auto px-10">
+      <div className="mr-10 w-fill-available maxHeightdvh overflow-y-auto overflow-x-hidden px-10">
         <AdminHeader />
         <Outlet />
       </div>

@@ -103,20 +103,28 @@
   }
 }
 
-.maxHeightdvh{
+.adminPayment-revenueStatistics svg {
+  overflow: visible;
+}
+
+.adminPayment-revenueStatistics .recharts-xAxis .recharts-cartesian-axis-ticks {
+  transform: translateY(25px);
+}
+
+.maxHeightdvh {
   max-height: calc(100dvh - 40px);
 }
 
-.fillAvailableHeight{
+.fillAvailableHeight {
   height: -webkit-fill-available;
   height: fill-available;
 }
 
-.fillAvailableWidth{
+.fillAvailableWidth {
   width: -webkit-fill-available;
   width: fill-available;
 }
 
-.singlePublicationAdmin{
-  box-shadow:0px 0px 8px #ebebeb;
+.singlePublicationAdmin {
+  box-shadow: 0px 0px 8px #ebebeb;
 }

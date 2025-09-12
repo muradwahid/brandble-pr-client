@@ -119,7 +119,6 @@ const AdminPagination = ({ totalPages, currentPage, onPageChange }) => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"
-          aria-hidden="true"
         >
           <path
             fillRule="evenodd"
@@ -187,7 +186,6 @@ const AdminPagination = ({ totalPages, currentPage, onPageChange }) => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="#878C91"
-          ariaHidden="true"
         >
           <path
             fillRule="evenodd"

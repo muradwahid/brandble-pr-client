@@ -2,22 +2,4 @@ export const chatList = [
   {
     id:"#653BSBE2-1O"
   },
-  {
-    id:"#653BSBE2-11"
-  },
-  {
-    id:"#653BSBE2-12"
-  },
-  {
-    id:"#653BSBE2-13"
-  },
-  {
-    id:"#653BSBE2-14"
-  },
-  {
-    id:"#653BSBE2-15"
-  },
-  {
-    id:"#653BSBE2-16"
-  },
 ]
