@@ -93,7 +93,7 @@ const TopPublication = () => {
             </tr>
           </thead>
           <tbody className=" text-[#36383A]">
-            {publicationData.slice(0, 10).map((item, index) => (
+            {publicationData.slice(0, 1).map((item, index) => (
               <tr key={index} className="border-t border-[#DCDEDF]">
                 <td className="px-3 py-3 text-nowrap">{item.title}</td>
                 <td className="px-3 py-3 text-nowrap">{item.genre}</td>

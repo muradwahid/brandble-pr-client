@@ -6,6 +6,7 @@ import SelectControl from "../../../ui/SelectControl/SelectControl";
 import { RxCross2 } from "react-icons/rx";
 const EditPublication = () => {
   const [isDisabled, setIsDisabled] = useState(true);
+  
   return (
     <div className="border border-[#F2F2F3] p-6 w-4/5 mx-auto singlePublicationAdmin">
       <div>

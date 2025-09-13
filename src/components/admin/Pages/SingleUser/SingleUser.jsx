@@ -2,12 +2,15 @@ import { useState } from "react";
 import AdminPagination from "../../../common/AdminPagination";
 import { publicationData } from "../../../user/Pages/Publications/data";
 import { EmailIcon, PhoneIcon } from "../../../../utils/icons";
+import { tableData } from "../../../user/Pages/DashboardPage/data";
 
 const SingleUser = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const totalItems = 90; // Example: total number of items
   const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const orderDetails = tableData.find((order) => order.id === 'fsadf');
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {

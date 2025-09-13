@@ -1,4 +1,6 @@
-import { Link } from "react-router";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router";
+import { useOutsideClick } from "../../../../hooks/useOutsideClick";
 import {
   AdultIcon,
   BitcoinIcon,
@@ -7,17 +9,43 @@ import {
   DeleteIcon,
   SpaIcon,
 } from "../../../../utils/icons";
-import { useOutsideClick } from "../../../../hooks/useOutsideClick";
-import { useState } from "react";
 import RemoveModal from "./RemoveModal";
 
 const SinglePublication = () => {
+  const { id } = useParams();
+  const [data, setData] = useState([]);
+  const publicationDetails = data.find((publication) => publication.id === id);
+  const [remove, setRemove] = useState(false);
 
-    const [remove,setRemove] = useState(false);
+  const ref = useOutsideClick(() => {
+    setRemove(false);
+  });
+  console.log(publicationDetails);
+  useEffect(() => {
+    const fetchPublications = async () => {
+      try {
+        // setLoading(true);
+        const response = await fetch(
+          "http://localhost:5000/api/v1/publication/all-publications"
+        );
 
-    const ref=useOutsideClick(() => { 
-      setRemove(false);
-    })
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setData(data.data.data); // Assuming your API returns { data: [], meta: {} }
+        console.log(data.data.data);
+        // setLoading(false);
+      } catch (err) {
+        // setError(err.message);
+        // setLoading(false);
+        console.log(err);
+      }
+    };
+
+    fetchPublications();
+  }, []);
   return (
     <div>
       <div className="border border-[#F2F2F3] p-6 w-4/5 mx-auto singlePublicationAdmin">
@@ -43,15 +71,15 @@ const SinglePublication = () => {
             </div>
             <div className="">
               <h2 className="text-[#36383A] font-glare md:text-[32px] text-2xl mb-5 leading-[140%]">
-                New York Times
+                {publicationDetails?.title}
               </h2>
               <div className="flex flex-wrap md:gap-10 gap-2.5">
                 <div className="flex gap-2">
                   <p className="p-1 bg-[#F2F2F3] text-[#5F6368] font-popping font-medium text-[11px] flex items-center ">
-                    DA: 95
+                    DA: {publicationDetails?.da}
                   </p>
                   <p className="p-1 bg-[#F2F2F3] text-[#5F6368] font-popping font-medium text-[11px] flex items-center ">
-                    DR: 95
+                    DR: {publicationDetails?.dr}
                   </p>
                   <p className="p-1 bg-[#F2F2F3] text-[#5F6368] font-popping font-medium text-[11px] flex items-center ">
                     TTP: 1-3 Days
@@ -60,11 +88,10 @@ const SinglePublication = () => {
                 <div className="p-1 bg-[#F2F2F3] text-[#5F6368] font-popping font-medium flex items-center gap-3 rounded-sm">
                   <p className="text-sm">Niche</p>
                   <span className="flex items-center gap-1">
-                    <AdultIcon />
-                    <CardiologyIcon />
-                    <SpaIcon />
-                    <BitcoinIcon />
-                    <CasinoIcon />
+                    {publicationDetails?.niche?.title == "adult" && <AdultIcon />}
+                    {publicationDetails?.niche?.title == "health" && <CardiologyIcon />}
+                    {publicationDetails?.niche?.title == "cannabis" && <SpaIcon />}
+                    {publicationDetails?.niche?.title == "crypto" && <BitcoinIcon />}
                   </span>
                 </div>
               </div>
@@ -78,7 +105,7 @@ const SinglePublication = () => {
               <p>:</p>
             </div>
             <p className="text-[#5F6368] font-glare font-normal">
-              Health & Fitness
+              {publicationDetails?.genre?.title}
             </p>
           </div>
           <div className="flex items-center gap-4">
@@ -86,7 +113,9 @@ const SinglePublication = () => {
               <p>Price</p>
               <p>:</p>
             </div>
-            <p className="text-[#5F6368] font-glare font-normal">$ 175</p>
+            <p className="text-[#5F6368] font-glare font-normal">
+              $ {publicationDetails?.price}
+            </p>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-[#5F6368] font-glare font-normal flex items-center w-24 justify-between">
@@ -100,21 +129,27 @@ const SinglePublication = () => {
               <p>Indexed</p>
               <p>:</p>
             </div>
-            <p className="text-[#5F6368] font-glare font-normal">Yes</p>
+            <p className="text-[#5F6368] font-glare font-normal capitalize">
+              {publicationDetails?.indexed}
+            </p>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-[#5F6368] font-glare font-normal flex items-center w-24 justify-between">
               <p>Do Follow</p>
               <p>:</p>
             </div>
-            <p className="text-[#5F6368] font-glare font-normal">Yes</p>
+            <p className="text-[#5F6368] font-glare font-normal capitalize">
+              {publicationDetails?.doFollow}
+            </p>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-[#5F6368] font-glare font-normal flex items-center w-24 justify-between">
               <p>Region</p>
               <p>:</p>
             </div>
-            <p className="text-[#5F6368] font-glare font-normal">Yes</p>
+            <p className="text-[#5F6368] font-glare font-normal">
+              {publicationDetails?.region}
+            </p>
           </div>
         </div>
       </div>

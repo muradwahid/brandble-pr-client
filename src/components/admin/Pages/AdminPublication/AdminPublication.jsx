@@ -22,10 +22,10 @@ import {
   StartCircleIcon,
 } from "../../../../utils/icons";
 import AdminPagination from "../../../common/AdminPagination";
-import { publicationData } from "../../../user/Pages/Publications/data";
 import Dropdown from "./Dropdown";
 
 const AdminPublication = () => {
+  const [data,setData] = useState([])
   const [queryParams, setQueryParams] = useState({});
   const [activeFilter, setActiveFilter] = useState({
     publication: false,
@@ -71,6 +71,33 @@ const AdminPublication = () => {
       document.removeEventListener("mousedown", handleClick);
     };
   }, [targetRef]);
+
+
+  useEffect(() => {
+    const fetchPublications = async () => {
+      try {
+        // setLoading(true);
+        const response = await fetch(
+          "http://localhost:5000/api/v1/publication/all-publications"
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setData(data.data.data); // Assuming your API returns { data: [], meta: {} }
+        console.log(data)
+        // setLoading(false);
+      } catch (err) {
+        // setError(err.message);
+        // setLoading(false);
+        console.log(err)
+      }
+    };
+
+    fetchPublications();
+  }, []);
 
   return (
     <div>
@@ -273,11 +300,11 @@ const AdminPublication = () => {
               </tr>
             </thead>
             <tbody className=" text-[#36383A]">
-              {publicationData.slice(0, 1).map((item, index) => (
+              {data.map((item, index) => (
                 <tr key={index} className="border-t border-[#DCDEDF]">
                   <td className="px-3 py-3 text-nowrap">{index + 1}</td>
                   <td className="px-3 py-3 text-nowrap">{item.title}</td>
-                  <td className="px-3 py-3 text-nowrap">{item.genre}</td>
+                  <td className="px-3 py-3 text-nowrap">{item.genre.title}</td>
                   <td className="px-3 py-3 text-nowrap">{item.da}</td>
                   <td className="px-3 py-3 text-nowrap">{item.dr}</td>
                   <td className="px-3 py-3 text-nowrap">
@@ -287,22 +314,28 @@ const AdminPublication = () => {
                     ${item.price || "1500"}
                   </td>
                   <td className="px-3 py-3 text-nowrap">{item.title}</td>
-                  <td className="px-3 py-3 text-nowrap">{item.title}</td>
+                  <td className="px-3 py-3 text-nowrap text-center capitalize">
+                    {item?.indexed}
+                  </td>
                   <td className="px-3 py-3 text-nowrap text-center capitalize">
                     {item.doFollow}
                   </td>
                   <td className="px-3 py-3 text-nowrap">{item.region}</td>
                   <td className="pr-2.5">
                     <span className="flex items-center gap-1">
-                      <AdultIcon />
-                      <CardiologyIcon />
+                      {item?.niche?.title == "adult" && <AdultIcon />}
+                      {item?.niche?.title == "health" && <CardiologyIcon />}
+                      {item?.niche?.title == "cannabis" && <SpaIcon />}
+                      {item?.niche?.title == "crypto" && <BitcoinIcon/>}
+
+                      {/* <CardiologyIcon />
                       <SpaIcon />
                       <BitcoinIcon />
-                      <CasinoIcon />
+                      <CasinoIcon /> */}
                     </span>
                   </td>
                   <td className="px-3 py-3 text-nowrap cursor-pointer text-center [writing-mode:vertical-rl] ">
-                    <Link to="/admin/publications/:id">...</Link>
+                    <Link to={`/admin/publications/${item.id}`}>...</Link>
                   </td>
                 </tr>
               ))}

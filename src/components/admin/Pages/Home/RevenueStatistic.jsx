@@ -28,7 +28,10 @@ const RevenueStatistic = () => {
           </p>
         </div>
         <div className="overflow-y-auto max-h-72 pr-3">
-          <table className="min-w-full text-sm font-normal overflow-x-scroll table-fixed border border-[#DCDEDF] overflow-hidden" style={{height:"max-content"}}>
+          <table
+            className="min-w-full text-sm font-normal overflow-x-scroll table-fixed border border-[#DCDEDF] overflow-hidden"
+            style={{ height: "max-content" }}
+          >
             <thead className="bg-[#F6F7F7]">
               <tr className="text-left py-2">
                 <th className="px-3 py-3 text-[#5F6368] font-normal">
@@ -37,16 +40,14 @@ const RevenueStatistic = () => {
                 <th className="px-3 py-3 text-[#5F6368] font-normal">
                   Services
                 </th>
-                <th
-                  className="px-3 py-3 text-[#5F6368] font-normal"
-                >
+                <th className="px-3 py-3 text-[#5F6368] font-normal">
                   Due Date
                 </th>
                 <th className="px-3 py-3 text-[#5F6368] font-normal">Status</th>
               </tr>
             </thead>
             <tbody className=" text-[#36383A]">
-              {tableData.map((item, index) => (
+              {tableData.slice(0, 1).map((item, index) => (
                 <tr key={index} className="border-t border-[#DCDEDF]">
                   <td className="px-3 py-3">{item.id}</td>
                   <td className="px-3 py-3">{item.service}</td>

@@ -26,7 +26,7 @@ const adminNav = [
   {
     title: "Orders",
     icon: <OrderIcon />,
-    path: "/admin/all-orders",
+    path: "/admin/orders",
   },
   {
     title: "Payments",

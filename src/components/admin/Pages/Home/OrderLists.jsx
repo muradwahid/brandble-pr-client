@@ -111,11 +111,11 @@ const OrderLists = () => {
             </tr>
           </thead>
           <tbody className=" text-[#36383A]">
-            {tableData.map((item, index) => (
+            {tableData.slice(0, 1).map((item, index) => (
               <tr key={index} className="border-t border-[#DCDEDF]">
                 <td className="px-3 py-3">{item.id}</td>
                 <td className="px-3 py-3">{item.username}</td>
-                <td className="px-3 py-3">{item.service}</td>
+                <td className="px-3 py-3 ">{item.service}</td>
                 <td className="px-3 py-3">{item.publication}</td>
                 <td className="px-3 py-3">${item.amount}</td>
                 <td className="px-3 py-3">{item.date}</td>

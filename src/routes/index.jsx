@@ -27,6 +27,7 @@ import SingleUser from "../components/admin/Pages/SingleUser/SingleUser";
 import TotalOrders from "../components/admin/Pages/TotalOrders/TotalOrders";
 import Messages from "../components/admin/Pages/Messages/Messages";
 import Payments from "../components/admin/Pages/Payments/Payments";
+import SingleOrder from "../components/admin/Pages/SingleOrder/SingleOrder";
 
 
 const router = createBrowserRouter([
@@ -156,8 +157,12 @@ const router = createBrowserRouter([
         element: <SingleUser/>
       },
       {
-        path: "/admin/all-orders",
+        path: "/admin/orders",
         element: <TotalOrders/>
+      },
+      {
+        path: "/admin/orders/:id",
+        element: <SingleOrder/>
       },
       {
         path: "/admin/payments",
