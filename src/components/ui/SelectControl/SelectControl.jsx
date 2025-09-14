@@ -37,7 +37,7 @@ const SelectControl = ({ options, value, onClick, name,inputType='checkbox',labe
       {/* The main component input-like area */}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className={`realtive border border-[#B2B5B8] px-3 py-2 font-poppins text-[#171819] w-full ${
+        className={`relative border border-[#B2B5B8] px-3 py-2 font-poppins text-[#171819] w-full ${
           isOpen && !readOnly ? "outline outline-[#006AC2]" : ""
         }`}
       >

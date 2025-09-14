@@ -421,7 +421,7 @@ export const CurrencyIcon = (props) => (
   </svg>
 );
 
-export const ArrowDown = (props) => (
+export const ArrowDown = ({ fill = "#5F6368", ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="10"
@@ -432,7 +432,7 @@ export const ArrowDown = (props) => (
   >
     <path
       d="M5.00052 5.7735L0.289062 1.06204L1.06302 0.288086L5.00052 4.22559L8.93802 0.288086L9.71198 1.06204L5.00052 5.7735Z"
-      fill="#5F6368"
+      fill={fill}
     />
   </svg>
 );

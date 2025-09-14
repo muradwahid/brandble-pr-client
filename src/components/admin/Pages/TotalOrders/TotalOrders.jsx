@@ -244,17 +244,27 @@ const TotalOrders = () => {
               {publicationData.slice(0, 1).map((item, index) => (
                 <tr key={index} className="border-t border-[#DCDEDF]">
                   <td className="px-3 py-3 text-nowrap">{index + 1}</td>
-                  <td className="px-3 py-3 text-nowrap">90987657</td>
-                  <td className="px-3 py-3 text-nowrap">Lee</td>
-                  <td className="px-3 py-3 text-nowrap text-[#222425]">
-                    Publish my own article
+                  <td>
+                    <Link to={`/admin/orders/${item?.id}`} className="px-3 py-3 text-nowrap">90987657</Link>
                   </td>
-                  <td className="px-3 py-3 text-nowrap">Hood Critic</td>
-                  <td className="px-3 py-3 text-nowrap overflow-hidden whitespace-nowrap text-ellipsis w-[92px]">
-                    Health & Fitness
+                  <td>
+                    <Link to={`/admin/orders/${item?.id}`} className="px-3 py-3 text-nowrap">Lee</Link>
                   </td>
-                  <td className="px-3 py-3 text-nowrap">
-                    ${item.price || "1500"}
+                  <td>
+                    <Link to={`/admin/orders/${item?.id}`} className="px-3 py-3 text-nowrap text-[#222425]">
+                      Publish my own article
+                    </Link>
+                  </td>
+                  <td>
+                    <Link to={`/admin/orders/${item?.id}`} className="px-3 py-3 text-nowrap">Hood Critic</Link>
+                  </td>
+                  <td>
+                    <Link to={`/admin/orders/${item?.id}`} className="px-3 py-3 text-nowrap overflow-hidden whitespace-nowrap text-ellipsis w-[92px]">
+                      Health & Fitness
+                    </Link>
+                  </td>
+                  <td>
+                    <Link to={`/admin/orders/${item?.id}`} className="px-3 py-3 text-nowrap">{item.price || "1500"}</Link>$
                   </td>
                   <td className="px-3 py-3 text-nowrap">03/03/2025</td>
                   <td className="px-3 py-3 text-nowrap">

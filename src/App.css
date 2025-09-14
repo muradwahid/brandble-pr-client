@@ -128,3 +128,7 @@
 .singlePublicationAdmin {
   box-shadow: 0px 0px 8px #ebebeb;
 }
+.singleOrderPageUpdateStatus{
+  width:calc(100% + 2px);
+  left:-1px;
+}
