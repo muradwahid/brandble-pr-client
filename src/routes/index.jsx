@@ -27,7 +27,8 @@ import SingleUser from "../components/admin/Pages/SingleUser/SingleUser";
 import TotalOrders from "../components/admin/Pages/TotalOrders/TotalOrders";
 import Messages from "../components/admin/Pages/Messages/Messages";
 import Payments from "../components/admin/Pages/Payments/Payments";
-import SingleOrder from "../components/admin/Pages/SingleOrder/SingleOrder";
+import SingleOrder from "../components/admin/Pages/TotalOrders/SingleOrder";
+import OrderDetails from "../components/admin/Pages/TotalOrders/OrderDetails";
 
 
 const router = createBrowserRouter([
@@ -138,39 +139,43 @@ const router = createBrowserRouter([
       },
       {
         path: "/admin/publications/:id",
-        element: <SinglePublication/>
+        element: <SinglePublication />,
       },
       {
         path: "/admin/publications/:id/edit",
-        element: <EditPublication/>
+        element: <EditPublication />,
       },
       {
         path: "/admin/publications/add-new-publication",
-        element: <AddPublication/>
+        element: <AddPublication />,
       },
       {
         path: "/admin/users",
-        element: <UserManagement/>
+        element: <UserManagement />,
       },
       {
         path: "/admin/users/:id",
-        element: <SingleUser/>
+        element: <SingleUser />,
       },
       {
         path: "/admin/orders",
-        element: <TotalOrders/>
+        element: <TotalOrders />,
       },
       {
         path: "/admin/orders/:id",
-        element: <SingleOrder/>
+        element: <SingleOrder />,
+      },
+      {
+        path: "/admin/orders/:id/details",
+        element: <OrderDetails />,
       },
       {
         path: "/admin/payments",
-        element: <Payments/>
+        element: <Payments />,
       },
       {
         path: "/admin/messages",
-        element: <Messages/>
+        element: <Messages />,
       },
     ],
   },

@@ -17,5 +17,5 @@ export function useOutsideClickClose(callback) {
     };
   }, [callback]);
 
-  return {ref,btnRef};
+  return { ref, btnRef };
 }
