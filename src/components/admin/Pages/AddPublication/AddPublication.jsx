@@ -56,8 +56,7 @@ const AddPublication = () => {
                 Niche
               </p>
               <MultiSelectToken
-                options={["Adult", "Health", "Cannabis", "Crypto", "Gambling"]}
-                value={["Adult", "Health"]}
+                value={[]}
                 onClick={(value) => console.log(value)}
               />
             </label>
