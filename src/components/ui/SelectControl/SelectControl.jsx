@@ -1,7 +1,19 @@
-import { useEffect, useRef, useState } from 'react';
-import { ArrowDownIcon, CheckMarkIcon } from '../../../utils/icons';
+import { useEffect, useRef, useState } from "react";
+import { ArrowDownIcon, CheckMarkIcon } from "../../../utils/icons";
 
-const SelectControl = ({ options, value, onClick, name,inputType='checkbox',label='Niche',readOnly=false }) => {
+const SelectControl = ({
+  options,
+  value = "",
+  name,
+  inputType = "checkbox",
+  label = "Niche",
+  readOnly = false,
+  disabled = false,
+  placeholder,
+  register,
+  errorLabel,
+  setValue
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAddValue, setIsAddValue] = useState(false);
   const componentRef = useRef(null);
@@ -26,14 +38,32 @@ const SelectControl = ({ options, value, onClick, name,inputType='checkbox',labe
 
   const handleSelectOption = (option) => {
     setSelectedOption(option);
-    onClick(option);
+    setValue(name,option)
     setIsOpen(false);
   };
-
 
   // const availableOptions = options.filter((option) => !value.includes(option));
   return (
     <div className="relative" ref={componentRef}>
+      <select
+        value={selectedOption}
+        className="hidden"
+        {...register(name, {
+          required: `${errorLabel} is required`,
+        })}
+        disabled={disabled}
+        readOnly={readOnly}
+        onChange={(e) => handleSelectOption(e.target.value)}
+      >
+        <option value="" disabled>
+          {placeholder}
+        </option>
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
       {/* The main component input-like area */}
       <div
         onClick={() => setIsOpen(!isOpen)}
@@ -43,9 +73,9 @@ const SelectControl = ({ options, value, onClick, name,inputType='checkbox',labe
       >
         {/* Rendered Tokens */}
         <div className="flex flex-wrap items-center gap-2">
-          <div className="">
-            <span>{selectedOption}</span>
-          </div>
+          <span className={`text-sm ${selectedOption ? "" : "text-[#B2B5B8]"}`}>
+            {selectedOption || placeholder}
+          </span>
         </div>
         <ArrowDownIcon className="ml-2.5 absolute right-3 top-1/2 -translate-y-1/2" />
       </div>
@@ -73,7 +103,7 @@ const SelectControl = ({ options, value, onClick, name,inputType='checkbox',labe
                   id={`${name}-${option}`}
                   value={option}
                   checked={selectedOption === option}
-                  onChange={() => handleSelectOption(option)}
+                  onChange={() => {}}
                 />
                 {option}
               </label>
