@@ -20,7 +20,7 @@ const SinglePublication = () => {
   const ref = useOutsideClick(() => {
     setRemove(false);
   });
-  console.log(publicationDetails);
+  // console.log(publicationDetails);
   useEffect(() => {
     const fetchPublications = async () => {
       try {

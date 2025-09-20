@@ -127,6 +127,7 @@ const MultiSelectToken = ({
                     setInput(e.target.value);
                     setIsInput(true);
                   }}
+                  value={input}
                   className="px-2 py-1 border border-[#36383A] outline-none w-full h-8"
                 />
                 <p
@@ -135,6 +136,7 @@ const MultiSelectToken = ({
                       setIsInput(false);
                     } else {
                       onAddNiche(input);
+                      setInput('')
                     }
                   }}
                   className=" bg-[#002747] h-8 w-8 flex items-center justify-center cursor-pointer"

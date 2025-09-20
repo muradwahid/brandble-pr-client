@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowDownIcon, CheckMarkIcon } from "../../../utils/icons";
+import { ArrowDownIcon, CheckMarkIcon, LoadingIcon } from "../../../utils/icons";
 
 const SelectControl = ({
   options,
-  value = "",
+  value = {id:""},
   name,
   inputType = "checkbox",
   label = "Niche",
@@ -12,12 +12,18 @@ const SelectControl = ({
   placeholder,
   register,
   errorLabel,
-  setValue
+  setValue,
+  isLoading,
+  onAddOption = () => { },
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAddValue, setIsAddValue] = useState(false);
   const componentRef = useRef(null);
   const [selectedOption, setSelectedOption] = useState(value);
+  const [isInput, setIsInput] = useState(true);
+  const [input, setInput] = useState("");
+
+  // const { data } = useQuery(selectedOption?.id);
 
   // Effect to handle clicks outside the component to close the dropdown
   useEffect(() => {
@@ -38,7 +44,7 @@ const SelectControl = ({
 
   const handleSelectOption = (option) => {
     setSelectedOption(option);
-    setValue(name,option)
+    setValue(name,option?.id)
     setIsOpen(false);
   };
 
@@ -46,7 +52,7 @@ const SelectControl = ({
   return (
     <div className="relative" ref={componentRef}>
       <select
-        value={selectedOption}
+        value={selectedOption?.id}
         className="hidden"
         {...register(name, {
           required: `${errorLabel} is required`,
@@ -59,8 +65,8 @@ const SelectControl = ({
           {placeholder}
         </option>
         {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
+          <option key={option?.id} value={option?.id}>
+            {option?.title}
           </option>
         ))}
       </select>
@@ -73,8 +79,8 @@ const SelectControl = ({
       >
         {/* Rendered Tokens */}
         <div className="flex flex-wrap items-center gap-2">
-          <span className={`text-sm ${selectedOption ? "" : "text-[#B2B5B8]"}`}>
-            {selectedOption || placeholder}
+          <span className={`text-sm capitalize ${selectedOption?.id ? "" : "text-[#B2B5B8]"}`}>
+            {selectedOption?.title || placeholder}
           </span>
         </div>
         <ArrowDownIcon className="ml-2.5 absolute right-3 top-1/2 -translate-y-1/2" />
@@ -83,15 +89,15 @@ const SelectControl = ({
       {/* Dropdown with available options */}
       {isOpen && !readOnly && (
         <div className="absolute z-10 w-full">
-          <div className="flex flex-col z-10 w-full mt-1 bg-white shadow-lg border border-[#B2B5B8]">
+          <div className="flex flex-col z-10 w-full mt-1 bg-white shadow-lg border border-[#B2B5B8] max-h-[330px] overflow-y-auto">
             {options.map((option, index) => (
               <label
                 key={index}
-                htmlFor={`${name}-${option}`}
-                className={`px-4 py-2 cursor-pointer hover:bg-slate-100 flex items-center gap-2.5 ${
+                htmlFor={`${name}-${option?.id}`}
+                className={`px-4 py-2 cursor-pointer hover:bg-slate-100 flex items-center gap-2.5 capitalize ${
                   index === 0 ? "" : "border-t border-[#B2B5B8]"
                 } ${
-                  selectedOption === option
+                  selectedOption?.id === option?.id
                     ? "bg-blue-50 text-blue-600"
                     : "text-[#878C91]"
                 }`}
@@ -100,12 +106,12 @@ const SelectControl = ({
                 <input
                   type={inputType}
                   name={name}
-                  id={`${name}-${option}`}
-                  value={option}
-                  checked={selectedOption === option}
+                  id={`${name}-${option?.id}`}
+                  value={option?.id}
+                  checked={selectedOption?.id === option?.id}
                   onChange={() => {}}
                 />
-                {option}
+                {option?.title}
               </label>
             ))}
 
@@ -117,14 +123,34 @@ const SelectControl = ({
             </p>
           </div>
           {isAddValue && (
-            <div className="p-2 w-full bg-white shadow-lg mt-2 flex items-center gap-1">
-              <input
-                type="text"
-                className="px-2 py-1 border border-[#36383A] outline-none w-full h-8"
-              />
-              <p className=" bg-[#002747] h-8 w-8 flex items-center justify-center cursor-pointer">
-                <CheckMarkIcon />
-              </p>
+            <div className="p-2 w-full bg-white shadow-lg mt-2">
+              <div className="flex items-center gap-1">
+                <input
+                  type="text"
+                  onChange={(e) => {
+                    setInput(e.target.value);
+                    setIsInput(true);
+                  }}
+                  value={input}
+                  className="px-2 py-1 border border-[#36383A] outline-none w-full h-8"
+                />
+                <p
+                  onClick={() => {
+                    if (!input) {
+                      setIsInput(false);
+                    } else {
+                      onAddOption(input);
+                      setInput("");
+                    }
+                  }}
+                  className=" bg-[#002747] h-8 w-8 flex items-center justify-center cursor-pointer"
+                >
+                  {isLoading ? <LoadingIcon fill='#fff' style={{height:"20px"}} /> :<CheckMarkIcon />}
+                </p>
+              </div>
+              {!isInput && (
+                <span className="text-red-400 text-xs">{label} is empty!</span>
+              )}
             </div>
           )}
         </div>

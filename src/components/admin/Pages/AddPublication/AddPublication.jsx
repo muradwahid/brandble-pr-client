@@ -5,14 +5,24 @@ import { useAddPublicationMutation } from "../../../../redux/api/publicationApi"
 import { AddImageIcon, ArrowDownIcon } from "../../../../utils/icons";
 import MultiSelectToken from "../../../ui/MultiSelectToken/MultiSelectToken";
 import SelectControl from "../../../ui/SelectControl/SelectControl";
-import { useAddNicheMutation, useNichesQuery } from "../../../../redux/api/nicheApi";
+import { useAddNicheMutation } from "../../../../redux/api/nicheApi";
+import { useAddGenreMutation, useGenreQuery } from '../../../../redux/api/genreApi';
+import { useApiData } from '../../../common/useapiData';
+import { useAddIndexedMutation } from '../../../../redux/api/indexedApi';
+import { useAddSponsorMutation } from '../../../../redux/api/sponsoreApi';
+import { useAddDofollowMutation } from '../../../../redux/api/dofollowApi';
 
 const AddPublication = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [niches, setNiches] = useState([])
+
+  const { nichesData,genresData,indexesData,sponsorsData,dofollowData } = useApiData()
   
-  const { data: nichesData, isLoading: nichesLoading } = useNichesQuery();
   const [addNiche, { isLoading:addNicheLoading }] = useAddNicheMutation()
+  const [addGenre, { isLoading:addGenreLoading }] = useAddGenreMutation()
+  const [addIndexed, { isLoading:addIndexLoading }] = useAddIndexedMutation()
+  const [addSponsor, { isLoading:addSponsorLoading }] = useAddSponsorMutation()
+  const [addDofollow, { isLoading:addDofollowLoading }] = useAddDofollowMutation()
 
   const {
     register,
@@ -23,24 +33,12 @@ const AddPublication = () => {
   const [addPublication, { isLoading, isError, error }] =
     useAddPublicationMutation();
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImagePreview(URL.createObjectURL(file));
-    }
-  };
 
-  // useEffect(() => {
-  //   return () => {
-  //     if (imagePreview) URL.revokeObjectURL(imagePreview);
-  //   };
-  // }, [imagePreview]);
-
-  useEffect(()=>console.log(nichesData),[nichesData])
 
   const onSubmit = (d) => {
     const obj = { ...d };
     const logo = obj["logo"];
+    console.log(logo)
     const publicationData = { ...obj };
     delete publicationData["logo"];
     console.log(publicationData);
@@ -68,37 +66,47 @@ const AddPublication = () => {
       }
   }
 
+
+
+const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setValue('logo',file)
+    if (file) {
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
   return (
     <div className="border border-[#F2F2F3] p-6 w-4/5 mx-auto singlePublicationAdmin">
-      <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <p className="font-glare text-[#5F6368] text-[20px] tracking-[-0.1px]">
             Publication Logo
           </p>
           {/* Logo */}
-          <div className="h-[150px] w-[150px] bg-[#E6E6E6] relative ">
             <label className="h-[150px] w-[150px]" htmlFor="publicationLogo">
-              {imagePreview && (
-                <img
+          <div className="h-[150px] w-[150px] bg-[#E6E6E6] relative cursor-pointer ">
+            {imagePreview &&
+              <img
                   className="h-full w-full object-cover"
-                  src={imagePreview}
+                  src={`${imagePreview}`}
                   alt=""
-                />
-              )}
+
+                />}
               {!imagePreview && (
                 <AddImageIcon className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
               )}
-            </label>
+            </div>
             <input
               className="hidden"
-              onChange={(e) => handleImageChange(e)}
+              onChange={(e) =>{
+                handleImageChange(e)}}
               type="file"
-              name="logo"
               accept="image/*"
               id="publicationLogo"
             />
-          </div>
+            </label>
         </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mt-10">
           <label htmlFor="">
             <p className="font-glare text-[#5F6368] font-normal tracking-[-0.1px] mb-1.5">
@@ -212,14 +220,17 @@ const AddPublication = () => {
                 Genre
               </p>
               <SelectControl
-                options={["Yes", "No"]}
+                options={genresData?.genres ||[]}
                 label="Option"
                 register={register}
+                useQuery={useGenreQuery}
                 inputType="radio"
                 placeholder="Ex: Yes"
                 setValue={setValue}
-                name="genre"
+                name="genreId"
                 errorLabel="Genre"
+                onAddOption={(v) => addGenre({title:v})}
+                isLoading={addGenreLoading}
               />
               {errors.genre && (
                 <span className="text-red-400 text-xs">
@@ -251,7 +262,7 @@ const AddPublication = () => {
                 Sponsored
               </p>
               <SelectControl
-                options={["Yes", "No"]}
+                options={sponsorsData?.sponsors || []}
                 label="Option"
                 register={register}
                 inputType="radio"
@@ -259,6 +270,8 @@ const AddPublication = () => {
                 setValue={setValue}
                 name="sponsored"
                 errorLabel="Sponsored"
+                onAddOption={(v) => addSponsor({title:v})}
+                isLoading={addSponsorLoading}
               />
               {errors.sponsored && (
                 <span className="text-red-400 text-xs">
@@ -271,14 +284,16 @@ const AddPublication = () => {
                 Index
               </p>
               <SelectControl
-                options={["Yes", "No"]}
+                options={indexesData?.indexes || []}
                 label="Option"
                 register={register}
                 inputType="radio"
                 placeholder="Ex: Yes"
                 setValue={setValue}
-                name="indexed"
+                name="indexedId"
                 errorLabel="Index"
+                onAddOption={(v) => addIndexed({title:v})}
+                isLoading={addIndexLoading}
               />
               {errors.indexed && (
                 <span className="text-red-400 text-xs">
@@ -291,7 +306,7 @@ const AddPublication = () => {
                 Do follow
               </p>
               <SelectControl
-                options={["Yes", "No"]}
+                options={dofollowData?.dofollows || []}
                 label="Option"
                 register={register}
                 inputType="radio"
@@ -299,6 +314,8 @@ const AddPublication = () => {
                 setValue={setValue}
                 name="doFollow"
                 errorLabel="Sponsored"
+                onAddOption={(v) => addDofollow({title:v})}
+                isLoading={addDofollowLoading}
               />
               {errors.doFollow && (
                 <span className="text-red-400 text-xs">
@@ -333,9 +350,18 @@ const AddPublication = () => {
               <input
                 type="text"
                 className="border border-[#B2B5B8] focus:outline focus:outline-[#006AC2] px-3 py-2 font-poppins text-[#171819] w-full text-sm placeholder:text-[#B2B5B8]"
-                name="Indexed"
+                name="location"
+                {...register("location", {
+                  required: "Location is required",
+                })}
               />
+              {errors.location && (
+                <span className="text-red-400 text-xs">
+                  {errors.location.message}
+                </span>
+              )} 
             </label>
+
           </div>
           <div className="flex justify-end">
             <input
