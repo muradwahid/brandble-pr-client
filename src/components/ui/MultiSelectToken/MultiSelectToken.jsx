@@ -58,7 +58,7 @@ const MultiSelectToken = ({
   return (
     <div className="relative" ref={componentRef}>
       {/* Hidden input for form submission */}
-      <input type="hidden" name={name} value={JSON.stringify(value)} />
+      <input type="hidden" name={name} value={value} />
 
       {/* The main component input-like area */}
       <div

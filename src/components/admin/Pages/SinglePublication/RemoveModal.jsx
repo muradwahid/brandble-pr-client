@@ -1,9 +1,41 @@
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { RxCross2, RxCrossCircled } from "react-icons/rx";
+import { useDeletePublicationMutation } from "../../../../redux/api/publicationApi";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { LoadingIcon } from '../../../../utils/icons';
+import { Navigate, useNavigate } from 'react-router';
 
-const RemoveModal = ({ref, onChange = () => {}, setRemove = () => {} }) => {
+const RemoveModal = ({
+  ref,
+  onChange = () => { },
+  id,
+}) => {
+  const [deletePublication] = useDeletePublicationMutation();
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleDeletePublication = async (id) => {
+    setIsLoading(true);
+    toast.loading("Deleting...");
+    try {
+      const result = await deletePublication(id);
+      console.log(result)
+      setIsLoading(false);
+      toast.success("Publication deleted successfully!");
+      onChange(false);
+            setTimeout(() => {
+        navigate("/admin/publications", { replace: true });
+      }, 500);
+    } catch (err) {
+      // console.error(err.message);
+      setIsLoading(false);
+      toast.error(err.message);
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-[#22242580] flex justify-center items-center p-4 backdrop-blur-[2px] z-50">
+    <div className={"fixed inset-0 bg-[#22242580] flex justify-center items-center p-4 backdrop-blur-[2px] z-50"}>
       <div
         className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md relative"
         ref={ref}
@@ -39,13 +71,11 @@ const RemoveModal = ({ref, onChange = () => {}, setRemove = () => {} }) => {
             No, Keep
           </button>
           <button
-            className="bg-[#DE350B] text-white font-medium py-2 px-6 rounded-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75 transition duration-150 ease-in-out cursor-pointer"
-            onClick={() => {
-              setRemove("remove");
-              onChange(false);
-            }}
+            className={`bg-[#DE350B]  text-white font-medium py-2 px-6 rounded-sm hover:bg-red-700 focus:outline-none ${isLoading ? 'bg-[#e95c39] hover:bg-[#e95c39]!' : ''} focus:ring-2 focus:ring-red-500 focus:ring-opacity-75 transition duration-150 ease-in-out cursor-pointer flex items-center gap-1.5`}
+            disabled={isLoading}
+            onClick={() => handleDeletePublication(id)}
           >
-            Yes, Remove
+            Yes, Remove {isLoading && <LoadingIcon fill='#fff' style={{ height: "20px" }} />}
           </button>
         </div>
       </div>

@@ -21,14 +21,14 @@ export const publicationApi = baseApi.injectEndpoints({
         url: `${NICHE_URL}/create`,
         method: "POST",
         data,
+        contentType: "multipart/form-data" ,
       }),
       invalidatesTags: ["publication"],
     }),
     publication: build.query({
       query: (id) => {
-        const nicheId = typeof id === "object" && id !== null ? id.id : id;
         return {
-          url: `${NICHE_URL}/${nicheId}`,
+          url: `${NICHE_URL}/${id}`,
           method: "GET",
         };
       },
@@ -39,14 +39,14 @@ export const publicationApi = baseApi.injectEndpoints({
         url: `${NICHE_URL}/${data.id}`,
         method: "PATCH",
         data: data.body,
+        contentType: "multipart/form-data" ,
       }),
       invalidatesTags: ["publication"],
     }),
     deletePublication: build.mutation({
       query: (id) => {
-        const nicheId = typeof id === "object" && id !== null ? id.id : id;
         return {
-          url: `${NICHE_URL}/${nicheId}`,
+          url: `${NICHE_URL}/${id}`,
           method: "DELETE",
         };
       },

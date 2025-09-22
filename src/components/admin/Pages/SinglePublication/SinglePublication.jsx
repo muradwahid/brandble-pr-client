@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useParams } from "react-router";
 import { useOutsideClick } from "../../../../hooks/useOutsideClick";
 import {
@@ -10,46 +10,52 @@ import {
   SpaIcon,
 } from "../../../../utils/icons";
 import RemoveModal from "./RemoveModal";
+import { usePublicationQuery } from '../../../../redux/api/publicationApi';
 
 const SinglePublication = () => {
   const { id } = useParams();
-  const [data, setData] = useState([]);
-  const publicationDetails = data.find((publication) => publication.id === id);
   const [remove, setRemove] = useState(false);
+  const { data, isLoading } = usePublicationQuery(id);
+
 
   const ref = useOutsideClick(() => {
     setRemove(false);
   });
-  // console.log(publicationDetails);
-  useEffect(() => {
-    const fetchPublications = async () => {
-      try {
-        // setLoading(true);
-        const response = await fetch(
-          "http://localhost:5000/api/v1/publication/all-publications"
-        );
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+  if (isLoading) {
+    return <div className="animate-pulse border border-[#F2F2F3] p-6 w-4/5 mx-auto singlePublicationAdmin ">
+      {/* Image placeholder */}
+      <div className="w-32 h-32 bg-gray-300 rounded-md mb-6"></div>
 
-        const data = await response.json();
-        setData(data.data.data); // Assuming your API returns { data: [], meta: {} }
-        console.log(data.data.data);
-        // setLoading(false);
-      } catch (err) {
-        // setError(err.message);
-        // setLoading(false);
-        console.log(err);
-      }
-    };
 
-    fetchPublications();
-  }, []);
+      {/* Title placeholder */}
+      <div className="h-6 bg-gray-300 rounded w-1/2 mb-4"></div>
+
+
+      {/* Tags placeholder */}
+      <div className="flex gap-2 mb-6">
+        <div className="h-5 w-16 bg-gray-300 rounded"></div>
+        <div className="h-5 w-16 bg-gray-300 rounded"></div>
+        <div className="h-5 w-20 bg-gray-300 rounded"></div>
+      </div>
+
+
+      {/* Details */}
+      <div className="space-y-4">
+        {Array(6).fill(0).map((_, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <div className="h-4 w-20 bg-gray-300 rounded"></div>
+            <div className="h-4 flex-1 bg-gray-200 rounded"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  }
+
   return (
     <div>
       <div className="border border-[#F2F2F3] p-6 w-4/5 mx-auto singlePublicationAdmin">
-        {remove && <RemoveModal onChange={setRemove} ref={ref} />}
+        {remove && <RemoveModal onChange={setRemove} ref={ref} id={data?.id} />}
         <div className="relative border-b border-[#DCDEDF] pb-5">
           <div className="flex md:gap-8 gap-3 absolute right-0">
             <div
@@ -59,7 +65,7 @@ const SinglePublication = () => {
               <DeleteIcon />
             </div>
             <Link
-              to="/admin/publications/:id/edit"
+              to={`/admin/publications/edit/${id}`}
               className="bg-[#F6F7F7] px-4 py-2.5 rounded-3xl text-[#5F6368] text-sm w-[52px] h-9 flex items-center justify-center cursor-pointer"
             >
               Edit
@@ -67,33 +73,39 @@ const SinglePublication = () => {
           </div>
           <div className="flex gap-5 items-end">
             <div className="bg-[#E6E6E6] h-[150px] w-[150px]">
-              <img src="" alt="" />
+              <img className='w-full h-full object-cover'  src={data?.logo} alt="" />
             </div>
             <div className="">
               <h2 className="text-[#36383A] font-glare md:text-[32px] text-2xl mb-5 leading-[140%]">
-                {publicationDetails?.title}
+                {data?.title}
               </h2>
               <div className="flex flex-wrap md:gap-10 gap-2.5">
                 <div className="flex gap-2">
                   <p className="p-1 bg-[#F2F2F3] text-[#5F6368] font-popping font-medium text-[11px] flex items-center ">
-                    DA: {publicationDetails?.da}
+                    DA: {data?.da}
                   </p>
                   <p className="p-1 bg-[#F2F2F3] text-[#5F6368] font-popping font-medium text-[11px] flex items-center ">
-                    DR: {publicationDetails?.dr}
+                    DR: {data?.dr}
                   </p>
                   <p className="p-1 bg-[#F2F2F3] text-[#5F6368] font-popping font-medium text-[11px] flex items-center ">
                     TTP: 1-3 Days
                   </p>
                 </div>
-                <div className="p-1 bg-[#F2F2F3] text-[#5F6368] font-popping font-medium flex items-center gap-3 rounded-sm">
+                {data?.niches?.length > 0 && <div className="p-1 bg-[#F2F2F3] text-[#5F6368] font-popping font-medium flex items-center gap-3 rounded-sm">
                   <p className="text-sm">Niche</p>
                   <span className="flex items-center gap-1">
-                    {publicationDetails?.niche?.title == "adult" && <AdultIcon />}
-                    {publicationDetails?.niche?.title == "health" && <CardiologyIcon />}
-                    {publicationDetails?.niche?.title == "cannabis" && <SpaIcon />}
-                    {publicationDetails?.niche?.title == "crypto" && <BitcoinIcon />}
+                    {
+                      data?.niches?.map((title, i) => {
+                        if (title === "adult") return <AdultIcon key={i} />;
+                        if (title === "health") return <CardiologyIcon key={i} />;
+                        if (title === "cannabis") return <SpaIcon key={i} />;
+                        if (title === "crypto") return <BitcoinIcon key={i} />;
+                        if (title === "casino") return <CasinoIcon key={i} />;
+                        return null;
+                      })
+                    }
                   </span>
-                </div>
+                </div>}
               </div>
             </div>
           </div>
@@ -105,7 +117,7 @@ const SinglePublication = () => {
               <p>:</p>
             </div>
             <p className="text-[#5F6368] font-glare font-normal">
-              {publicationDetails?.genre?.title}
+              {data?.genre?.title}
             </p>
           </div>
           <div className="flex items-center gap-4">
@@ -113,16 +125,16 @@ const SinglePublication = () => {
               <p>Price</p>
               <p>:</p>
             </div>
-            <p className="text-[#5F6368] font-glare font-normal">
-              $ {publicationDetails?.price}
-            </p>
+            {data?.price && <p className="text-[#5F6368] font-glare font-normal">
+              $ {data?.price}
+            </p>}
           </div>
           <div className="flex items-center gap-4">
             <div className="text-[#5F6368] font-glare font-normal flex items-center w-24 justify-between">
               <p>Sponsored</p>
               <p>:</p>
             </div>
-            <p className="text-[#5F6368] font-glare font-normal">Yes</p>
+            <p className="text-[#5F6368] font-glare font-normal">{data?.sponsored?.title}</p>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-[#5F6368] font-glare font-normal flex items-center w-24 justify-between">
@@ -130,7 +142,7 @@ const SinglePublication = () => {
               <p>:</p>
             </div>
             <p className="text-[#5F6368] font-glare font-normal capitalize">
-              {publicationDetails?.indexed}
+              {data?.index?.title}
             </p>
           </div>
           <div className="flex items-center gap-4">
@@ -139,7 +151,7 @@ const SinglePublication = () => {
               <p>:</p>
             </div>
             <p className="text-[#5F6368] font-glare font-normal capitalize">
-              {publicationDetails?.doFollow}
+              {data?.doFollow?.title}
             </p>
           </div>
           <div className="flex items-center gap-4">
@@ -148,7 +160,7 @@ const SinglePublication = () => {
               <p>:</p>
             </div>
             <p className="text-[#5F6368] font-glare font-normal">
-              {publicationDetails?.region}
+              {data?.region}
             </p>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { useForm } from "react-hook-form";
 import countries from "../../../../assets/countries.json";
 import { useAddPublicationMutation } from "../../../../redux/api/publicationApi";
@@ -11,6 +11,7 @@ import { useApiData } from '../../../common/useapiData';
 import { useAddIndexedMutation } from '../../../../redux/api/indexedApi';
 import { useAddSponsorMutation } from '../../../../redux/api/sponsoreApi';
 import { useAddDofollowMutation } from '../../../../redux/api/dofollowApi';
+import toast from 'react-hot-toast';
 
 const AddPublication = () => {
   const [imagePreview, setImagePreview] = useState(null);
@@ -30,32 +31,51 @@ const AddPublication = () => {
     formState: { errors },setValue,
   } = useForm();
 
-  const [addPublication, { isLoading, isError, error }] =
+  const [addPublication, 
+    // { isLoading, isError, error }
+  ] =
     useAddPublicationMutation();
 
 
 
-  const onSubmit = (d) => {
+  const onSubmit =async (d) => {
     const obj = { ...d };
     const logo = obj["logo"];
-    console.log(logo)
+    // console.log(logo)
     const publicationData = { ...obj };
     delete publicationData["logo"];
-    console.log(publicationData);
     const publicationStr = JSON.stringify(publicationData);
     const formData = new FormData();
-    formData.append("logo", logo);
+    formData.append("file", logo);
     formData.append("data", publicationStr);
-
-    try {
-      // const result = await addPublication(formData);
-      // alert(result.data);
-    } catch (err) {
-      console.error("Submission failed:", err);
-      alert("Failed to add publication");
+    if (formData) {
+      try {
+        await addPublication(formData);
+        toast.success('Publication added successfully!');
+      } catch (err) {
+        console.error("Submission failed:", err);
+        toast.error("Failed to add publication");
+      }
+      
     }
 
-    console.log(error)
+    //   try {
+    // const response = await fetch('http://localhost:5000/api/v1/publication/create', {
+    //   method: 'POST',
+    //   body: formData,
+    // });
+
+    //     if (!response.ok) {
+    //       throw new Error(`HTTP error! status: ${response.status}`);
+    //     }
+
+    //     const result = await response.json();
+    //     console.log('Success:', result);
+    //     alert('Publication added successfully!');
+    //   } catch (err) {
+    //     console.error('Submission failed:', err);
+    //     alert('Failed to add publication');
+    //   }
   };
 
   const handleAddNiche = async (val) => { 
@@ -66,7 +86,7 @@ const AddPublication = () => {
       }
   }
 
-
+// console.log(sponsorsData,dofollowData,indexesData)
 
 const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -83,7 +103,8 @@ const handleImageChange = (e) => {
             Publication Logo
           </p>
           {/* Logo */}
-            <label className="h-[150px] w-[150px]" htmlFor="publicationLogo">
+          <div className="h-[150px] w-[150px]">
+            <label htmlFor="publicationLogo">
           <div className="h-[150px] w-[150px] bg-[#E6E6E6] relative cursor-pointer ">
             {imagePreview &&
               <img
@@ -105,6 +126,8 @@ const handleImageChange = (e) => {
               id="publicationLogo"
             />
             </label>
+
+          </div>
         </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mt-10">
@@ -169,31 +192,31 @@ const handleImageChange = (e) => {
               </p>
               <MultiSelectToken
                 value={niches}
-                {...register("niche", {
+                {...register("niches", {
                   required: "Niche are required",
                 })}
                 options={nichesData?.niches || []}
                 onChange={(value) => {
                   setNiches(value);
-                  setValue("niche", JSON.stringify(value));
+                  setValue("niches",value);
                 }}
                 onAddNiche={(v) => handleAddNiche(v)}
                 isLoading={addNicheLoading}
               />
               <input
                 type="hidden"
-                {...register("niche", {
+                {...register("niches", {
                   required: "Niche are required",
                   validate: (value) => {
-                    const parsedValue = JSON.parse(value || "[]");
+                    const parsedValue = value ||' []';
                     return parsedValue.length > 0 || "Niche are required";
                   },
                 })}
-                value={JSON.stringify(niches)}
+                value={niches}
               />
-              {errors.niche && (
+              {errors.niches && (
                 <span className="text-red-400 text-xs">
-                  {errors.niche.message}
+                  {errors.niches.message}
                 </span>
               )}
             </label>
@@ -220,7 +243,7 @@ const handleImageChange = (e) => {
                 Genre
               </p>
               <SelectControl
-                options={genresData?.genres ||[]}
+                options={genresData?.genres || []}
                 label="Option"
                 register={register}
                 useQuery={useGenreQuery}
@@ -232,9 +255,9 @@ const handleImageChange = (e) => {
                 onAddOption={(v) => addGenre({title:v})}
                 isLoading={addGenreLoading}
               />
-              {errors.genre && (
+              {errors.genreId && (
                 <span className="text-red-400 text-xs">
-                  {errors.genre.message}
+                  {errors.genreId.message}
                 </span>
               )}
             </div>
@@ -268,14 +291,14 @@ const handleImageChange = (e) => {
                 inputType="radio"
                 placeholder="Ex: Yes"
                 setValue={setValue}
-                name="sponsored"
+                name="sponsorId"
                 errorLabel="Sponsored"
                 onAddOption={(v) => addSponsor({title:v})}
                 isLoading={addSponsorLoading}
               />
-              {errors.sponsored && (
+              {errors.sponsorId && (
                 <span className="text-red-400 text-xs">
-                  {errors.sponsored.message}
+                  {errors.sponsorId.message}
                 </span>
               )}
             </label>
@@ -295,9 +318,9 @@ const handleImageChange = (e) => {
                 onAddOption={(v) => addIndexed({title:v})}
                 isLoading={addIndexLoading}
               />
-              {errors.indexed && (
+              {errors.indexedId && (
                 <span className="text-red-400 text-xs">
-                  {errors.indexed.message}
+                  {errors.indexedId.message}
                 </span>
               )}
             </label>
@@ -312,14 +335,14 @@ const handleImageChange = (e) => {
                 inputType="radio"
                 placeholder="Ex: Yes"
                 setValue={setValue}
-                name="doFollow"
+                name="doFollowId"
                 errorLabel="Sponsored"
                 onAddOption={(v) => addDofollow({title:v})}
                 isLoading={addDofollowLoading}
               />
-              {errors.doFollow && (
+              {errors.doFollowId && (
                 <span className="text-red-400 text-xs">
-                  {errors.doFollow.message}
+                  {errors.doFollowId.message}
                 </span>
               )}
             </label>

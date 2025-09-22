@@ -1,6 +1,6 @@
 import { baseApi } from "./baseApi";
 
-const GENRE_URL = "/defollow";
+const GENRE_URL = "/dofollow";
 export const dofollowApi = baseApi.injectEndpoints({
     endpoints: (build) => ({
         dofollows: build.query({

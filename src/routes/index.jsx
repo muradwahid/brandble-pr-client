@@ -142,7 +142,7 @@ const router = createBrowserRouter([
         element: <SinglePublication />,
       },
       {
-        path: "/admin/publications/:id/edit",
+        path: "/admin/publications/edit/:id",
         element: <EditPublication />,
       },
       {

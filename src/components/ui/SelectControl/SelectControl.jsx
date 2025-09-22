@@ -14,6 +14,7 @@ const SelectControl = ({
   errorLabel,
   setValue,
   isLoading,
+  isNotRequired=true,
   onAddOption = () => { },
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,8 +23,6 @@ const SelectControl = ({
   const [selectedOption, setSelectedOption] = useState(value);
   const [isInput, setIsInput] = useState(true);
   const [input, setInput] = useState("");
-
-  // const { data } = useQuery(selectedOption?.id);
 
   // Effect to handle clicks outside the component to close the dropdown
   useEffect(() => {
@@ -54,9 +53,9 @@ const SelectControl = ({
       <select
         value={selectedOption?.id}
         className="hidden"
-        {...register(name, {
+        {...register(name,isNotRequired? {
           required: `${errorLabel} is required`,
-        })}
+        }:{})}
         disabled={disabled}
         readOnly={readOnly}
         onChange={(e) => handleSelectOption(e.target.value)}
@@ -64,7 +63,7 @@ const SelectControl = ({
         <option value="" disabled>
           {placeholder}
         </option>
-        {options.map((option) => (
+        {options && options?.map((option) => (
           <option key={option?.id} value={option?.id}>
             {option?.title}
           </option>
@@ -90,7 +89,7 @@ const SelectControl = ({
       {isOpen && !readOnly && (
         <div className="absolute z-10 w-full">
           <div className="flex flex-col z-10 w-full mt-1 bg-white shadow-lg border border-[#B2B5B8] max-h-[330px] overflow-y-auto">
-            {options.map((option, index) => (
+            {options && options?.map((option, index) => (
               <label
                 key={index}
                 htmlFor={`${name}-${option?.id}`}
