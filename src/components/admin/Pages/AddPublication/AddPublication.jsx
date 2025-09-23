@@ -1,8 +1,7 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import countries from "../../../../assets/countries.json";
 import { useAddPublicationMutation } from "../../../../redux/api/publicationApi";
-import { AddImageIcon, ArrowDownIcon } from "../../../../utils/icons";
+import { AddImageIcon, ArrowDownIcon, LoadingIcon } from "../../../../utils/icons";
 import MultiSelectToken from "../../../ui/MultiSelectToken/MultiSelectToken";
 import SelectControl from "../../../ui/SelectControl/SelectControl";
 import { useAddNicheMutation } from "../../../../redux/api/nicheApi";
@@ -12,33 +11,31 @@ import { useAddIndexedMutation } from '../../../../redux/api/indexedApi';
 import { useAddSponsorMutation } from '../../../../redux/api/sponsoreApi';
 import { useAddDofollowMutation } from '../../../../redux/api/dofollowApi';
 import toast from 'react-hot-toast';
+import SelectRegionData from '../../../ui/SelectRegionData/SelectRegionData';
 
 const AddPublication = () => {
   const [imagePreview, setImagePreview] = useState(null);
+  const [isResetValue, setIsResetValue] = useState(false);
   const [niches, setNiches] = useState([])
+  const [isImgRequired, setIsImgRequired] = useState(false);
 
-  const { nichesData,genresData,indexesData,sponsorsData,dofollowData } = useApiData()
-  
-  const [addNiche, { isLoading:addNicheLoading }] = useAddNicheMutation()
-  const [addGenre, { isLoading:addGenreLoading }] = useAddGenreMutation()
-  const [addIndexed, { isLoading:addIndexLoading }] = useAddIndexedMutation()
-  const [addSponsor, { isLoading:addSponsorLoading }] = useAddSponsorMutation()
-  const [addDofollow, { isLoading:addDofollowLoading }] = useAddDofollowMutation()
+  const { nichesData, genresData, indexesData, sponsorsData, dofollowData } = useApiData()
+
+  const [addNiche, { isLoading: addNicheLoading }] = useAddNicheMutation()
+  const [addGenre, { isLoading: addGenreLoading }] = useAddGenreMutation()
+  const [addIndexed, { isLoading: addIndexLoading }] = useAddIndexedMutation()
+  const [addSponsor, { isLoading: addSponsorLoading }] = useAddSponsorMutation()
+  const [addDofollow, { isLoading: addDofollowLoading }] = useAddDofollowMutation()
 
   const {
     register,
     handleSubmit,
-    formState: { errors },setValue,
+    formState: { errors }, setValue, reset
   } = useForm();
 
-  const [addPublication, 
-    // { isLoading, isError, error }
-  ] =
-    useAddPublicationMutation();
+  const [addPublication, { isLoading }] = useAddPublicationMutation();
 
-
-
-  const onSubmit =async (d) => {
+  const onSubmit = async (d) => {
     const obj = { ...d };
     const logo = obj["logo"];
     // console.log(logo)
@@ -48,16 +45,33 @@ const AddPublication = () => {
     const formData = new FormData();
     formData.append("file", logo);
     formData.append("data", publicationStr);
-    if (formData) {
-      try {
-        await addPublication(formData);
-        toast.success('Publication added successfully!');
-      } catch (err) {
-        console.error("Submission failed:", err);
-        toast.error("Failed to add publication");
+
+    console.log(logo?.name)
+
+    if (logo?.name) {
+      setIsImgRequired(false)
+      if (formData) {
+        try {
+          const response = await addPublication(formData);
+          if (response?.data?.id) {
+            toast.success('Publication added successfully!');
+            setImagePreview(null)
+            setIsResetValue(true)
+          }
+          reset()
+          setNiches([])
+        } catch (err) {
+          console.error("Submission failed:", err);
+          toast.error("Failed to add publication");
+          setImagePreview(null)
+        }
+
       }
-      
+    } else {
+      setIsImgRequired(true)
     }
+    setIsResetValue(false)
+
 
     //   try {
     // const response = await fetch('http://localhost:5000/api/v1/publication/create', {
@@ -78,36 +92,37 @@ const AddPublication = () => {
     //   }
   };
 
-  const handleAddNiche = async (val) => { 
-      try {
-        await addNiche({title:val})
-      } catch (error) {
-        console.error(error)
-      }
+  const handleAddNiche = async (val) => {
+    try {
+      await addNiche({ title: val })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
-// console.log(sponsorsData,dofollowData,indexesData)
+  // console.log(sponsorsData,dofollowData,indexesData)
 
-const handleImageChange = (e) => {
+  const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setValue('logo',file)
+    setValue('logo', file)
     if (file) {
       setImagePreview(URL.createObjectURL(file));
     }
   };
 
+
   return (
     <div className="border border-[#F2F2F3] p-6 w-4/5 mx-auto singlePublicationAdmin">
-        <div>
-          <p className="font-glare text-[#5F6368] text-[20px] tracking-[-0.1px]">
-            Publication Logo
-          </p>
-          {/* Logo */}
-          <div className="h-[150px] w-[150px]">
-            <label htmlFor="publicationLogo">
-          <div className="h-[150px] w-[150px] bg-[#E6E6E6] relative cursor-pointer ">
-            {imagePreview &&
-              <img
+      <div>
+        <p className="font-glare text-[#5F6368] text-[20px] tracking-[-0.1px]">
+          Publication Logo
+        </p>
+        {/* Logo */}
+        <div className="h-[150px] w-[150px]">
+          <label htmlFor="publicationLogo">
+            <div className="h-[150px] w-[150px] bg-[#E6E6E6] relative cursor-pointer ">
+              {imagePreview &&
+                <img
                   className="h-full w-full object-cover"
                   src={`${imagePreview}`}
                   alt=""
@@ -119,16 +134,22 @@ const handleImageChange = (e) => {
             </div>
             <input
               className="hidden"
-              onChange={(e) =>{
-                handleImageChange(e)}}
+              onChange={(e) => {
+                handleImageChange(e)
+              }}
               type="file"
               accept="image/*"
               id="publicationLogo"
             />
-            </label>
+          </label>
 
-          </div>
         </div>
+        {isImgRequired && (
+          <span className="text-red-400 text-xs">
+            Logo is required
+          </span>
+        )}
+      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mt-10">
           <label htmlFor="">
@@ -196,9 +217,10 @@ const handleImageChange = (e) => {
                   required: "Niche are required",
                 })}
                 options={nichesData?.niches || []}
+                placeholder='Ex: Health'
                 onChange={(value) => {
                   setNiches(value);
-                  setValue("niches",value);
+                  setValue("niches", value);
                 }}
                 onAddNiche={(v) => handleAddNiche(v)}
                 isLoading={addNicheLoading}
@@ -208,7 +230,7 @@ const handleImageChange = (e) => {
                 {...register("niches", {
                   required: "Niche are required",
                   validate: (value) => {
-                    const parsedValue = value ||' []';
+                    const parsedValue = value || ' []';
                     return parsedValue.length > 0 || "Niche are required";
                   },
                 })}
@@ -243,16 +265,18 @@ const handleImageChange = (e) => {
                 Genre
               </p>
               <SelectControl
+                key={isResetValue}
                 options={genresData?.genres || []}
                 label="Option"
                 register={register}
+                isResetValue={isResetValue}
                 useQuery={useGenreQuery}
                 inputType="radio"
                 placeholder="Ex: Yes"
                 setValue={setValue}
                 name="genreId"
                 errorLabel="Genre"
-                onAddOption={(v) => addGenre({title:v})}
+                onAddOption={(v) => addGenre({ title: v })}
                 isLoading={addGenreLoading}
               />
               {errors.genreId && (
@@ -285,15 +309,17 @@ const handleImageChange = (e) => {
                 Sponsored
               </p>
               <SelectControl
+                key={isResetValue}
                 options={sponsorsData?.sponsors || []}
                 label="Option"
                 register={register}
                 inputType="radio"
                 placeholder="Ex: Yes"
+                isResetValue={isResetValue}
                 setValue={setValue}
                 name="sponsorId"
                 errorLabel="Sponsored"
-                onAddOption={(v) => addSponsor({title:v})}
+                onAddOption={(v) => addSponsor({ title: v })}
                 isLoading={addSponsorLoading}
               />
               {errors.sponsorId && (
@@ -307,15 +333,17 @@ const handleImageChange = (e) => {
                 Index
               </p>
               <SelectControl
+                key={isResetValue}
                 options={indexesData?.indexes || []}
                 label="Option"
                 register={register}
                 inputType="radio"
                 placeholder="Ex: Yes"
+                isResetValue={isResetValue}
                 setValue={setValue}
                 name="indexedId"
                 errorLabel="Index"
-                onAddOption={(v) => addIndexed({title:v})}
+                onAddOption={(v) => addIndexed({ title: v })}
                 isLoading={addIndexLoading}
               />
               {errors.indexedId && (
@@ -329,15 +357,17 @@ const handleImageChange = (e) => {
                 Do follow
               </p>
               <SelectControl
+                key={isResetValue}
                 options={dofollowData?.dofollows || []}
                 label="Option"
                 register={register}
                 inputType="radio"
+                isResetValue={isResetValue}
                 placeholder="Ex: Yes"
                 setValue={setValue}
                 name="doFollowId"
                 errorLabel="Sponsored"
-                onAddOption={(v) => addDofollow({title:v})}
+                onAddOption={(v) => addDofollow({ title: v })}
                 isLoading={addDofollowLoading}
               />
               {errors.doFollowId && (
@@ -351,19 +381,18 @@ const handleImageChange = (e) => {
                 Region
               </p>
               <div className="relative">
-                <select
+                <SelectRegionData
                   name="region"
-                  id="region"
-                  defaultChecked="US"
-                  className="border border-[#B2B5B8] focus:outline focus:outline-[#006AC2] px-3 py-2 font-poppins text-[#171819] w-full appearance-none"
-                >
-                  {countries.map((country) => (
-                    <option key={country.code} defaultValue={country.code}>
-                      {country.name}
-                    </option>
-                  ))}
-                </select>
-                <ArrowDownIcon className="ml-2.5 absolute right-3 top-1/2 -translate-y-1/2" />
+                  label="Option"
+                  setValue={setValue}
+                  register={register}
+                  placeholder="Ex: United States"
+                />
+                {errors.region && (
+                  <span className="text-red-400 text-xs">
+                    {errors.region.message}
+                  </span>
+                )}
               </div>
             </label>
             <label htmlFor="">
@@ -374,6 +403,7 @@ const handleImageChange = (e) => {
                 type="text"
                 className="border border-[#B2B5B8] focus:outline focus:outline-[#006AC2] px-3 py-2 font-poppins text-[#171819] w-full text-sm placeholder:text-[#B2B5B8]"
                 name="location"
+                placeholder='Ex: 1234 Mockingbird Lane, Austin, TX 78701, USA'
                 {...register("location", {
                   required: "Location is required",
                 })}
@@ -382,16 +412,19 @@ const handleImageChange = (e) => {
                 <span className="text-red-400 text-xs">
                   {errors.location.message}
                 </span>
-              )} 
+              )}
             </label>
 
           </div>
           <div className="flex justify-end">
-            <input
+            <button
+              disabled={isLoading}
               type="submit"
-              value="Add Publication"
-              className="font-poppins text-white bg-[#002747] px-11 py-3 mt-9 cursor-pointer"
-            />
+              className={`font-poppins text-white  px-11 py-3 mt-9 cursor-pointer flex  items-center gap-2 bg-[#295d88] ${isLoading ? 'bg-[#295d88]' : 'bg-[#002747]'}`}
+            >
+              Add Publication
+              {isLoading && <LoadingIcon fill='#fff' style={{ height: "20px" }} />}
+            </button>
           </div>
         </div>
       </form>

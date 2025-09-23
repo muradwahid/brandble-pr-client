@@ -11,7 +11,7 @@ export const publicationApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response) => {
         return {
-          niches: response,
+          publications: response,
         };
       },
       providesTags: ["publication"],

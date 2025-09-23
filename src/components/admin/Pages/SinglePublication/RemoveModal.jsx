@@ -17,12 +17,12 @@ const RemoveModal = ({
 
   const handleDeletePublication = async (id) => {
     setIsLoading(true);
-    toast.loading("Deleting...");
+    const deleteId= toast.loading("Deleting...");
     try {
       const result = await deletePublication(id);
       console.log(result)
       setIsLoading(false);
-      toast.success("Publication deleted successfully!");
+      toast.success("Publication deleted successfully!",{id:deleteId});
       onChange(false);
             setTimeout(() => {
         navigate("/admin/publications", { replace: true });
@@ -30,7 +30,7 @@ const RemoveModal = ({
     } catch (err) {
       // console.error(err.message);
       setIsLoading(false);
-      toast.error(err.message);
+      toast.error(err.message,{id:deleteId});
     }
   };
 

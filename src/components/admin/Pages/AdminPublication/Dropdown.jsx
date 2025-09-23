@@ -1,4 +1,4 @@
-const Dropdown = ({ active, onClick, items = ["asc", "dsc"],ref, className }) => {
+const Dropdown = ({ active, onClick, items = ["asc", "desc"],ref, className }) => {
   return (
     <div className={`absolute top-[30px] w-full left-0 bg-white group-hover:visible border border-[#DCDEDF] py-1 px-1.5 rounded-sm ${className}`} ref={ref}>
       <div>
