@@ -28,6 +28,7 @@ import { usePublicationsQuery } from '../../../../redux/api/publicationApi';
 const AdminPublication = () => {
   const sortBtnRef = useRef(null);
   const [queryParams, setQueryParams] = useState({});
+  const [activeParamsVal, setActiveParamsVal] = useState({});
   const query = { ...queryParams }
   const [activeFilter, setActiveFilter] = useState({
     publication: false,
@@ -49,9 +50,7 @@ const AdminPublication = () => {
   // query["sortBy"] = sortBy;
   // query["sortOrder"] = sortOrder;
 
-  const searchTerms = new URLSearchParams(queryParams).toString();
-
-  const { data, isLoading } = usePublicationsQuery({ ...query });
+  const { data, isLoading } = usePublicationsQuery(query);
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
@@ -83,11 +82,11 @@ const AdminPublication = () => {
     };
   }, [targetRef]);
 
-  console.log(data.publications.meta.total)
+  // console.log(data.publications.meta.total)
 
 
-    const handleSort = (val) => {
-      const ascendingOrder = val === 'asc';
+  const handleSort = (val) => {
+    const ascendingOrder = val === 'asc';
 
 
     const tableBody = sortBtnRef.current;
@@ -104,10 +103,11 @@ const AdminPublication = () => {
     });
   };
 
+
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
-        <div className="flex gap-3">
+      <div className="flex justify-between items-center mb-4 flex-wrap-reverse gap-3">
+        <div className="flex gap-3 flex-wrap">
           <div
             className="flex gap-2 items-center border border-[#DCDEDF] py-1 px-2.5 rounded-sm cursor-pointer h-8 relative"
             ref={buttonRef}
@@ -122,16 +122,17 @@ const AdminPublication = () => {
             <PublicationBadgeIcon />
             <p className="text-[#878C91] text-sm">
               Publication{" "}
-              <span className="capitalize">{queryParams?.sortBy === 'title' ? queryParams?.sortOrder : ''}</span>
+              <span className="capitalize">{activeParamsVal?.sortBy === 'title' ? activeParamsVal?.sortOrder : ''}</span>
             </p>
             <ArrowDownIcon className="ml-2.5" />
             {activeFilter?.publication && (
               <Dropdown
                 ref={targetRef}
-                onClick={(val) =>
-                  setQueryParams({ sortBy: 'title', sortOrder: val })
-                }
-                active={queryParams?.sortBy === 'title' ? queryParams?.sortOrder : ''}
+                onClick={(val) => {
+                  setQueryParams({...queryParams, title: val })
+                  setActiveParamsVal({ sortBy: 'title', sortOrder: val })
+                }}
+                active={activeParamsVal?.sortBy === 'title' ? activeParamsVal?.sortOrder : ''}
               />
             )}
           </div>
@@ -147,16 +148,17 @@ const AdminPublication = () => {
           >
             <GenreIcon />
             <p className="text-[#878C91] text-sm">
-              Genre <span className="capitalize">{queryParams?.sortBy === 'genre' ? queryParams?.sortOrder : ''}</span>
+              Genre <span className="capitalize">{activeParamsVal?.sortBy === 'genre' ? activeParamsVal?.sortOrder : ''}</span>
             </p>
             <ArrowDownIcon className="ml-2.5" />
             {activeFilter?.genre && (
               <Dropdown
                 ref={targetRef}
-                onClick={(val) =>
-                  setQueryParams({ sortBy: 'genre', sortOrder: val  })
-                }
-                active={queryParams?.sortBy === 'genre' ? queryParams?.sortOrder : ''}
+                onClick={(val) => {
+                  setQueryParams({ ...setQueryParams, genre: val })
+                  setActiveParamsVal({ sortBy: 'genre', sortOrder: val })
+                }}
+                active={activeParamsVal?.sortBy === 'genre' ? activeParamsVal?.sortOrder : ''}
               />
             )}
           </div>
@@ -169,16 +171,17 @@ const AdminPublication = () => {
           >
             <CurrencyIcon />
             <p className="text-[#878C91] text-sm">
-              Price <span className="capitalize">{queryParams?.sortBy === 'price' ? queryParams?.sortOrder : ''}</span>
+              Price <span className="capitalize">{activeParamsVal?.sortBy === 'price' ? activeParamsVal?.sortOrder : ''}</span>
             </p>
             <ArrowDownIcon className="ml-2.5" />
             {activeFilter?.price && (
               <Dropdown
                 ref={targetRef}
-                onClick={(val) =>
-                  setQueryParams({ sortBy: 'title', sortOrder: val })
+                onClick={(val) =>{
+                  setQueryParams({ price: val })
+                  setActiveParamsVal({ sortBy: 'price', sortOrder: val })}
                 }
-                active={queryParams?.sortBy === 'price' ? queryParams?.sortOrder : ''}
+                active={activeParamsVal?.sortBy === 'price' ? activeParamsVal?.sortOrder : ''}
               />
             )}
           </div>
@@ -194,17 +197,19 @@ const AdminPublication = () => {
             <CampaignIcon />
             <p className="text-[#878C91] text-sm">
               Sponsored{" "}
-              <span className="capitalize">{queryParams?.sortBy === 'sponsored' ? queryParams?.sortOrder : ''}</span>
+              <span className="capitalize">{activeParamsVal?.sortBy === 'sponsor' ? activeParamsVal?.sortOrder : ''}</span>
             </p>
             <ArrowDownIcon className="ml-2.5" />
             {activeFilter?.sponsored && (
               <Dropdown
                 ref={targetRef}
-                onClick={(val) =>{
+                onClick={(val) => {
                   handleSort(val)
-                  setQueryParams({ sortBy: 'sponsored', sortOrder: val  })}
+                  setActiveParamsVal({ sortBy: 'sponsor', sortOrder: val })
+                  setQueryParams({...queryParams, sponsor:val})
                 }
-                active={queryParams?.sortBy === 'sponsored' ? queryParams?.sortOrder : ''}
+                }
+                active={activeParamsVal?.sortBy === 'sponsor' ? activeParamsVal?.sortOrder : ''}
               />
             )}
           </div>
@@ -305,11 +310,11 @@ const AdminPublication = () => {
               </tr>
             </thead>
             <tbody className=" text-[#36383A]" ref={sortBtnRef}>
-              {data?.publications?.data && data?.publications?.data.map((item, index) => (
+              {data?.publications?.data && data?.publications?.data?.map((item, index) => (
                 <tr key={index} className="border-t border-[#DCDEDF]">
                   <td className="px-3 py-3 text-nowrap">{index + 1}</td>
                   <td className="px-3 py-3 text-nowrap">{item?.title}</td>
-                  <td className="px-3 py-3 text-nowrap">{item?.genre.title}</td>
+                  <td className="px-3 py-3 text-nowrap">{item?.genre}</td>
                   <td className="px-3 py-3 text-nowrap">{item?.da}</td>
                   <td className="px-3 py-3 text-nowrap">{item?.dr}</td>
                   <td className="px-3 py-3 text-nowrap">
@@ -318,12 +323,12 @@ const AdminPublication = () => {
                   <td className="px-3 py-3 text-nowrap">
                     ${item.price}
                   </td>
-                  <td className="px-3 py-3 text-nowrap">{item?.sponsored?.title}</td>
+                  <td className="px-3 py-3 text-nowrap">{item?.sponsor}</td>
                   <td className="px-3 py-3 text-nowrap text-center capitalize">
-                    {item?.index?.title}
+                    {item?.index}
                   </td>
                   <td className="px-3 py-3 text-nowrap text-center capitalize">
-                    {item?.doFollow?.title}
+                    {item?.doFollow}
                   </td>
                   <td className="px-3 py-3 text-nowrap">{item?.region}</td>
                   <td className="pr-2.5">

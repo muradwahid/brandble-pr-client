@@ -3,7 +3,7 @@ import { ArrowDownIcon, CheckMarkIcon, LoadingIcon } from "../../../utils/icons"
 
 const SelectControl = ({
   options,
-  value = {id:""},
+  value = '',
   name,
   inputType = "checkbox",
   label = "Niche",
@@ -44,7 +44,7 @@ const SelectControl = ({
 
   const handleSelectOption = (option) => {
     setSelectedOption(option);
-    setValue(name,option?.id)
+    setValue(name,option)
     setIsOpen(false);
   };
 
@@ -60,7 +60,7 @@ const SelectControl = ({
   return (
     <div className="relative" ref={componentRef}>
       <select
-        value={selectedOption?.id}
+        value={selectedOption}
         className="hidden"
         {...register(name,isNotRequired? {
           required: `${errorLabel} is required`,
@@ -72,8 +72,8 @@ const SelectControl = ({
         <option value="" disabled>
           {placeholder}
         </option>
-        {options && options?.map((option) => (
-          <option key={option?.id} value={option?.id}>
+        {options && options?.map((option,i) => (
+          <option key={i} value={option}>
             {option?.title}
           </option>
         ))}
@@ -87,8 +87,8 @@ const SelectControl = ({
       >
         {/* Rendered Tokens */}
         <div className="flex flex-wrap items-center gap-2">
-          <span className={`text-sm capitalize ${selectedOption?.id ? "" : "text-[#B2B5B8]"}`}>
-            {selectedOption?.title || placeholder}
+          <span className={`text-sm capitalize ${selectedOption ? "" : "text-[#B2B5B8]"}`}>
+            {selectedOption || placeholder}
           </span>
         </div>
         <ArrowDownIcon className="ml-2.5 absolute right-3 top-1/2 -translate-y-1/2" />
@@ -105,18 +105,18 @@ const SelectControl = ({
                 className={`px-4 py-2 cursor-pointer hover:bg-slate-100 flex items-center gap-2.5 capitalize ${
                   index === 0 ? "" : "border-t border-[#B2B5B8]"
                 } ${
-                  selectedOption?.id === option?.id
+                  selectedOption?.title === option?.title
                     ? "bg-blue-50 text-blue-600"
                     : "text-[#878C91]"
                 }`}
-                onClick={() => handleSelectOption(option)}
+                onClick={() => handleSelectOption(option.title)}
               >
                 <input
                   type={inputType}
                   name={name}
                   id={`${name}-${option?.id}`}
-                  value={option?.id}
-                  checked={selectedOption?.id === option?.id}
+                  value={option?.title}
+                  checked={selectedOption === option}
                   onChange={() => {}}
                 />
                 {option?.title}

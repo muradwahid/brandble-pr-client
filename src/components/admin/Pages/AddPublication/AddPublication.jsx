@@ -46,8 +46,6 @@ const AddPublication = () => {
     formData.append("file", logo);
     formData.append("data", publicationStr);
 
-    console.log(logo?.name)
-
     if (logo?.name) {
       setIsImgRequired(false)
       if (formData) {
@@ -274,14 +272,14 @@ const AddPublication = () => {
                 inputType="radio"
                 placeholder="Ex: Yes"
                 setValue={setValue}
-                name="genreId"
+                name="genre"
                 errorLabel="Genre"
                 onAddOption={(v) => addGenre({ title: v })}
                 isLoading={addGenreLoading}
               />
-              {errors.genreId && (
+              {errors.genre && (
                 <span className="text-red-400 text-xs">
-                  {errors.genreId.message}
+                  {errors.genre.message}
                 </span>
               )}
             </div>
@@ -317,14 +315,14 @@ const AddPublication = () => {
                 placeholder="Ex: Yes"
                 isResetValue={isResetValue}
                 setValue={setValue}
-                name="sponsorId"
+                name="sponsor"
                 errorLabel="Sponsored"
                 onAddOption={(v) => addSponsor({ title: v })}
                 isLoading={addSponsorLoading}
               />
-              {errors.sponsorId && (
+              {errors.sponsor && (
                 <span className="text-red-400 text-xs">
-                  {errors.sponsorId.message}
+                  {errors.sponsor.message}
                 </span>
               )}
             </label>
@@ -341,14 +339,14 @@ const AddPublication = () => {
                 placeholder="Ex: Yes"
                 isResetValue={isResetValue}
                 setValue={setValue}
-                name="indexedId"
+                name="index"
                 errorLabel="Index"
                 onAddOption={(v) => addIndexed({ title: v })}
                 isLoading={addIndexLoading}
               />
-              {errors.indexedId && (
+              {errors.index && (
                 <span className="text-red-400 text-xs">
-                  {errors.indexedId.message}
+                  {errors.index.message}
                 </span>
               )}
             </label>
@@ -365,14 +363,14 @@ const AddPublication = () => {
                 isResetValue={isResetValue}
                 placeholder="Ex: Yes"
                 setValue={setValue}
-                name="doFollowId"
+                name="doFollow"
                 errorLabel="Sponsored"
                 onAddOption={(v) => addDofollow({ title: v })}
                 isLoading={addDofollowLoading}
               />
-              {errors.doFollowId && (
+              {errors.doFollow && (
                 <span className="text-red-400 text-xs">
-                  {errors.doFollowId.message}
+                  {errors.doFollow.message}
                 </span>
               )}
             </label>

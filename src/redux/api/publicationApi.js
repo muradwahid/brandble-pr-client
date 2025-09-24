@@ -14,7 +14,7 @@ export const publicationApi = baseApi.injectEndpoints({
           publications: response,
         };
       },
-      providesTags: ["publication"],
+      providesTags: ["publication",'all-publications'],
     }),
     addPublication: build.mutation({
       query: (data) => ({

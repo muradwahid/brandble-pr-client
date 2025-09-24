@@ -43,8 +43,7 @@ const EditPublication = () => {
     formState: { errors }, setValue,
   } = useForm();
 
-  const [updatePublication] =
-    useUpdatePublicationMutation();
+  const [updatePublication] = useUpdatePublicationMutation();
 
 
 
@@ -58,7 +57,7 @@ const EditPublication = () => {
       formData.append("file", logo);
     }
 
-    const validData={}
+    const validData = {}
     Object.keys(publicationData).forEach((key) => {
       if (publicationData[key] !== '' && publicationData[key] !== undefined && publicationData[key] !== null) {
         if (Array.isArray(publicationData[key])) {
@@ -71,34 +70,34 @@ const EditPublication = () => {
 
     if (validData) {
       formData.append("data", JSON.stringify(validData));
-      
+
     }
 
     if (formData) {
-        console.log("FormData contents:");
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
+      console.log("FormData contents:");
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
 
-        try {
-          await updatePublication({ id, body: formData });
-          toast.success("Publication updated successfully");
-        } catch (err) {
-          // console.error(err.message);
-          toast.error(err.message);
-        }
+      try {
+        await updatePublication({ id, body: formData });
+        toast.success("Publication updated successfully");
+      } catch (err) {
+        // console.error(err.message);
+        toast.error(err.message);
+      }
 
-    //   const response = await fetch(`http://localhost:5000/api/v1/publication/${id}`, {
-    //   method: 'PATCH',
-    //   body: formData,
+      //   const response = await fetch(`http://localhost:5000/api/v1/publication/${id}`, {
+      //   method: 'PATCH',
+      //   body: formData,
 
-    // });
+      // });
 
-    // if (!response.ok) {
-    //   const errorData = await response.json();
-    //   console.error('Server error details:', errorData);
-    //   throw new Error(`HTTP error! status: ${response.status}`);
-    // }
+      // if (!response.ok) {
+      //   const errorData = await response.json();
+      //   console.error('Server error details:', errorData);
+      //   throw new Error(`HTTP error! status: ${response.status}`);
+      // }
 
     }
   }
@@ -152,7 +151,7 @@ const EditPublication = () => {
                   alt=""
 
                 />}
-              {!(imagePreview || singlePublication?.logo) && (
+              {!(imagePreview || !singlePublication?.logo) && (
                 <AddImageIcon className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
               )}
             </div>
@@ -341,7 +340,7 @@ const EditPublication = () => {
                 Index
               </p>
               <SelectControl
-              key={singlePublicationLoading}
+                key={singlePublicationLoading}
                 options={indexesData?.indexes || []}
                 value={singlePublication?.index}
                 label="Option"
@@ -366,7 +365,7 @@ const EditPublication = () => {
                 Do follow
               </p>
               <SelectControl
-              key={singlePublicationLoading}
+                key={singlePublicationLoading}
                 options={dofollowData?.dofollows || []}
                 value={singlePublication?.doFollow}
                 label="Option"
@@ -394,7 +393,7 @@ const EditPublication = () => {
                 <select
                   id="region"
                   {
-                    ...register('region')
+                  ...register('region')
                   }
                   defaultChecked="US"
                   className="border border-[#B2B5B8] focus:outline focus:outline-[#006AC2] px-3 py-2 font-poppins text-[#171819] w-full appearance-none"
