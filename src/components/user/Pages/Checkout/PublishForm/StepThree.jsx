@@ -1,8 +1,8 @@
-import React from 'react';
-import FileUploadField from './FileUploadField/FileUploadField';
+import UploadFileField from '../../../../ui/UploadFileField/UploadFileField';
 
-const StepThree = () => {
+const StepThree = ({ register, errorMessage,control }) => {
   const inputCls = ` px-3 py-2 bg-[#F6F7F7] border border-[#DCDEDF] outline-none text-[#5F6368] placeholder-[#B2B5B8] placeholder:font-normal w-full`;
+
   return (
     <div>
       <h1 className="text-[#222425] text-[20px] font-glare border-b border-[#DCDEDF] pb-3">
@@ -11,7 +11,7 @@ const StepThree = () => {
       <div>
         <div className="flex flex-col mt-5">
           <label
-            htmlFor="announcements"
+            htmlFor="announcement"
             className="text-sm text-[#5F6368] mb-3"
           >
             Please list any specific announcements that are upcoming in the next
@@ -20,12 +20,13 @@ const StepThree = () => {
           </label>
           <textarea
             type="text"
-            id="announcements"
-            name="announcements"
+            id="announcement"
+            {...register('announcement', { required: "Upcoming announcements are required." })}
             rows={5}
             className={`${inputCls} resize-none`}
             placeholder="Describe here..."
           />
+          {errorMessage('announcement')}
         </div>
         <div className="flex flex-col mt-5">
           <label htmlFor="publicist" className="text-sm text-[#5F6368] mb-3">
@@ -35,19 +36,35 @@ const StepThree = () => {
           </label>
           <textarea
             type="text"
-            id="publicist"
-            name="publicist"
+            id="additionalContent"
+            {...register('additionalContent', { required: "Additional details required." })}
+            name="additionalContent"
             rows={5}
             className={`${inputCls} resize-none`}
             placeholder="Describe here..."
           />
+          {errorMessage('announcement')}
         </div>
       </div>
+
 
       <h1 className="text-[#222425] text-[20px] font-glare border-b border-[#DCDEDF] pb-3 mt-10 mb-5">
         Upload Image
       </h1>
-      <FileUploadField />
+      <p htmlFor="publicist" className="text-sm text-[#5F6368] mb-3">
+        Upload one HORIZONTAL, high-resolution, and professional photo of you/the person this PR campaign is for.
+      </p>
+      <UploadFileField register={register} errorMessage={errorMessage} name="personImage" requiredMessage="Please upload a clearer horizontal photo." control={control}/>
+
+      <p htmlFor="publicist" className="text-sm text-[#5F6368] mb-3 mt-5">
+        Upload one photo of your brand/product/service you want to highlight. (Optional)
+      </p>
+      <UploadFileField register={register} errorMessage={errorMessage} name="serviceImage" isOptional={true} control={control}/>
+      <p htmlFor="publicist" className="text-sm text-[#5F6368] mb-3 mt-5">
+        Upload your company or brand logo. (Optional)
+      </p>
+      <UploadFileField register={register} errorMessage={errorMessage} name="brandLogoLogo" isOptional={true} control={control}/>
+
     </div>
   );
 };

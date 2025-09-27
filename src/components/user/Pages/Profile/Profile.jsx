@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {  useState } from "react";
 import profileImg from "../../../../assets/profile2.png";
 import { AddImageIcon, LoadingIcon, PenIcon } from "../../../../utils/icons";
 import { RxCross2 } from "react-icons/rx";
@@ -16,13 +16,13 @@ const Profile = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors }, setValue, reset
+    formState: { errors }, setValue
   } = useForm();
 
-  const id = "ad44b1de-c9d3-4fd3-9058-88e1f456d987"
+  const id = "1af4492d-bf75-451d-a1af-9fbc23eed92b"
   const { data } = useUserQuery(id);
 
-  const [updateUser, {isLoading}] = useUpdateUserMutation();
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
 
   const onSubmit = async (d) => {
     const obj = { ...d };
@@ -69,7 +69,6 @@ const Profile = () => {
       setImagePreview(URL.createObjectURL(file));
     }
   };
-
 
 
   return (
@@ -151,14 +150,11 @@ const Profile = () => {
               <input
                 type="text"
                 disabled={general}
-                placeholder="Type here"
-                contentEditable="true"
+                placeholder="Profile name"
                 id="profileName"
-                {...register("name", {
-                  required: "Profile name is missing.",
-                })}
+                {...register("name")}
                 className="w-full text-[#36383A] text-[15px] py-1.5 px-2 border-1 border-[#DCDEDF] focus:outline-2 focus:outline-[#004A87]"
-                value={data?.name}
+                defaultValue={data?.name}
               />
               {errors.name && (
                 <span className="text-red-400 text-xs">
@@ -172,12 +168,12 @@ const Profile = () => {
               </label>
               <input
                 type="text"
-                placeholder="Type here"
+                placeholder="Company"
                 {...register("company")}
                 disabled={general}
                 id="company"
                 className="w-full text-[#36383A] text-[15px] py-1.5 px-2 border-1 border-[#DCDEDF] focus:outline-2 focus:outline-[#004A87]"
-                defaultValue={data?.name}
+                defaultValue={data?.company}
               />
             </div>
             <div className="flex flex-col gap-1.5 mt-5">
@@ -189,7 +185,7 @@ const Profile = () => {
               </label>
               <input
                 type="text"
-                placeholder="Type here"
+                placeholder="Designation"
                 disabled={general}
                 {...register("designation")}
                 id="designation"
@@ -206,7 +202,7 @@ const Profile = () => {
               </label>
               <input
                 type="tel"
-                placeholder="Type here"
+                placeholder="Phone number"
                 {...register("phoneNumber")}
                 id="phoneNumber"
                 disabled={general}
@@ -254,9 +250,8 @@ const Profile = () => {
                 disabled={security}
                 placeholder="Email"
                 name="profileName"
-                {...register("email", {
-                  required: "Email is empty.",
-                })}
+                required
+                {...register("email")}
                 id="profileName"
                 className="w-full text-[#36383A] text-[15px] py-1.5 px-2 border-1 border-[#DCDEDF] focus:outline-2 focus:outline-[#004A87]"
                 defaultValue={data?.email}
@@ -278,10 +273,10 @@ const Profile = () => {
               </div>
               <input
                 type="password"
-                placeholder="Type here"
+                placeholder="Password"
+                minLength={8}
                 disabled={security}
                 {...register("password", {
-                  required: "Password is required.",
                   minLength: {
                     value: 8,
                     message: "Password must be at least 8 characters long.",

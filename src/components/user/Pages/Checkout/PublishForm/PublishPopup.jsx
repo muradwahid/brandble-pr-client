@@ -26,11 +26,11 @@ const PublishPopup = ({ setPublishPopup }) => {
         <div className="flex justify-center space-x-4 mt-32">
           <Link
             onClick={() => {
-              window.location.reload();
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-              });
+              // window.location.reload();
+              // window.scrollTo({
+              //   top: 0,
+              //   behavior: "smooth",
+              // });
               setPublishPopup(false);
             }}
             to="/user/checkout/order-submit"

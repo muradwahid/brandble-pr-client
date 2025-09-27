@@ -31,14 +31,14 @@ export const authApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
-      providesTags: ["auth",'update'],
+      providesTags: ["auth", 'update'],
     }),
     updateUser: build.mutation({
       query: (data) => ({
         url: `${AUTH_URL}/update/${data.id}`,
         method: "PATCH",
         data: data.body,
-        contentType: "multipart/form-data" ,
+        contentType: "multipart/form-data",
       }),
       invalidatesTags: ["auth"],
     }),
