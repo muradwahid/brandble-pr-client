@@ -51,19 +51,19 @@ const StepThree = ({ register, errorMessage,control }) => {
       <h1 className="text-[#222425] text-[20px] font-glare border-b border-[#DCDEDF] pb-3 mt-10 mb-5">
         Upload Image
       </h1>
-      <p htmlFor="publicist" className="text-sm text-[#5F6368] mb-3">
+      <p htmlFor="personImage" className="text-sm text-[#5F6368] mb-3">
         Upload one HORIZONTAL, high-resolution, and professional photo of you/the person this PR campaign is for.
       </p>
       <UploadFileField register={register} errorMessage={errorMessage} name="personImage" requiredMessage="Please upload a clearer horizontal photo." control={control}/>
 
-      <p htmlFor="publicist" className="text-sm text-[#5F6368] mb-3 mt-5">
+      <p htmlFor="serviceImage" className="text-sm text-[#5F6368] mb-3 mt-5">
         Upload one photo of your brand/product/service you want to highlight. (Optional)
       </p>
       <UploadFileField register={register} errorMessage={errorMessage} name="serviceImage" isOptional={true} control={control}/>
-      <p htmlFor="publicist" className="text-sm text-[#5F6368] mb-3 mt-5">
+      <p htmlFor="brandLogo" className="text-sm text-[#5F6368] mb-3 mt-5">
         Upload your company or brand logo. (Optional)
       </p>
-      <UploadFileField register={register} errorMessage={errorMessage} name="brandLogoLogo" isOptional={true} control={control}/>
+      <UploadFileField register={register} errorMessage={errorMessage} name="brandLogo" isOptional={true} control={control} />
 
     </div>
   );

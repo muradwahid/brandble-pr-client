@@ -1,5 +1,4 @@
 import { IoMdHeart } from "react-icons/io";
-import img from "../../../../assets/publication.png";
 import { AdultIcon, BitcoinIcon, CardiologyIcon, CartIcon, CasinoIcon, SpaIcon } from "../../../../utils/icons";
 import { favoriteData } from "./data";
 
@@ -19,7 +18,7 @@ const Favorite = () => {
             <div className="xl:flex gap-3">
               <div className="bg-[#F6F6F6] relative md:max-w-[143px] w-full flex items-center justify-center">
                 <div className="w-full">
-                  <img src={img} alt="" className="w-full" />
+                  <img src={""} alt="" className="w-full" />
                 </div>
                 <p className="bg-[#DCDEDF] text-[12px] text-[#878C91] font-medium absolute top-1 left-1 px-2 py-0.5">
                   Music

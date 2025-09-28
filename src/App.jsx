@@ -10,7 +10,7 @@ function App() {
       <Toaster
         position="top-center"
       />
-      {/* <RouterProvider router={router} /> */}
+      <RouterProvider router={router} />
     </>
   );
 }

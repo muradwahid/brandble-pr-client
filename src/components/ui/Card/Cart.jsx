@@ -1,40 +1,51 @@
 import { useEffect, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { RxCrossCircled } from "react-icons/rx";
-import { cartData } from "./data";
 import "./style.css";
 import { Link } from "react-router";
-
-import hoodcriticImg from "../../../assets/hoodcriticImg.png"
+import { getFromLocalStorage, setToLocalStorage } from '../../../utils/local-storage';
+import toast from 'react-hot-toast';
 
 const Cart = ({ ref, setOpenCart }) => {
-  // State to manage the cart items. Each item has an id, name, price, and checked status.
-  const [cartItems, setCartItems] = useState(cartData);
+  // Get initial data from localStorage
+  const [cartItems, setCartItems] = useState(() => {
+    const savedData = getFromLocalStorage("brandableCardData");
+    return savedData ? JSON.parse(savedData) : [];
+  });
 
-  // State to store the calculated subtotal
   const [subtotal, setSubtotal] = useState(0);
 
-  // useEffect hook to recalculate subtotal whenever cartItems state changes
   useEffect(() => {
-    const total = cartItems.reduce((sum, item) => {
-      // Only add to sum if the item is checked
-      return sum + (item.checked ? item.price : 0);
+    const total = cartItems?.reduce((sum, item) => {
+      return sum + (item.isChecked ? Number(item.price) : 0);
     }, 0);
-    setSubtotal(total); // Update the subtotal state
-  }, [cartItems]); // Dependency array: runs when cartItems changes
+    setSubtotal(total);
+  }, [cartItems]);
 
   // Handler for checkbox changes
   const handleCheckboxChange = (id) => {
-    setCartItems((prevItems) =>
-      prevItems.map(
-        (item) => (item.id === id ? { ...item, checked: !item.checked } : item) // Toggle checked status for the specific item
-      )
-    );
+    setCartItems(prevItems => {
+      const updatedItems = prevItems.map(item => {
+        if (item.id === id) {
+          return { ...item, isChecked: !item.isChecked };
+        }
+        return item;
+      });
+      
+      // Save to localStorage after state update
+      setToLocalStorage("brandableCardData", JSON.stringify(updatedItems));
+      return updatedItems;
+    });
   };
 
   // Handler for deleting an item from the cart
-  const handleDeleteItem = (id) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id)); // Remove item by filtering its ID
+  const removeFromCard = (id, title) => {
+    setCartItems(prevItems => {
+      const updatedItems = prevItems.filter(item => item.id !== id);
+      setToLocalStorage("brandableCardData", JSON.stringify(updatedItems));
+      return updatedItems;
+    });
+      toast.success(`"${title}" removed from cart!`);
   };
 
   return (
@@ -55,37 +66,37 @@ const Cart = ({ ref, setOpenCart }) => {
 
       {/* Modal Body - Cart Items */}
       <div className="max-h-96 overflow-y-auto cart-items-container mt-5 pr-5">
-        {cartItems.length === 0 ? (
-          <p className="text-center text-gray-600">Your cart is empty.</p>
+        {cartItems?.length === 0 ? (
+          <p className="text-center text-gray-600 mb-5">Your cart is empty.</p>
         ) : (
-          cartItems.map((item) => (
+          cartItems?.map((item) => (
             <div
-              key={item.id}
+              key={item.id + item.isChecked}
               className="flex mb-6 last:mb-0 border-b pb-4 border-gray-100 cart-item"
             >
               <input
                 type="checkbox"
-                checked={item.checked}
+                checked={item.isChecked || false}
                 onChange={() => handleCheckboxChange(item.id)}
                 className="custom-checkbox h-5 w-5 mr-2"
               />
               <div className="md:mr-4 mr-2.5 md:w-32 w-24 relative">
                 <img
-                  src={hoodcriticImg}
-                  alt={item.name}
+                  src={item.logo}
+                  alt={item.title}
                   className="h-full w-full"
                 />
                 <span className="bg-[#EF873A] text-white md:text-xs text-[8px] md:px-2.5 px-1.5 py-0.5 rounded-sm absolute top-1.5 left-2 whitespace-nowrap">
-                  {item.tag}
+                  {item?.genre}
                 </span>
               </div>
               <div className="flex-grow">
                 <div className="flex items-center justify-between md:mb-2">
                   <h3 className="text-[16px] font-normal text-[#36383A]">
-                    {item.name}
+                    {item.title}
                   </h3>
                   <button
-                    onClick={() => handleDeleteItem(item.id)}
+                    onClick={() => removeFromCard(item?.id,item?.title)}
                     className="text-red-500 hover:text-red-700 focus:outline-none mb-2 delete-item-btn"
                   >
                     <RiDeleteBin6Line className="text-[#FF8F73] text-[24px] hover:text-red-400 transition cursor-pointer" />
@@ -93,16 +104,16 @@ const Cart = ({ ref, setOpenCart }) => {
                 </div>
                 <div className="flex gap-2 flex-wrap text-[12px] font-semibold text-[#878C91] ">
                   <div className="flex gap-1.5">
-                    <p>Sponsored :</p> <p>{item.sponsored}</p>
+                    <p>Sponsored :</p> <p className='capitalize'>{item.sponsor}</p>
                   </div>
                   <span>•</span>
                   <div className="flex gap-1.5">
-                    <p>Indexed :</p> <p>{item.indexed}</p>
+                    <p>Indexed :</p> <p className='capitalize'>{item.index}</p>
                   </div>
                 </div>
                 <div className="flex md:gap-2 gap-0.5 flex-wrap text-[12px] font-semibold text-[#878C91]  md:mb-1 mb-0.5">
                   <div className="flex gap-1.5">
-                    <p className="m-0">Do Follow :</p> <p>{item.doFollow}</p>
+                    <p className="m-0">Do Follow :</p> <p className='capitalize'>{item.doFollow}</p>
                   </div>
                   <span>•</span>
                   <div className="flex gap-1.5">
@@ -118,7 +129,7 @@ const Cart = ({ ref, setOpenCart }) => {
                       DR: {item.dr}
                     </span>
                     <span className="bg-[#F2F2F3] text-[#5F6368] font-semibold px-2 py-1">
-                      TAT: {item.tat}
+                      TAT: {item.ttp}
                     </span>
                   </div>
                   <span className="flex items-center md:text-[20px] text-[18px] text-[#36383A] font-glare">

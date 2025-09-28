@@ -5,7 +5,6 @@ const UserMyOrderLayout = () => {
   return (
     <>
       <Outlet />
-      <Footer />
     </>
   );
 };
