@@ -21,7 +21,7 @@ const Profile = () => {
 
   const {id} = getUserInfo();
 
-  const { data } = useUserQuery(id);
+  const { data = {} } = useUserQuery(id || '');
 
   const [updateUser, { isLoading }] = useUpdateUserMutation();
 
