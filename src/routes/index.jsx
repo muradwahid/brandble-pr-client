@@ -29,7 +29,7 @@ import Messages from "../components/admin/Pages/Messages/Messages";
 import Payments from "../components/admin/Pages/Payments/Payments";
 import SingleOrder from "../components/admin/Pages/TotalOrders/SingleOrder";
 import OrderDetails from "../components/admin/Pages/TotalOrders/OrderDetails";
-import Login from "../components/auth/Login";
+// import Login from "../components/auth/Login";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 
 

@@ -4,7 +4,7 @@ import { RxCross2 } from "react-icons/rx";
 import { Link } from "react-router";
 import { useUpdateUserMutation, useUserQuery } from '../../../../redux/api/authApi';
 import toast from 'react-hot-toast';
-import { useForm } from 'react-hook-form';
+// import { useForm } from 'react-hook-form';
 import { getUserInfo } from "../../../../helpers/user/user";
 
 const Profile = () => {
@@ -13,11 +13,26 @@ const Profile = () => {
   const [security, setSecurity] = useState(true);
 
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }, setValue
-  } = useForm();
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { errors }, setValue
+  // } = useForm();
+
+  const register = (e) => { 
+    return {
+      name
+    }
+  }
+
+  const handleSubmit = (e) => { }
+  const formState = {
+    errors: {name},
+    setValue: () => { }
+  }
+
+  const { errors, setValue } = formState;
+
 
   const {id} = getUserInfo();
 
@@ -157,9 +172,9 @@ const Profile = () => {
                 className="w-full text-[#36383A] text-[15px] py-1.5 px-2 border-1 border-[#DCDEDF] focus:outline-2 focus:outline-[#004A87]"
                 defaultValue={data?.name}
               />
-              {errors.name && (
+              {errors?.name && (
                 <span className="text-red-400 text-xs">
-                  {errors.name.message}
+                  {errors?.name.message}
                 </span>
               )}
             </div>
@@ -257,9 +272,9 @@ const Profile = () => {
                 className="w-full text-[#36383A] text-[15px] py-1.5 px-2 border-1 border-[#DCDEDF] focus:outline-2 focus:outline-[#004A87]"
                 defaultValue={data?.email}
               />
-              {errors.email && (
+              {errors?.email && (
                 <span className="text-red-400 text-xs">
-                  {errors.email.message}
+                  {errors?.email.message}
                 </span>
               )}
             </div>
@@ -287,9 +302,9 @@ const Profile = () => {
                 className="w-full text-[#36383A] text-[15px] py-1.5 px-2 border-1 border-[#DCDEDF] focus:outline-2 focus:outline-[#004A87]"
                 defaultValue={data?.password}
               />
-              {errors.password && (
+              {errors?.password && (
                 <span className="text-red-400 text-xs">
-                  {errors.password.message}
+                  {errors?.password.message}
                 </span>
               )}
             </div>
