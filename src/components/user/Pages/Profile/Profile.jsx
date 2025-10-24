@@ -1,11 +1,11 @@
 import {  useState } from "react";
-import profileImg from "../../../../assets/profile2.png";
 import { AddImageIcon, LoadingIcon, PenIcon } from "../../../../utils/icons";
 import { RxCross2 } from "react-icons/rx";
 import { Link } from "react-router";
 import { useUpdateUserMutation, useUserQuery } from '../../../../redux/api/authApi';
 import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
+import { getUserInfo } from "../../../../helpers/user/user";
 
 const Profile = () => {
   const [imagePreview, setImagePreview] = useState(null);
@@ -19,7 +19,8 @@ const Profile = () => {
     formState: { errors }, setValue
   } = useForm();
 
-  const id = "1af4492d-bf75-451d-a1af-9fbc23eed92b"
+  const {id} = getUserInfo();
+
   const { data } = useUserQuery(id);
 
   const [updateUser, { isLoading }] = useUpdateUserMutation();

@@ -18,7 +18,7 @@ const Chat = () => {
         </div>
 
         <div className="chat-messages flex flex-col">
-          <div className="text-center text-xs text-gray-400 my-4">19 August</div>
+          {/* <div className="text-center text-xs text-gray-400 my-4">19 August</div>
 
           <div className="flex items-start mb-2">
             <div className="message-bubble message-received">
@@ -94,7 +94,7 @@ const Chat = () => {
                 <LuCheckCheck />
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="bg-transparent flex items-center gap-3 px-6 pb-6 relative">

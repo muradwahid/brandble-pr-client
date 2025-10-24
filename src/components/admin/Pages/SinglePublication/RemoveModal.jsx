@@ -4,7 +4,7 @@ import { useDeletePublicationMutation } from "../../../../redux/api/publicationA
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { LoadingIcon } from '../../../../utils/icons';
-import { Navigate, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 const RemoveModal = ({
   ref,

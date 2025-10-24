@@ -47,14 +47,14 @@ const UserSidebar = () => {
           <div>
             {/* profile */}
             <div className="md:flex gap-5 items-end border-b-[1px] border-[#b2b5b8] pb-5">
-              <div className="w-[60px] h-[60px]">
-                <img className="w-full" src={userImage} alt="" />
+              <div className="w-[60px] h-[60px] border">
+                <img className="w-full" src={'userImage'} alt="" />
               </div>
               <div className="flex flex-col">
-                <h4 className="text-[#222425] text-[20px] font-glare ">
+                {/* <h4 className="text-[#222425] text-[20px] font-glare ">
                   John Doe
-                </h4>
-                <small className="text-[#5F6368]">john.doe@gmail.com</small>
+                </h4> */}
+                {/* <small className="text-[#5F6368]">john.doe@gmail.com</small> */}
               </div>
             </div>
 

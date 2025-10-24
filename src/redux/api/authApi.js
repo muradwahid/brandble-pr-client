@@ -5,7 +5,7 @@ export const authApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     users: build.query({
       query: (arg) => ({
-        url: `${AUTH_URL}/get-all`,
+        url: `${AUTH_URL}/all-users`,
         method: "GET",
         params: arg,
       }),
@@ -18,7 +18,7 @@ export const authApi = baseApi.injectEndpoints({
     }),
     userLogin: build.mutation({
       query: (loginData) => ({
-        url: `${AUTH_URL}/login`,
+        url: `${AUTH_URL}/signin`,
         method: "POST",
         data: loginData,
       }),
@@ -31,7 +31,7 @@ export const authApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
-      providesTags: ["auth", 'update'],
+      providesTags: ["auth", 'update','signin'],
     }),
     updateUser: build.mutation({
       query: (data) => ({

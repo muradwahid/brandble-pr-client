@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "@netlify/vite-plugin": "^2.5.1",
+    "@stripe/react-stripe-js": "^4.0.2",
+    "@stripe/stripe-js": "^7.9.0",
     "@tailwindcss/vite": "^4.1.11",
     "axios": "^1.12.2",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.543.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

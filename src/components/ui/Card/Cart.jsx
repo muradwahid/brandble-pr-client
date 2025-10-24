@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { RxCrossCircled } from "react-icons/rx";
 import "./style.css";
-import { Link } from "react-router";
+import {  useNavigate } from "react-router";
 import { getFromLocalStorage, setToLocalStorage } from '../../../utils/local-storage';
 import toast from 'react-hot-toast';
+import { LoadingIcon } from '../../../utils/icons';
 
 const Cart = ({ ref, setOpenCart }) => {
   // Get initial data from localStorage
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate()
   const [cartItems, setCartItems] = useState(() => {
     const savedData = getFromLocalStorage("brandableCardData");
     return savedData ? JSON.parse(savedData) : [];
@@ -31,7 +35,7 @@ const Cart = ({ ref, setOpenCart }) => {
         }
         return item;
       });
-      
+
       // Save to localStorage after state update
       setToLocalStorage("brandableCardData", JSON.stringify(updatedItems));
       return updatedItems;
@@ -45,8 +49,23 @@ const Cart = ({ ref, setOpenCart }) => {
       setToLocalStorage("brandableCardData", JSON.stringify(updatedItems));
       return updatedItems;
     });
-      toast.success(`"${title}" removed from cart!`);
+    toast.success(`"${title}" removed from cart!`);
   };
+
+  const handleCheckoutBtn = () => {
+    setIsLoading(true)
+    if (subtotal < 1) {
+      setIsLoading(false)
+      return toast.error('Select at least one item!')
+    }
+    if (cartItems.length < 1) {
+      setIsLoading(false)
+      return toast.error("Your cart is empty!")
+    }
+    navigate('/user/checkout')
+    setIsLoading(false)
+    setOpenCart(false)
+  }
 
   return (
     <div
@@ -96,7 +115,7 @@ const Cart = ({ ref, setOpenCart }) => {
                     {item.title}
                   </h3>
                   <button
-                    onClick={() => removeFromCard(item?.id,item?.title)}
+                    onClick={() => removeFromCard(item?.id, item?.title)}
                     className="text-red-500 hover:text-red-700 focus:outline-none mb-2 delete-item-btn"
                   >
                     <RiDeleteBin6Line className="text-[#FF8F73] text-[24px] hover:text-red-400 transition cursor-pointer" />
@@ -147,13 +166,15 @@ const Cart = ({ ref, setOpenCart }) => {
         <div className="font-normal text-[#222425]">
           Subtotal: <span id="subtotal-amount">${subtotal.toFixed(2)}</span>
         </div>
-        <Link
-          to="/user/checkout"
-          onClick={() => setOpenCart(false)}
-          className="bg-[#222425] text-white py-2 px-8 hover:bg-gray-800 transition cursor-pointer"
+        <button
+          type='button'
+          // to="/user/checkout"
+          onClick={() => handleCheckoutBtn()}
+          className="bg-[#222425] text-white py-2 px-8 hover:bg-gray-800 transition cursor-pointer flex items-center gap-3"
         >
           Checkout
-        </Link>
+          {isLoading && <LoadingIcon fill='#fff' style={{ height: "20px" }} />}
+        </button>
       </div>
     </div>
   );

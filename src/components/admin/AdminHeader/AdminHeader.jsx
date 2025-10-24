@@ -2,11 +2,19 @@ import { RxMagnifyingGlass } from "react-icons/rx";
 import { Link, useMatch } from "react-router";
 import profileImg from "../../../assets/adminprofile.png";
 import { BellIcon, CirclePlusIcon } from "../../../utils/icons";
+import { getUserInfo } from "../../../helpers/user/user";
+import { useUserQuery } from "../../../redux/api/authApi";
 
 const AdminHeader = () => {
   const publicationSingle = useMatch("/admin/publications/:id");
   const addPublication = useMatch("/admin/publications/add-new-publication");
   const isShowButton = publicationSingle?.pathname && !addPublication?.pathname;
+
+
+  const { id } = getUserInfo();
+
+  const { data } = useUserQuery(id);
+
   return (
     <div className="flex w-full justify-between mb-9 mt-5 ">
       <div className="relative">
@@ -34,7 +42,7 @@ const AdminHeader = () => {
         <div className="flex items-center gap-5">
           <BellIcon />
           <div className="w-[40px] h-[40px] rounded-[8px] overflow-hidden">
-            <img className="w-full h-full" src={profileImg} alt="" />
+            <img className="w-full h-full" src={data?.image} alt="" />
           </div>
         </div>
       </div>

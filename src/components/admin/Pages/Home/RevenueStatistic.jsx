@@ -49,9 +49,9 @@ const RevenueStatistic = () => {
             <tbody className=" text-[#36383A]">
               {tableData.slice(0, 1).map((item, index) => (
                 <tr key={index} className="border-t border-[#DCDEDF]">
-                  <td className="px-3 py-3">{item.id}</td>
+                  <td className="px-3 py-3">M9hvmC4hq07q1s</td>
                   <td className="px-3 py-3">{item.service}</td>
-                  <td className="px-3 py-3">{item.date}</td>
+                  <td className="px-3 py-3">10/10/2025</td>
                   <td className="pr-2.5">
                     <button
                       className={` text-white cursor-pointer px-1 py-0.5 rounded-sm capitalize font-normal w-full ${

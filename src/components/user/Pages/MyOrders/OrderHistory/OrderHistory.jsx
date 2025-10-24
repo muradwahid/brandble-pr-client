@@ -38,7 +38,7 @@ const OrderHistory = () => {
         </div>
       </div>
 
-      <div>
+      {/* <div>
         {orderHistoryData.map((item, index) => (
           <div key={index} className="border border-[#DCDEDF] p-2.5 mb-5">
             <div className="flex items-center justify-between">
@@ -103,7 +103,7 @@ const OrderHistory = () => {
           currentPage={currentPage}
           onPageChange={handlePageChange}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

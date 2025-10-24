@@ -9,7 +9,7 @@ const Favorite = () => {
       <h2 className="md:text-2xl text-[20px] text-[#222425] font-glare mb-6">
         Favorites
       </h2>
-      <div className="grid  xl:grid-cols-3 md:grid-cols-2 grid-cols-2 gap-4">
+      {/* <div className="grid  xl:grid-cols-3 md:grid-cols-2 grid-cols-2 gap-4">
         {favoriteData.map((item, index) => (
           <div
             key={index}
@@ -81,6 +81,9 @@ const Favorite = () => {
             </div>
           </div>
         ))}
+      </div> */}
+      <div className="h-[50dvh] flex items-center justify-center ">
+        <h1 className="text-3xl">No favorites yet. Tap the heart on any product to add it here.</h1>
       </div>
     </div>
   );

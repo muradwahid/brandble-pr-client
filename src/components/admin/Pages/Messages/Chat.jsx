@@ -2,19 +2,24 @@ import { FcManager } from "react-icons/fc";
 import { GoPaperAirplane } from "react-icons/go";
 import { LuCheckCheck } from "react-icons/lu";
 import "./style.css"
+import { getUserInfo } from "../../../../helpers/user/user";
+import { useUserQuery } from "../../../../redux/api/authApi";
 
 const Chat = ({ activeConversation }) => {
+    const { id } = getUserInfo();
+  
+    const { data } = useUserQuery(id);
   return (
     <div>
       <div className="message-chat-container border-l-1 border-[#D1DADB]">
         <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
           {activeConversation === "user" ? (
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 rounded-full h-[48px] w-[48px]">
-                <img src="" alt="" />
+              <div className=" bg-blue-100 rounded-full h-[48px] w-[48px] overflow-hidden">
+                <img src={data?.image} className="h-[48px] w-[48px]" alt="" />
               </div>
               <span className="font-medium text-[#222425] font-poppins">
-                Sharif
+                Murad Wahid
               </span>
             </div>
           ) : (
@@ -29,8 +34,8 @@ const Chat = ({ activeConversation }) => {
           )}
         </div>
 
-        <div className="chat-messages flex flex-col">
-          <div className="text-center text-xs text-gray-400 my-4">
+        <div className="chat-messages flex flex-col w-full">
+          {/* <div className="text-center text-xs text-gray-400 my-4">
             19 August
           </div>
 
@@ -108,7 +113,7 @@ const Chat = ({ activeConversation }) => {
                 <LuCheckCheck />
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div className="bg-transparent flex items-center gap-3 px-6 pb-4 relative">
@@ -116,7 +121,6 @@ const Chat = ({ activeConversation }) => {
             className=" border border-[#DCDEDF] outline-none py-3 px-5 rounded-3xl w-full bg-white flex-1"
             type="text"
             placeholder="Send a message..."
-            // className="input-field"
             cols={30}
             rows={4}
           />

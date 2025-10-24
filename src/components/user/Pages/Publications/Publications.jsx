@@ -11,7 +11,6 @@ import {
 import FilterableSidebar from "./FilterableSidebar";
 import { useState } from "react";
 import Pagination from "../../../common/Pagination";
-import { FaHeart } from "react-icons/fa";
 import { IoIosHeartEmpty, IoMdHeart } from "react-icons/io";
 import { usePublicationsQuery } from '../../../../redux/api/publicationApi';
 import SkeletonCard from '../../../common/SkeletonCard';
@@ -28,8 +27,9 @@ const Publications = () => {
   const [toggle, setToggle] = useState(false);
   const [activeIdx, setActiveIdx] = useState(null);
 
-  const { data, } = usePublicationsQuery()
-
+  const { data } = usePublicationsQuery()
+  const { meta = {} } = data || {}
+  console.log(meta);
   const isLoading = false;
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
@@ -207,8 +207,8 @@ const addToCard = (data) => {
                 <option value="30">30 Result</option>
               </select>
               <Pagination
-                totalPages={totalPages}
-                currentPage={currentPage}
+                totalPages={meta?.total}
+                currentPage={meta?.page}
                 onPageChange={handlePageChange}
               />
             </div>

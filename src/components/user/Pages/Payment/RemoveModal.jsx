@@ -1,7 +1,27 @@
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { RxCross2, RxCrossCircled } from "react-icons/rx";
+import { useDeleteMethodMutation } from "../../../../redux/api/stripepaymentApi";
+import toast from "react-hot-toast";
 
-const RemoveModal = ({ref, onChange = () => {}, setRemove = () => {} }) => {
+const RemoveModal = ({ ref, onChange = () => { }, setRemove = () => { }, setActivePayment, activePayment }) => {
+  const [deleteMethod,{isLoading}] = useDeleteMethodMutation();
+
+  
+  const handleDeletePublication = async (id) => {
+
+    const deleteId = toast.loading("Deleting...");
+    try {
+      const result = await deleteMethod(id);
+      if (result?.data?.id) {
+        setRemove("remove");
+        onChange(false);
+      }
+      toast.success("Payment method deleted successfully!", { id: deleteId });
+      onChange(false);
+    } catch (err) {
+      toast.error(err.message, { id: deleteId });
+    }
+  };
   return (
     <div className="fixed inset-0 bg-[#22242580] flex justify-center items-center p-4 backdrop-blur-[2px]">
       <div
@@ -40,9 +60,9 @@ const RemoveModal = ({ref, onChange = () => {}, setRemove = () => {} }) => {
           </button>
           <button
             className="bg-[#DE350B] text-white font-medium py-2 px-6 rounded-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-75 transition duration-150 ease-in-out cursor-pointer"
+            disabled={isLoading}
             onClick={() => {
-              setRemove("remove");
-              onChange(false);
+              handleDeletePublication(activePayment);
             }}
           >
             Yes, Remove

@@ -15,12 +15,12 @@ const OrderStatus = () => {
   const statisticRef = useRef();
   const viewRef = useRef();
 
-  const newClient = 11;
-  const repeated = 4;
+  const newClient = 0;
+  const repeated = 0;
   const totalOrders = newClient + repeated;
   const percent = parseInt((repeated / totalOrders) * 100);
 
-  const totalMainOrder = 22;
+  const totalMainOrder = 0;
   useEffect(() => {
     function handleClick(event) {
       if (
@@ -77,10 +77,10 @@ const OrderStatus = () => {
             <div className="md:border-r md:border-b-0 border-b border-[#DCDEDF] pr-6 flex-1 md:pb-0 pb-5">
               <div className="flex items-center mb-11 justify-between">
                 <p className="text-[#5F6368]">Total Orders</p>
-                <div className="flex items-center gap-3 text-[#de350b] bg-[rgba(255,143,115,0.5)] border border-[#FF8F73] rounded-[4px] px-2 py-1 ml-5 shadow-md shadow-[rgba(255,143,115,0.3)]">
+                {/* <div className="flex items-center gap-3 text-[#de350b] bg-[rgba(255,143,115,0.5)] border border-[#FF8F73] rounded-[4px] px-2 py-1 ml-5 shadow-md shadow-[rgba(255,143,115,0.3)]">
                   <p className="text-xs font-medium">3.5 %</p>{" "}
                   <TrendingDownIcon />
-                </div>
+                </div> */}
               </div>
               <div className="flex gap-5">
                 <div className="w-[31px] h-[126px] rounded-sm overflow-hidden relative">

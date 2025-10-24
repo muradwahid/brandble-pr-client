@@ -227,7 +227,7 @@ const AdminPublication = () => {
             </div>
           </Link>
           <div
-            className="flex gap-3 items-center py-2 px-2.5 pl-4 rounded-[8px] cursor-pointer bg-[#36B37E]  h-9"
+            className="flex gap-2.5 items-center py-2 px-4 rounded-[8px] cursor-pointer bg-[#36B37E]  h-9"
           // onClick={() => setToggle(!toggle)}
           // ref={sortBtnRef}
           >
@@ -310,7 +310,7 @@ const AdminPublication = () => {
               </tr>
             </thead>
             <tbody className=" text-[#36383A]" ref={sortBtnRef}>
-              {data?.publications?.data && data?.publications?.data?.map((item, index) => (
+              {data?.data && data?.data?.map((item, index) => (
                 <tr key={index} className="border-t border-[#DCDEDF]">
                   <td className="px-3 py-3 text-nowrap">{index + 1}</td>
                   <td className="px-3 py-3 text-nowrap">{item?.title}</td>

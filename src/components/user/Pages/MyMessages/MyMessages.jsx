@@ -62,7 +62,7 @@ const MyMessages = () => {
         </div>
 
         {/* messages */}
-        <div>
+        <div className="w-full">
           <Chat />
         </div>
       </div>

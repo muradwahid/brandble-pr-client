@@ -17,7 +17,18 @@ export const axiosBaseQuery =
             "Content-Type": contentType || "application/json",
           },
         });
-        return result;
+        if (result?.success) {
+          return result
+        } else {
+          return {
+            error: {
+              statusCode: result?.statusCode,
+              message: result?.message,
+              errorMessages: result?.errorMessages,
+              data: result?.data,
+            }
+          }
+        }
       } catch (axiosError) {
         let err = axiosError;
         return {

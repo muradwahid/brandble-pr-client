@@ -7,6 +7,7 @@ import { Link } from "react-router";
 import siteLogo from "../../../assets/logo.png";
 import userImage from "../../../assets/profile.png";
 import Cart from "../../ui/Card/Cart";
+import { FaUser } from "react-icons/fa";
 const TopNavBar = () => {
   const btnRef = useRef();
   const [openCart, setOpenCart] = useState(false);
@@ -47,7 +48,8 @@ const TopNavBar = () => {
             <CartIcon className="cursor-pointer" />
           </div>
           <div>
-            <img src={userImage} alt="" />
+            <img src={'userImage'} alt="" />
+            <FaUser className="text-2xl text-gray-500 cursor-pointer"/>
           </div>
         </div>
         {openCart && <Cart ref={cartRef} setOpenCart={setOpenCart} />}

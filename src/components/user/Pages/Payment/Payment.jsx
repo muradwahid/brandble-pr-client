@@ -10,7 +10,7 @@ import MakeDefaultModal from "./MakeDefaultModal";
 import { useOutsideClick } from "../../../../hooks/useOutsideClick";
 const Payment = () => {
   const [activeTab, setActiveTab] = useState("method");
-  const [activePayment, setActivePayment] = useState("first");
+  const [activePayment, setActivePayment] = useState("");
   const [remove,setRemove] = useState(false);
   const [makeDefault, setMakeDefault] = useState(false);
 
@@ -21,8 +21,11 @@ const Payment = () => {
 
   return (
     <div className="w-full max-w-[850px] md:mx-auto">
-      {remove && <RemoveModal onChange={setRemove} ref={ref} />}
-      {makeDefault && <MakeDefaultModal onChange={setMakeDefault} ref={ref} />}
+      {remove && <RemoveModal onChange={setRemove} ref={ref} activePayment={activePayment} setActivePayment={setActivePayment} />}
+      {
+         makeDefault &&
+        <MakeDefaultModal onChange={setMakeDefault} ref={ref} />
+       }
       <div className="w-full border-b border-[#DCDEDF] pb-4 flex gap-2.5 items-center justify-between">
         <h2 className="md:text-2xl text-[20px] text-[#222425] font-glare">
           Payment

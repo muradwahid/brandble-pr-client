@@ -27,14 +27,18 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   //@ts-ignore
   function (response) {
-    const responseObject= {
+    const responseObject = {
+      statusCode: response?.data?.statusCode,
+      success: response?.data?.success,
+      message: response?.data?.message,
       data: response?.data?.data,
       meta: response?.data?.meta,
     };
     return responseObject;
   },
   function (error) {
-    const responseObject= {
+    const responseObject = {
+      success: false,
       statusCode: error?.response?.data?.statusCode || 500,
       message: error?.response?.data?.message || "Something went wrong",
       errorMessages: error?.response?.data?.message,

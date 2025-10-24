@@ -21,7 +21,7 @@ const Notification = () => {
       <h2 className="md:text-2xl text-[20px] text-[#222425] font-glare mb-6">
         Notifications
       </h2>
-      <div className="bg-white border border-[#DCDEDF]">
+      {/* <div className="bg-white border border-[#DCDEDF]">
         <div className="flex justify-end items-center p-4 ">
           <a
             href="#"
@@ -51,7 +51,7 @@ const Notification = () => {
             <div className="flex-grow">
               <p className="text-sm font-medium text-gray-900">
                 Article Submission Confirmation
-                {/* <span className="text-red-500 ml-1">•</span> */}
+                <span className="text-red-500 ml-1">•</span>
               </p>
               <p className="text-sm text-gray-600">
                 Your article '[Title]' has been submitted! We'll notify you once
@@ -70,7 +70,7 @@ const Notification = () => {
             <div className="flex-grow">
               <p className="text-sm font-medium text-gray-900">
                 Article Submission Confirmation
-                {/* <span className="text-red-500 ml-1">•</span> */}
+                <span className="text-red-500 ml-1">•</span>
               </p>
               <p className="text-sm text-gray-600">
                 Your article '[Title]' has been submitted! We'll notify you once
@@ -89,7 +89,7 @@ const Notification = () => {
             <div className="flex-grow">
               <p className="text-sm font-medium text-gray-900">
                 Article Submission Confirmation
-                {/* <span className="text-red-500 ml-1">•</span> */}
+                <span className="text-red-500 ml-1">•</span>
               </p>
               <p className="text-sm text-gray-600">
                 Your article '[Title]' has been submitted! We'll notify you once
@@ -108,7 +108,7 @@ const Notification = () => {
             <div className="flex-grow">
               <p className="text-sm font-medium text-gray-900">
                 Article Submission Confirmation
-                {/* <span className="text-red-500 ml-1">•</span> */}
+                <span className="text-red-500 ml-1">•</span>
               </p>
               <p className="text-sm text-gray-600">
                 Your article '[Title]' has been submitted! We'll notify you once
@@ -180,8 +180,8 @@ const Notification = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="sm:flex items-center justify-end md:gap-28 sm:gap-10 my-8">
+      </div> */}
+      {/* <div className="sm:flex items-center justify-end md:gap-28 sm:gap-10 my-8">
         <select
           defaultValue="10"
           className="text-[#878C91] text-[14px] border border-[#B2B5B8] px-2 py-[5.5px] focus:outline-2 focus:outline-[#004A87] md:mt-0 mt-1.5 sm:mb-0 mb-5 "
@@ -199,6 +199,9 @@ const Notification = () => {
           currentPage={currentPage}
           onPageChange={handlePageChange}
         />
+      </div> */}
+      <div className="h-[50dvh] flex items-center justify-center ">
+        <h1 className="text-3xl text-center leading-[150%]">No new notifications. You’ll see updates here as they come in.</h1>
       </div>
     </div>
   );

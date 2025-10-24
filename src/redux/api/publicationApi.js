@@ -12,7 +12,7 @@ export const publicationApi = baseApi.injectEndpoints({
       transformResponse: (response) => {
         return response
       },
-      providesTags: ["publication",'all-publications','create'],
+      providesTags: ["publication",'create'],
     }),
     addPublication: build.mutation({
       query: (data) => ({
@@ -21,7 +21,7 @@ export const publicationApi = baseApi.injectEndpoints({
         data,
         contentType: "multipart/form-data" ,
       }),
-      invalidatesTags: ["publication"],
+      invalidatesTags: ["publication","all-publication"],
     }),
     publication: build.query({
       query: (id) => {

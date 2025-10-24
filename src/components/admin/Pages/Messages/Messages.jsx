@@ -3,12 +3,18 @@ import { chatList } from "../../../user/Pages/MyMessages/data";
 import { PiMagnifyingGlassLight } from "react-icons/pi";
 import { ShieldIcon } from "../../../../utils/icons";
 import Chat from "./Chat";
+import { getUserInfo } from "../../../../helpers/user/user";
+import { useUserQuery } from "../../../../redux/api/authApi";
 
 
 const Messages = () => {
   const [activeIdx, setActiveIdx] = useState("#653BSBE2-12");
   const [activeConversation, setActiveConversation] = useState('user');
   const activeCls = "bg-[#E6F4FF] border-l-[#008CFF] border-b-[#008CFF]";
+
+      const { id } = getUserInfo();
+    
+      const { data } = useUserQuery(id);
   return (
     <div className="">
       <div className="h-full flex">
@@ -64,15 +70,15 @@ const Messages = () => {
                       <ShieldIcon />
                     </div>
                   ) : (
-                    <div className="h-[48px] w-[48px] bg-[#F6F7F7] rounded-full">
-                      <img src="" alt="" />
+                    <div className="h-[48px] w-[48px] bg-[#F6F7F7] rounded-full overflow-hidden">
+                        <img className="h-[48px] w-[48px]" src={data.image} alt="" />
                     </div>
                   )}
                   <div className="w-[140px] hidden lg:block">
                     {activeConversation === "order" ? (
                       <p className="text-[#36383A] font-normal">#45964040534</p>
                     ) : (
-                      <p className="text-[#36383A]">User Name</p>
+                      <p className="text-[#36383A]">Murad Wahid</p>
                     )}
                     <div className="whitespace-nowrap overflow-hidden overflow-ellipsis text-[#878C91] text-[14px]">
                       Enter your message description here...
@@ -91,7 +97,7 @@ const Messages = () => {
         </div>
 
         {/* messages */}
-        <div>
+        <div className="w-full">
           <Chat activeConversation={activeConversation} />
         </div>
       </div>

@@ -29,13 +29,23 @@ import Messages from "../components/admin/Pages/Messages/Messages";
 import Payments from "../components/admin/Pages/Payments/Payments";
 import SingleOrder from "../components/admin/Pages/TotalOrders/SingleOrder";
 import OrderDetails from "../components/admin/Pages/TotalOrders/OrderDetails";
+import Login from "../components/auth/Login";
+import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 
 
 const router = createBrowserRouter([
+  // {
+  //   path: "/auth/login",
+  //   element: <Login/>,
+  // },
+  // {
+  //   path: "/register",
+  //   element: <Login/>,
+  // },
   {
     path: "/",
     errorElement: <div>Error</div>,
-    element: <UserLayout />,
+    element:<PrivateRoute><UserLayout /></PrivateRoute> ,
     children: [
       {
         index: true,
@@ -47,31 +57,31 @@ const router = createBrowserRouter([
       // },
       {
         path: "/user/profile", // This will render at /user
-        element: <Profile />,
+        element:<PrivateRoute> <Profile /></PrivateRoute>,
       },
       {
         path: "/user/dashboard", // This will render at /dashboard
-        element: <DashboardPage />,
+        element: <PrivateRoute><DashboardPage /></PrivateRoute>  ,
       },
       {
         path: "/user/publications", // This will render at /publications
-        element: <Publications />,
+        element: <PrivateRoute> <Publications /></PrivateRoute>,
       },
       {
-        path: "/user/messages", // This will render at /publications
-        element: <MyMessages />,
+        path: "/user/messages",
+        element:<PrivateRoute><MyMessages /></PrivateRoute> ,
       },
       {
-        path: "/user/favorite", // This will render at /publications
-        element: <Favorite />,
+        path: "/user/favorite",
+        element:<PrivateRoute><Favorite /></PrivateRoute> ,
       },
       {
         path: "/user/notifications", // This will render at /publications
-        element: <Notification />,
+        element:<PrivateRoute><Notification /></PrivateRoute> ,
       },
       {
         path: "/user/orders", // This will render at //orders
-        element: <UserMyOrderLayout />,
+        element:<PrivateRoute><UserMyOrderLayout /></PrivateRoute> ,
         children: [
           {
             index: true,
@@ -79,106 +89,106 @@ const router = createBrowserRouter([
           },
           {
             path: "/user/orders/running",
-            element: <RunningOrder />,
+            element:<PrivateRoute><RunningOrder /></PrivateRoute> ,
           },
 
           {
             path: "/user/orders/history",
-            element: <OrderHistory />,
+            element:<PrivateRoute><OrderHistory /></PrivateRoute> ,
           },
         ],
       },
       {
         path: "/user/articles", // This will render at //articles
-        element: <MyArticles />,
+        element:<PrivateRoute><MyArticles /></PrivateRoute> ,
       },
       {
         path: "/user/payments", // This will render at //payments
-        element: <Payment />,
+        element:<PrivateRoute><Payment /></PrivateRoute> ,
       },
       {
         path: "/user/checkout", // This will render at //checkout
-        element: <Checkout />,
+        element: <PrivateRoute><Checkout /></PrivateRoute>,
       },
     ],
   },
   {
     path: "/user/orders/running/:id",
-    element: <RunningOrderLayout />,
+    element:<PrivateRoute><RunningOrderLayout /></PrivateRoute> ,
     children: [
       {
         index: true,
-        element: <Order />,
+        element:<PrivateRoute><Order /></PrivateRoute> ,
       },
       {
         path: "/user/orders/running/:id/details",
-        element: <Details />,
+        element:<PrivateRoute><Details /></PrivateRoute>,
       },
     ],
   },
   {
     path: "/user/checkout/order-submit",
-    element: <OrderSubmitForm />,
+    element:<PrivateRoute><OrderSubmitForm /></PrivateRoute> ,
   },
-  {
-    path: "/admin",
-    errorElement: <div>Error</div>,
-    element: <AdminLayout />,
-    children: [
-      {
-        index: true,
-        element: <Navigate to="/dashboard" replace />,
-      },
-      {
-        path: "/admin/dashboard",
-        element: <Home />,
-      },
-      {
-        path: "/admin/publications",
-        element: <AdminPublication />,
-      },
-      {
-        path: "/admin/publications/:id",
-        element: <SinglePublication />,
-      },
-      {
-        path: "/admin/publications/edit/:id",
-        element: <EditPublication />,
-      },
-      {
-        path: "/admin/publications/add-new-publication",
-        element: <AddPublication />,
-      },
-      {
-        path: "/admin/users",
-        element: <UserManagement />,
-      },
-      {
-        path: "/admin/users/:id",
-        element: <SingleUser />,
-      },
-      {
-        path: "/admin/orders",
-        element: <TotalOrders />,
-      },
-      {
-        path: "/admin/orders/:id",
-        element: <SingleOrder />,
-      },
-      {
-        path: "/admin/orders/:id/details",
-        element: <OrderDetails />,
-      },
-      {
-        path: "/admin/payments",
-        element: <Payments />,
-      },
-      {
-        path: "/admin/messages",
-        element: <Messages />,
-      },
-    ],
-  },
+  // {
+  //   path: "/admin",
+  //   errorElement: <div>Error</div>,
+  //   element:<PrivateRoute><AdminLayout /></PrivateRoute> ,
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: <Navigate to="/dashboard" replace />,
+  //     },
+  //     {
+  //       path: "/admin/dashboard",
+  //       element:<PrivateRoute><Home /></PrivateRoute> ,
+  //     },
+  //     {
+  //       path: "/admin/publications",
+  //       element:<PrivateRoute><AdminPublication /></PrivateRoute> ,
+  //     },
+  //     {
+  //       path: "/admin/publications/:id",
+  //       element:<PrivateRoute><SinglePublication /></PrivateRoute> ,
+  //     },
+  //     {
+  //       path: "/admin/publications/edit/:id",
+  //       element:<PrivateRoute><EditPublication /></PrivateRoute> ,
+  //     },
+  //     {
+  //       path: "/admin/publications/add-new-publication",
+  //       element:<PrivateRoute><AddPublication /></PrivateRoute> ,
+  //     },
+  //     {
+  //       path: "/admin/users",
+  //       element:<PrivateRoute><UserManagement /></PrivateRoute> ,
+  //     },
+  //     {
+  //       path: "/admin/users/:id",
+  //       element:<PrivateRoute><SingleUser /></PrivateRoute> ,
+  //     },
+  //     {
+  //       path: "/admin/orders",
+  //       element:<PrivateRoute><TotalOrders /></PrivateRoute> ,
+  //     },
+  //     {
+  //       path: "/admin/orders/:id",
+  //       element:<PrivateRoute><SingleOrder /></PrivateRoute> ,
+  //     },
+  //     {
+  //       path: "/admin/orders/:id/details",
+  //       element:<PrivateRoute><OrderDetails /></PrivateRoute> ,
+  //     },
+  //     {
+  //       path: "/admin/payments",
+  //       element: <PrivateRoute><Payments /></PrivateRoute>,
+  //     },
+  //     {
+  //       path: "/admin/messages",
+  //       element:<PrivateRoute><Messages /></PrivateRoute> ,
+  //     },
+  //   ],
+  // },
 ]);
 
 export default router;

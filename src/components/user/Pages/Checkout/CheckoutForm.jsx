@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { GoShieldLock } from "react-icons/go";
 import "./style.css";
+import { useMethodsQuery } from "../../../../redux/api/stripepaymentApi";
 
-const CheckoutForm = () => {
+const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
+  
+  const { data, isLoading} = useMethodsQuery();
+
   const inputCls = ` px-3 py-2 bg-[#F6F7F7] border border-[#DCDEDF] outline-none text-[#5F6368] placeholder-[#B2B5B8] placeholder:font-normal w-full`;
-  const [selectedPaymentMethod, setSelectedPaymentMethod] =
-    useState("visa_card_1");
 
-  const handlePaymentMethodChange = (e) => {
-    setSelectedPaymentMethod(e.target.id);
-  };
+  useEffect(() => { 
+    setSelectedMethod(data?.filter(method => method?.isDefault)[0]?.stripePaymentMethodId)
+  },[data, setSelectedMethod])
 
   return (
     <div className="w-full flex-1">
@@ -130,6 +132,8 @@ const CheckoutForm = () => {
           </div>
 
           {/* payment method */}
+          {
+            !isLoading && 
           <div className="border border-[#F2F2F3] p-3.5">
             <div className="border-b border-[#DCDEDF] pb-3">
               <h3 className="text-[20px] text-[#222425] font-glare">
@@ -145,38 +149,80 @@ const CheckoutForm = () => {
             </div>
             <div className="flex flex-col w-full mt-4 border-b border-[#DCDEDF] pb-1.5">
               <div className="w-full grid gap-2.5">
-                <label
-                  htmlFor="visa_card_1"
-                  className="flex items-center cursor-pointer gap-12 justify-start"
-                >
-                  <input
-                    type="radio"
-                    name="payment_card"
-                    id="visa_card_1"
-                    checked={selectedPaymentMethod === "visa_card_1"}
-                    onChange={handlePaymentMethodChange}
-                    className="cursor-pointer accent-[#008CFF]"
-                  />
-                  <p className="text-[#222425] text-sm">
-                    accountemail@gmail.com
-                  </p>
-                </label>
-                <div className="flex justify-between mt-1.5">
-                  <div className="flex items-center gap-2">
-                    <img
-                      src="https://shorturl.at/gHTiX"
-                      alt="VISA"
-                      className="w-14 h-auto mr-2"
-                    />
-                    <p className="text-[#5F6368] text-sm">******6615</p>
-                  </div>
-                </div>
+                { 
+                  data?.map((method) => method?.isDefault && <label
+                    htmlFor={method?.stripePaymentMethodId}
+                    key={method?.stripePaymentMethodId}
+                  >
+                    <div className="flex items-center cursor-pointer gap-12 justify-start">
+                      <input
+                        type="radio"
+                        name="payment_card"
+                        id={method?.stripePaymentMethodId}
+                        checked={selectedMethod === method?.stripePaymentMethodId}
+                        onChange={() => selectedMethod(method?.stripePaymentMethodId)}
+                        className="cursor-pointer accent-[#008CFF]"
+                      />
+                      <p className="text-[#222425] text-sm capitalize">
+                        {method?.brand}
+                      </p>
+                      {/* <p className="text-[#222425] text-sm">
+                        accountemail@gmail.com
+                      </p> */}
+                    </div>
+
+                    <div className="flex justify-between mt-1.5">
+                      <div className="flex items-center gap-2">
+                        <p className="text-[#222425] text-md capitalize font-medium">
+                          {method?.type}
+                        </p>
+                        {/* <img
+                          src="https://shorturl.at/gHTiX"
+                          alt="VISA"
+                          className="w-14 h-auto mr-2"
+                        /> */}
+                        <p className="text-[#5F6368] text-sm">******{method?.last4}</p>
+                      </div>
+                    </div>
+                  </label>)
+                }
+            
               </div>
             </div>
 
             {/* other payment methods */}
             <div className="w-full space-y-7 mt-4">
-              <div className="w-1/2">
+              {
+                    data?.map((method) => !method?.isDefault && <label htmlFor={method?.stripePaymentMethodId} key={method?.stripePaymentMethodId} >
+                  <div className="w-1/2">
+                  <div className="flex justify-between">
+                    <div className="flex items-center cursor-pointer gap-3 justify-start">
+                      <input
+                        type="radio"
+                        name="payment_card"
+                          checked={selectedMethod === method?.stripePaymentMethodId}
+                          onChange={() => selectedMethod(method?.stripePaymentMethodId)}
+                        className="cursor-pointer accent-[#008CFF]"
+                      />
+                      {/* <img
+                        src="/public/assets/visalogo.png"
+                        alt="VISA"
+                        className="w-10 h-auto mr-2"
+                      /> */}
+                        <p className="text-[#222425] text-sm capitalize">
+                          {method?.brand}
+                        </p>
+                    </div>
+                  </div>
+                  <div className="flex justify-between mt-4">
+                      <p className="text-[#222425] text-sm capitalize">{method?.type}</p>
+                      <p className="text-[#5F6368] text-sm">******{method?.last4}</p>
+                  </div>
+                </div>  
+                </label>
+                )
+              }
+              {/* <div className="w-1/2">
                 <div className="flex justify-between">
                   <div className="flex items-center cursor-pointer gap-3 justify-start">
                     <input
@@ -221,7 +267,7 @@ const CheckoutForm = () => {
                   <p className="text-[#222425] text-sm">Card</p>
                   <p className="text-[#5F6368] text-sm">******6615</p>
                 </div>
-              </div>
+              </div> */}
               <div className="flex justify-end">
                 <button className="text-sm text-[#36383A] bg-[#DCDEDF] px-8 py-2.5 cursor-pointer hover:bg-[#bebfc0] transition-all duration-200">
                   New Payment Method
@@ -229,6 +275,7 @@ const CheckoutForm = () => {
               </div>
             </div>
           </div>
+          }
         </div>
       </div>
     </div>

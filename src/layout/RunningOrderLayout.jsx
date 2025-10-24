@@ -1,9 +1,14 @@
 import React from "react";
-import { Outlet } from "react-router";
+import { Navigate, Outlet } from "react-router";
 import TopNavBar from "../components/user/TopNavBar/TopNavBar";
 import Footer from "../components/ui/Footer/Footer";
+import { isLoggedIn } from "../helpers/user/user";
 
 const RunningOrderLayout = () => {
+  const isUserExist = isLoggedIn()
+  if (!isUserExist) {
+    <Navigate to="/auth/login" replace />;
+  }
   return (
     <div className="flex flex-col h-screen">
       {/* header */}

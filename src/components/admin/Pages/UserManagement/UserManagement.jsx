@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { publicationData } from '../../../user/Pages/Publications/data';
 import { ArticlePublishedIcon, DraftIcon, EmailIcon, GenreIcon, LoginIcon, OrderBox, RegistrationIcon, UserIcon } from '../../../../utils/icons';
 import AdminPagination from '../../../common/AdminPagination';
+import { useUsersQuery } from '../../../../redux/api/authApi';
 
 const UserManagement = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
-    const totalItems = 90; // Example: total number of items
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-  
+    const totalItems = 1; // Example: total number of items
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const { data } = useUsersQuery()
     const handlePageChange = (page) => {
       if (page >= 1 && page <= totalPages) {
         setCurrentPage(page);
@@ -76,21 +76,21 @@ const UserManagement = () => {
               </tr>
             </thead>
             <tbody className=" text-[#5F6368] text-sm">
-              {publicationData.slice(0, 1).map((item, index) => (
+              {data?.users.map((item, index) => (
                 <tr key={index} className="border-t border-[#DCDEDF]">
                   <td className="px-3 py-3 text-nowrap">{index + 1}</td>
-                  <td className="px-3 py-3 text-nowrap">Lee</td>
+                  <td className="px-3 py-3 text-nowrap">{item?.name}</td>
                   <td className="px-3 py-3 text-nowrap text-center overflow-hidden whitespace-nowrap text-ellipsis">
                     demo@gmail.com
                   </td>
-                  <td className="px-3 py-3 text-nowrap text-center">11</td>
-                  <td className="px-3 py-3 text-nowrap text-center">1</td>
-                  <td className="px-3 py-3 text-nowrap">11</td>
+                  <td className="px-3 py-3 text-nowrap text-center">0</td>
+                  <td className="px-3 py-3 text-nowrap text-center">0</td>
+                  <td className="px-3 py-3 text-nowrap">0</td>
                   <td className="px-3 py-3 text-nowrap overflow-hidden whitespace-nowrap text-ellipsis">
-                    Business
+                    
                   </td>
-                  <td className="px-3 py-3 text-nowrap">1/1/2023</td>
-                  <td className="px-3 py-3 text-nowrap">1/1/2023</td>
+                  <td className="px-3 py-3 text-nowrap">13/10/2025</td>
+                  <td className="px-3 py-3 text-nowrap">13/10/2025</td>
                 </tr>
               ))}
             </tbody>

@@ -97,7 +97,7 @@ const MyArticles = () => {
           </div>
         ))}
       </div>
-      <div className="flex items-center justify-between md:gap-28 sm:gap-10 my-8">
+      {/* <div className="flex items-center justify-between md:gap-28 sm:gap-10 my-8">
         <select
           defaultValue="10"
           className="text-[#878C91] text-[14px] border border-[#B2B5B8] sm:px-2 sm:py-[5.5px] focus:outline-2 focus:outline-[#004A87] sm:h-auto h-[27px]"
@@ -115,7 +115,7 @@ const MyArticles = () => {
           currentPage={currentPage}
           onPageChange={handlePageChange}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

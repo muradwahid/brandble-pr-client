@@ -50,7 +50,7 @@ const DashboardPage = () => {
           </div>
         </div>
       </div>
-      <Table />
+      {/* <Table />
       <div className="flex items-center md:justify-end justify-between gap-5 md:gap-28 sm:gap-10 my-8">
         <select
           defaultValue="10"
@@ -69,6 +69,9 @@ const DashboardPage = () => {
           currentPage={currentPage}
           onPageChange={handlePageChange}
         />
+      </div> */}
+      <div className="h-[50dvh] flex items-center justify-center">
+      <h1 className="text-3xl">Your running order is empty.</h1>
       </div>
       <div>
         <p className="text-[#222425] py-5 font-medium border-t border-[#DCDEDF] font-glare">

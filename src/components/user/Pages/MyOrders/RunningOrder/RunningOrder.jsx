@@ -25,7 +25,7 @@ const RunningOrder = () => {
             </button>
           </div>
         </div>
-        <table className="min-w-full bg-[#F6F7F7] text-[16px] font-normal overflow-x-scroll table-fixed">
+        {/* <table className="min-w-full bg-[#F6F7F7] text-[16px] font-normal overflow-x-scroll table-fixed">
           <thead className="">
             <tr className="text-left py-2">
               <th className="px-3 py-3 text-[#222425] font-medium w-[5%]">
@@ -99,7 +99,10 @@ const RunningOrder = () => {
               </tr>
             ))}
           </tbody>
-        </table>
+        </table> */}
+        <div className="h-[50dvh] flex items-center justify-center ">
+          <h1 className="text-3xl text-center leading-[150%]">Your running order is empty.</h1>
+        </div>
       </div>
     </div>
   );
