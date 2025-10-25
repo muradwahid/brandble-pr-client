@@ -3,12 +3,12 @@ import { AddImageIcon, LoadingIcon, PenIcon } from "../../../../utils/icons";
 import { RxCross2 } from "react-icons/rx";
 import { Link } from "react-router";
 // import { useUpdateUserMutation, useUserQuery } from '../../../../redux/api/authApi';
-import toast from 'react-hot-toast';
+// import toast from 'react-hot-toast';
 // import { useForm } from 'react-hook-form';
-import { getUserInfo } from "../../../../helpers/user/user";
+// import { getUserInfo } from "../../../../helpers/user/user";
 
 const Profile = () => {
-  const [imagePreview, setImagePreview] = useState(null);
+  // const [imagePreview, setImagePreview] = useState(null);
   const [general, setGeneral] = useState(true);
   const [security, setSecurity] = useState(true);
 
@@ -20,7 +20,7 @@ const Profile = () => {
   // } = useForm();
 
 
-  const {id} = getUserInfo();
+  // const {id} = getUserInfo();
 
   // const { data = {} } = useUserQuery(id || '');
 
