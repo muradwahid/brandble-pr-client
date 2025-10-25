@@ -9,7 +9,7 @@ const PaymentHistory = () => {
           <DownloadIcon className="fill-white w-2.5" /> Download
         </button>
       </div>
-      <div className="overflow-x-auto">
+      {/* <div className="overflow-x-auto">
         <table className="min-w-full border-collapse border border-[#DCDEDF] payment-history-table">
           <thead className="bg-[#DCDEDF]">
             <tr>
@@ -253,7 +253,7 @@ const PaymentHistory = () => {
             </tr>
           </tbody>
         </table>
-      </div>
+      </div> */}
     </div>
   );
 };
