@@ -2,76 +2,76 @@ import {  useState } from "react";
 import { AddImageIcon, LoadingIcon, PenIcon } from "../../../../utils/icons";
 import { RxCross2 } from "react-icons/rx";
 import { Link } from "react-router";
-// import { useUpdateUserMutation, useUserQuery } from '../../../../redux/api/authApi';
-// import toast from 'react-hot-toast';
-// import { useForm } from 'react-hook-form';
-// import { getUserInfo } from "../../../../helpers/user/user";
+import { useUpdateUserMutation, useUserQuery } from '../../../../redux/api/authApi';
+import toast from 'react-hot-toast';
+import { useForm } from 'react-hook-form';
+import { getUserInfo } from "../../../../helpers/user/user";
 
 const Profile = () => {
-  // const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [general, setGeneral] = useState(true);
   const [security, setSecurity] = useState(true);
 
 
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: { errors }, setValue
-  // } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }, setValue
+  } = useForm();
 
 
-  // const {id} = getUserInfo();
+  const {id} = getUserInfo();
 
-  // const { data = {} } = useUserQuery(id || '');
+  const { data = {} } = useUserQuery(id || '');
 
-  // const [updateUser, { isLoading }] = useUpdateUserMutation();
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
 
 
-  // const onSubmit = async (d) => {
-  //   const obj = { ...d };
-  //   const logo = obj["image"];
-  //   const publicationData = { ...obj };
-  //   delete publicationData["image"];
-  //   const formData = new FormData();
-  //   if (logo) {
-  //     formData.append("file", logo);
-  //   }
+  const onSubmit = async (d) => {
+    const obj = { ...d };
+    const logo = obj["image"];
+    const publicationData = { ...obj };
+    delete publicationData["image"];
+    const formData = new FormData();
+    if (logo) {
+      formData.append("file", logo);
+    }
 
-  //   const validData = {}
-  //   Object.keys(publicationData).forEach((key) => {
-  //     if (publicationData[key] !== '' && publicationData[key] !== undefined && publicationData[key] !== null) {
-  //       if (Array.isArray(publicationData[key])) {
-  //         validData[key] = JSON.stringify(publicationData[key]);
-  //       } else {
-  //         validData[key] = publicationData[key];
-  //       }
-  //     }
-  //   });
+    const validData = {}
+    Object.keys(publicationData).forEach((key) => {
+      if (publicationData[key] !== '' && publicationData[key] !== undefined && publicationData[key] !== null) {
+        if (Array.isArray(publicationData[key])) {
+          validData[key] = JSON.stringify(publicationData[key]);
+        } else {
+          validData[key] = publicationData[key];
+        }
+      }
+    });
 
-  //   if (validData) {
-  //     formData.append("data", JSON.stringify(validData));
+    if (validData) {
+      formData.append("data", JSON.stringify(validData));
 
-  //   }
+    }
 
-  //   if (formData) {
+    if (formData) {
 
-  //     try {
-  //       await updateUser({ id, body: formData });
-  //       toast.success("User profile updated successfully");
-  //     } catch (err) {
-  //       // console.error(err.message);
-  //       toast.error(err.message);
-  //     }
-  //   }
-  // }
+      try {
+        await updateUser({ id, body: formData });
+        toast.success("User profile updated successfully");
+      } catch (err) {
+        // console.error(err.message);
+        toast.error(err.message);
+      }
+    }
+  }
 
-  // const handleImageChange = (e) => {
-  //   const file = e.target.files[0];
-  //   setValue('image', file)
-  //   if (file) {
-  //     setImagePreview(URL.createObjectURL(file));
-  //   }
-  // };
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setValue('image', file)
+    if (file) {
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
 
 
   return (
@@ -93,26 +93,26 @@ const Profile = () => {
               <div className='xl:w-[125px] xl:h-[125px] lg:w-[100px] lg:h-[100px] md:w-[80px] h-[80px] w-[80px] bg-[#E6E6E6] relative'>
                 <PenIcon className="absolute top-0 right-[0px] translate-x-[50%] translate-y-[-50%] bg-white rounded-full" />
                 {
-                  // (imagePreview || data?.image) &&
+                  (imagePreview || data?.image) &&
                   <img
                   className="w-full h-full object-cover"
-                  // src={`${imagePreview || data?.image}`}
+                  src={`${imagePreview || data?.image}`}
                   alt=""
                   />
                 }
                 {
-                  // data?.image ? "" : !imagePreview &&
+                  data?.image ? "" : !imagePreview &&
                     <AddImageIcon className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
                 }
                 <input
                   className="hidden"
                   type="file"
                   name="image"
-                  // {...register('image')}
+                  {...register('image')}
                   id="profileImage"
-                  // onChange={(e) => {
-                  //   handleImageChange(e)
-                  // }}
+                  onChange={(e) => {
+                    handleImageChange(e)
+                  }}
                   accept="image/*"
                 />
               </div>
@@ -121,7 +121,7 @@ const Profile = () => {
         </div>
       </div>
       <form
-        // onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
       >
         {/* general Information */}
         <div className="lg:flex  items-start mt-16">
@@ -161,15 +161,15 @@ const Profile = () => {
                 disabled={general}
                 placeholder="Profile name"
                 id="profileName"
-                // {...register("name")}
+                {...register("name")}
                 className="w-full text-[#36383A] text-[15px] py-1.5 px-2 border-1 border-[#DCDEDF] focus:outline-2 focus:outline-[#004A87]"
-                // defaultValue={data?.name}
+                defaultValue={data?.name}
               />
-              {/* {errors?.name && (
+             {errors?.name && (
                 <span className="text-red-400 text-xs">
                   {errors?.name.message}
                 </span>
-              )} */}
+              )} 
             </div>
             <div className="flex flex-col gap-1.5 mt-5">
               <label className="text-[#878C91] text-[14px]" htmlFor="company">
@@ -178,11 +178,11 @@ const Profile = () => {
               <input
                 type="text"
                 placeholder="Company"
-                // {...register("company")}
+                {...register("company")}
                 disabled={general}
                 id="company"
                 className="w-full text-[#36383A] text-[15px] py-1.5 px-2 border-1 border-[#DCDEDF] focus:outline-2 focus:outline-[#004A87]"
-                // defaultValue={data?.company}
+                defaultValue={data?.company}
               />
             </div>
             <div className="flex flex-col gap-1.5 mt-5">
@@ -196,10 +196,10 @@ const Profile = () => {
                 type="text"
                 placeholder="Designation"
                 disabled={general}
-                // {...register("designation")}
+                {...register("designation")}
                 id="designation"
                 className="w-full text-[#36383A] text-[15px] py-1.5 px-2 border-1 border-[#DCDEDF] focus:outline-2 focus:outline-[#004A87]"
-                // defaultValue={data?.designation}
+                defaultValue={data?.designation}
               />
             </div>
             <div className="flex flex-col gap-1.5 mt-5">
@@ -212,11 +212,11 @@ const Profile = () => {
               <input
                 type="tel"
                 placeholder="Phone number"
-                // {...register("phoneNumber")}
+                {...register("phoneNumber")}
                 id="phoneNumber"
                 disabled={general}
                 className="w-full text-[#36383A] text-[15px] py-1.5 px-2 border-1 border-[#DCDEDF] focus:outline-2 focus:outline-[#004A87]"
-                // defaultValue={data?.phoneNumber}
+                defaultValue={data?.phoneNumber}
               />
             </div>
           </div>
@@ -260,16 +260,16 @@ const Profile = () => {
                 placeholder="Email"
                 name="profileName"
                 required
-                // {...register("email")}
+                {...register("email")}
                 id="profileName"
                 className="w-full text-[#36383A] text-[15px] py-1.5 px-2 border-1 border-[#DCDEDF] focus:outline-2 focus:outline-[#004A87]"
-                // defaultValue={data?.email}
+                defaultValue={data?.email}
               />
-              {/* {errors?.email && (
+              {errors?.email && (
                 <span className="text-red-400 text-xs">
                   {errors?.email.message}
                 </span>
-              )} */}
+              )}
             </div>
             <div className="flex flex-col gap-1.5 mt-5">
               <div className="flex justify-between">
@@ -285,29 +285,29 @@ const Profile = () => {
                 placeholder="Password"
                 minLength={8}
                 disabled={security}
-                // {...register("password", {
-                //   minLength: {
-                //     value: 8,
-                //     message: "Password must be at least 8 characters long.",
-                //   },
-                // })}
+                {...register("password", {
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters long.",
+                  },
+                })}
                 id="password"
                 className="w-full text-[#36383A] text-[15px] py-1.5 px-2 border-1 border-[#DCDEDF] focus:outline-2 focus:outline-[#004A87]"
-                // defaultValue={data?.password}
+                defaultValue={data?.password}
               />
-              {/* {errors?.password && (
+              {errors?.password && (
                 <span className="text-red-400 text-xs">
                   {errors?.password.message}
                 </span>
-              )} */}
+              )}
             </div>
             <div className="flex justify-end mt-5">
               <button
                 type="submit"
-                // disabled={isLoading}
+                disabled={isLoading}
                 className="bg-[#171819] hover:shadow-xl transition-all ease-in-out duration-300 text-[15px] text-white py-1.5 px-5 cursor-pointer flex items-center gap-3"
               >Save Changes
-                {/* {isLoading && <LoadingIcon fill='#fff' style={{ height: "20px" }} />} */}
+                {isLoading && <LoadingIcon fill='#fff' style={{ height: "20px" }} />}
               </button>
             </div>
           </div>

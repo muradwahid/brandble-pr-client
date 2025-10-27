@@ -34,14 +34,14 @@ import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 
 
 const router = createBrowserRouter([
-  // {
-  //   path: "/auth/login",
-  //   element: <Login/>,
-  // },
-  // {
-  //   path: "/register",
-  //   element: <Login/>,
-  // },
+  {
+    path: "/auth/login",
+    element: <Login/>,
+  },
+  {
+    path: "/register",
+    element: <Login/>,
+  },
   {
     path: "/",
     errorElement: <div></div>,
@@ -130,65 +130,65 @@ const router = createBrowserRouter([
     path: "/user/checkout/order-submit",
     element:<PrivateRoute><OrderSubmitForm /></PrivateRoute> ,
   },
-  // {
-  //   path: "/admin",
-  //   errorElement: <div>Error</div>,
-  //   element:<PrivateRoute><AdminLayout /></PrivateRoute> ,
-  //   children: [
-  //     {
-  //       index: true,
-  //       element: <Navigate to="/dashboard" replace />,
-  //     },
-  //     {
-  //       path: "/admin/dashboard",
-  //       element:<PrivateRoute><Home /></PrivateRoute> ,
-  //     },
-  //     {
-  //       path: "/admin/publications",
-  //       element:<PrivateRoute><AdminPublication /></PrivateRoute> ,
-  //     },
-  //     {
-  //       path: "/admin/publications/:id",
-  //       element:<PrivateRoute><SinglePublication /></PrivateRoute> ,
-  //     },
-  //     {
-  //       path: "/admin/publications/edit/:id",
-  //       element:<PrivateRoute><EditPublication /></PrivateRoute> ,
-  //     },
-  //     {
-  //       path: "/admin/publications/add-new-publication",
-  //       element:<PrivateRoute><AddPublication /></PrivateRoute> ,
-  //     },
-  //     {
-  //       path: "/admin/users",
-  //       element:<PrivateRoute><UserManagement /></PrivateRoute> ,
-  //     },
-  //     {
-  //       path: "/admin/users/:id",
-  //       element:<PrivateRoute><SingleUser /></PrivateRoute> ,
-  //     },
-  //     {
-  //       path: "/admin/orders",
-  //       element:<PrivateRoute><TotalOrders /></PrivateRoute> ,
-  //     },
-  //     {
-  //       path: "/admin/orders/:id",
-  //       element:<PrivateRoute><SingleOrder /></PrivateRoute> ,
-  //     },
-  //     {
-  //       path: "/admin/orders/:id/details",
-  //       element:<PrivateRoute><OrderDetails /></PrivateRoute> ,
-  //     },
-  //     {
-  //       path: "/admin/payments",
-  //       element: <PrivateRoute><Payments /></PrivateRoute>,
-  //     },
-  //     {
-  //       path: "/admin/messages",
-  //       element:<PrivateRoute><Messages /></PrivateRoute> ,
-  //     },
-  //   ],
-  // },
+  {
+    path: "/admin",
+    errorElement: <div>Error</div>,
+    element:<PrivateRoute><AdminLayout /></PrivateRoute> ,
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/dashboard" replace />,
+      },
+      {
+        path: "/admin/dashboard",
+        element:<PrivateRoute><Home /></PrivateRoute> ,
+      },
+      {
+        path: "/admin/publications",
+        element:<PrivateRoute><AdminPublication /></PrivateRoute> ,
+      },
+      {
+        path: "/admin/publications/:id",
+        element:<PrivateRoute><SinglePublication /></PrivateRoute> ,
+      },
+      {
+        path: "/admin/publications/edit/:id",
+        element:<PrivateRoute><EditPublication /></PrivateRoute> ,
+      },
+      {
+        path: "/admin/publications/add-new-publication",
+        element:<PrivateRoute><AddPublication /></PrivateRoute> ,
+      },
+      {
+        path: "/admin/users",
+        element:<PrivateRoute><UserManagement /></PrivateRoute> ,
+      },
+      {
+        path: "/admin/users/:id",
+        element:<PrivateRoute><SingleUser /></PrivateRoute> ,
+      },
+      {
+        path: "/admin/orders",
+        element:<PrivateRoute><TotalOrders /></PrivateRoute> ,
+      },
+      {
+        path: "/admin/orders/:id",
+        element:<PrivateRoute><SingleOrder /></PrivateRoute> ,
+      },
+      {
+        path: "/admin/orders/:id/details",
+        element:<PrivateRoute><OrderDetails /></PrivateRoute> ,
+      },
+      {
+        path: "/admin/payments",
+        element: <PrivateRoute><Payments /></PrivateRoute>,
+      },
+      {
+        path: "/admin/messages",
+        element:<PrivateRoute><Messages /></PrivateRoute> ,
+      },
+    ],
+  },
 ]);
 
 export default router;
