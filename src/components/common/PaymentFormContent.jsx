@@ -139,7 +139,7 @@ const PaymentFormContent = ({ clientSecret, onSuccess, onCancel }) => {
           <button
             type="submit"
             disabled={!stripe || !canSubmit || isLoading}
-            className="bg-[#004A87] px-8 py-2 cursor-pointer hover:bg-[#023d6d] transition"
+            className="bg-[#004A87] px-8 py-2 cursor-pointer hover:bg-[#023d6d] transition text-white"
           >
             {isLoading ? 'Saving..' : 'Save Card'}
           </button>

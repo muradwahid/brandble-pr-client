@@ -12,7 +12,7 @@ import FilterableSidebar from "./FilterableSidebar";
 import { useState } from "react";
 import Pagination from "../../../common/Pagination";
 import { IoIosHeartEmpty, IoMdHeart } from "react-icons/io";
-// import { usePublicationsQuery } from '../../../../redux/api/publicationApi';
+import { usePublicationsQuery } from '../../../../redux/api/publicationApi';
 import SkeletonCard from '../../../common/SkeletonCard';
 import { getFromLocalStorage, setToLocalStorage } from '../../../../utils/local-storage';
 import toast from 'react-hot-toast';
@@ -27,10 +27,7 @@ const Publications = () => {
   const [toggle, setToggle] = useState(false);
   const [activeIdx, setActiveIdx] = useState(null);
 
-  // const { data } = usePublicationsQuery()
-  const data = {
-    meta: {}
-  }
+  const { data } = usePublicationsQuery()
   const { meta = {} } = data || {}
   const isLoading = false;
   const handlePageChange = (page) => {

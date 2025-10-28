@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 import "./style.css";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { getFromLocalStorage, setToLocalStorage } from '../../../../utils/local-storage';
 import toast from 'react-hot-toast';
 import { useMethodsQuery, useProcessPaymentMutation } from "../../../../redux/api/stripepaymentApi";
@@ -10,24 +10,21 @@ import { useAddOrderMutation } from "../../../../redux/api/orderApi";
 import { getUserInfo } from "../../../../helpers/user/user";
 
 const Cart = ({ setCheckoutPopup, selectedMethod }) => {
+  const navigation = useNavigate();
   const { data:allMehotd } = useMethodsQuery();
   const [cartItems, setCartItems] = useState(() => {
     const savedData = getFromLocalStorage("brandableCardData");
     return savedData ? JSON.parse(savedData) : [];
   });
-  const accessToken = getFromLocalStorage('accessToken');
-  console.log({accessToken});
   const [processPayment, { isLoading }] = useProcessPaymentMutation()
-  const [addOrder, { isLoading: addOrderLoading }] = useAddOrderMutation()
+  const [ addOrder, { isLoading: addOrderLoading }] = useAddOrderMutation()
 
   const [subtotal, setSubtotal] = useState(0);
-  console.log(allMehotd);
   useEffect(() => {
     const total = cartItems?.reduce((sum, item) => {
       return sum + (item.isChecked ? Number(item.price) : 0);
     }, 0);
     setSubtotal(total);
-    console.log({cartItems});
   }, [cartItems]);
 
   // Handler for checkbox changes
@@ -64,7 +61,6 @@ const Cart = ({ setCheckoutPopup, selectedMethod }) => {
     try {
       const result = await processPayment(data);
       if (result.data.status === 'succeeded') {
-        console.log({result});
         const publicationIds = cartItems?.map(item => item.isChecked && item.id)
         const orderData = {
           publicationIds,
@@ -72,9 +68,10 @@ const Cart = ({ setCheckoutPopup, selectedMethod }) => {
           amount: result.data.amount,
           userId: getUserInfo()?.id,
         }
-        console.log(result.data.paymentMethod.id)
         const orderResult = await addOrder(orderData)
-        console.log(orderResult);
+        if (orderResult?.data?.id) {
+          navigation(`/user/checkout/order-submit/${orderResult?.data?.id}`, { replace: true });
+        }
       }
     } catch (err) {
       console.err(err)

@@ -3,8 +3,12 @@ import toast from 'react-hot-toast';
 import { useAddWonArticleMutation } from '../../../../../../redux/api/wonArticleApi';
 import { LoadingIcon, UploadFileIcon } from '../../../../../../utils/icons';
 import { useState } from 'react';
+import { useUpdateOrderMutation } from '../../../../../../redux/api/orderApi';
+import { useParams } from 'react-router';
 const WonArticle = ({ setPublishPopup }) => {
+  const {id} = useParams()
   const [fileName, setFileName] = useState([])
+  const [updateOrder] = useUpdateOrderMutation()
   const {
     register,
     handleSubmit,
@@ -29,12 +33,17 @@ const WonArticle = ({ setPublishPopup }) => {
 
     if (file?.length) {
       if (formData) {
-        console.log(formData)
+        // console.log(formData)
         try {
           const response = await addWonArticle(formData);
           if (response?.data?.id) {
-            setPublishPopup(true)
-            setFileName([])
+            const data = { id: id, body: { wonArticleId: response?.data?.id, orderType: 'wonArticle', writeArticleId:null } }
+            const orderUpdate = await updateOrder(data)
+            if (orderUpdate?.data?.id) {
+              setPublishPopup(true)
+              setFileName([])
+            }
+            
           }
           reset()
         } catch (err) {

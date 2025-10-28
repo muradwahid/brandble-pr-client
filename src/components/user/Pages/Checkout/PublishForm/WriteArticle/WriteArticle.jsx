@@ -6,10 +6,16 @@ import { useUserQuery } from "../../../../../../redux/api/authApi"
 import toast from 'react-hot-toast';
 import { useAddWriteArticleMutation } from '../../../../../../redux/api/writeArticleApi';
 import { LoadingIcon } from '../../../../../../utils/icons';
+import { useUpdateOrderMutation } from '../../../../../../redux/api/orderApi';
+import { getUserInfo } from '../../../../../../helpers/user/user';
+import { useParams } from 'react-router';
 
 const WriteArticle = ({ step, setStep, setPublishPopup }) => {
-  const id = "5cdd3e2e-eec2-4aaf-9e8b-0d8fb3d94ffd"
-  const { data, isLoading } = useUserQuery(id);
+  const user = getUserInfo()
+  const {id} = useParams()
+  const { data, isLoading } = useUserQuery(user?.id);
+
+    const [updateOrder] = useUpdateOrderMutation()
 
   const [addWriteArticle, { isLoading: addWriteArticleLoading, error }] = useAddWriteArticleMutation();
 
@@ -90,9 +96,15 @@ const WriteArticle = ({ step, setStep, setPublishPopup }) => {
     try {
       const response = await addWriteArticle(formData);
       if (response?.data?.id) {
-        toast.success('Write article submitted successfully');
-        setPublishPopup(true)
-        reset()
+        const data = {
+          id: id, body: {
+            writeArticleId: response?.data?.id, orderType: 'writeArticle', wonArticleId:null } }
+        const orderUpdate = await updateOrder(data)
+        if (orderUpdate?.data?.id) {
+          toast.success('Write article submitted successfully');
+          setPublishPopup(true)
+          reset()
+        }
       }
     // eslint-disable-next-line no-unused-vars
     } catch (err) {
@@ -150,7 +162,7 @@ const WriteArticle = ({ step, setStep, setPublishPopup }) => {
                   className="bg-[#002747] text-white px-16 py-2 cursor-pointer hover:bg-[#075ca1] flex items-center justify-center transition-all duration-200 gap-3"
                 >
                   {addWriteArticleLoading ? "Submitting" :"Submit"}
-                  {<LoadingIcon fill='#fff' style={{ height: "20px" }} />}
+                  {addWriteArticleLoading  &&<LoadingIcon fill='#fff' style={{ height: "20px" }} />}
                 </button>
               )}
             </div>

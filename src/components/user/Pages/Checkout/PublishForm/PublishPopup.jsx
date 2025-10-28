@@ -33,7 +33,7 @@ const PublishPopup = ({ setPublishPopup }) => {
               // });
               setPublishPopup(false);
             }}
-            to="/user/checkout/order-submit"
+            to="/user/orders/running"
             className="bg-[#002747] text-[18px] text-white py-2 px-8 hover:bg-[#002747]/90 transition cursor-pointer w-full inline-block text-center"
           >
             Done
