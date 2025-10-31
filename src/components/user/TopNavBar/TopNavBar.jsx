@@ -54,7 +54,7 @@ const TopNavBar = () => {
           <div>
             {
               data?.image ? <div className="w-[40px] h-[40px] border rounded-full overflow-hidden">
-                <img className="w-full h-full" src={'userImage'} alt="" />
+                <img className="w-full h-full" src={data?.image} alt="" />
               </div> : <FaUser className="text-2xl text-gray-500 cursor-pointer"/>
             }
           </div>
