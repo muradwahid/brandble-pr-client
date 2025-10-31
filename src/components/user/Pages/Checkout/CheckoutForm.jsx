@@ -2,10 +2,15 @@ import { useEffect } from "react";
 import { GoShieldLock } from "react-icons/go";
 import "./style.css";
 import { useMethodsQuery } from "../../../../redux/api/stripepaymentApi";
+import { getUserInfo } from "../../../../helpers/user/user";
+import { useUserQuery } from "../../../../redux/api/authApi";
 
 const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
   
-  const { data, isLoading} = useMethodsQuery();
+  const { data, isLoading } = useMethodsQuery();
+  
+      const user = getUserInfo();
+      const { data:userData } = useUserQuery(user?.id);
 
   const inputCls = ` px-3 py-2 bg-[#F6F7F7] border border-[#DCDEDF] outline-none text-[#5F6368] placeholder-[#B2B5B8] placeholder:font-normal w-full`;
 
@@ -33,7 +38,7 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                 type="text"
                 id="fullName"
                 className={`${inputCls}`}
-                value="John Doe"
+                value={userData?.name}
                 readOnly
               />
             </div>
@@ -47,7 +52,7 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                 type="email"
                 id="email"
                 className={`${inputCls}`}
-                value="john.doe@example.com"
+                value={userData?.email}
                 readOnly
               />
             </div>
@@ -61,20 +66,20 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                 type="text"
                 id="companyName"
                 className={`${inputCls}`}
-                value="Brandable PR Inc."
+                value={userData?.company}
                 readOnly
               />
             </div>
           </div>
 
           {/* billing address */}
-          <div className="border border-[#F2F2F3] p-3.5">
+          {/* <div className="border border-[#F2F2F3] p-3.5">
             <div className="border-b border-[#DCDEDF] pb-3">
               <h3 className="text-[20px] text-[#222425] font-glare">
                 Billing Address
               </h3>
             </div>
-            {/* address */}
+    
             <div className="flex flex-col w-full mt-4">
               <label htmlFor="fullName" className="text-sm text-[#5F6368] mb-1">
                 Address
@@ -129,7 +134,7 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                 readOnly
               />
             </div>
-          </div>
+          </div> */}
 
           {/* payment method */}
           {

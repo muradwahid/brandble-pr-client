@@ -5,13 +5,17 @@ import { BellIcon, CartIcon } from "../../../utils/icons";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import siteLogo from "../../../assets/logo.png";
-import userImage from "../../../assets/profile.png";
 import Cart from "../../ui/Card/Cart";
 import { FaUser } from "react-icons/fa";
+import { getUserInfo } from "../../../helpers/user/user";
+import { useUserQuery } from "../../../redux/api/authApi";
 const TopNavBar = () => {
   const btnRef = useRef();
   const [openCart, setOpenCart] = useState(false);
   const cartRef = useRef();
+
+    const user = getUserInfo();
+    const { data } = useUserQuery(user?.id);
 
   useEffect(() => {
     function handleClick(event) {
@@ -48,8 +52,11 @@ const TopNavBar = () => {
             <CartIcon className="cursor-pointer" />
           </div>
           <div>
-            <img src={'userImage'} alt="" />
-            <FaUser className="text-2xl text-gray-500 cursor-pointer"/>
+            {
+              data?.image ? <div className="w-[40px] h-[40px] border rounded-full overflow-hidden">
+                <img className="w-full h-full" src={'userImage'} alt="" />
+              </div> : <FaUser className="text-2xl text-gray-500 cursor-pointer"/>
+            }
           </div>
         </div>
         {openCart && <Cart ref={cartRef} setOpenCart={setOpenCart} />}

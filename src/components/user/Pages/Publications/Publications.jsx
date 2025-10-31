@@ -16,8 +16,12 @@ import { usePublicationsQuery } from '../../../../redux/api/publicationApi';
 import SkeletonCard from '../../../common/SkeletonCard';
 import { getFromLocalStorage, setToLocalStorage } from '../../../../utils/local-storage';
 import toast from 'react-hot-toast';
+import { getUserInfo } from "../../../../helpers/user/user";
+import { useAddFavoriteMutation } from "../../../../redux/api/favoriteApi";
 
 const Publications = () => {
+
+  const user = getUserInfo();
 
   // eslint-disable-next-line no-unused-vars
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,6 +30,8 @@ const Publications = () => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const [toggle, setToggle] = useState(false);
   const [activeIdx, setActiveIdx] = useState(null);
+
+  const [addFavorite] = useAddFavoriteMutation();
 
   const { data } = usePublicationsQuery()
   const { meta = {} } = data || {}
@@ -57,8 +63,21 @@ const addToCard = (data) => {
     toast.success("Item added to cart successfully!");
     return true; 
   }
-}
-
+  }
+  
+  const handleAddToFavorite = async (itemId) => {
+    if (!user) {
+      toast.error("Please log in to add favorites.");
+      return;
+    }
+    try {
+      await addFavorite({ userId: user.id, itemId }).unwrap();
+      toast.success("Added to favorites!");
+    // eslint-disable-next-line no-unused-vars
+    } catch (error) {
+      toast.error("Failed to add to favorites.");
+    }
+  }
   const cmCls = "text-[#878C91] text-[12px] font-[12px] flex items-center";
   return (
     <div className="w-full">
@@ -121,7 +140,10 @@ const addToCard = (data) => {
                         {item?.genre}
                       </p>
                       <div
-                        onClick={() => setActiveIdx(index)}
+                        onClick={() => {
+                          handleAddToFavorite(item?.id);
+                          setActiveIdx(index)
+                        }}
                         className="absolute top-1 right-1 cursor-pointer"
                       >
                         {index === activeIdx ? (

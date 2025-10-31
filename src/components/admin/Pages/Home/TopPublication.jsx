@@ -18,8 +18,12 @@ import {
   StarHalf,
   StartCircleIcon,
 } from "../../../../utils/icons";
+import { usePublicationsQuery } from "../../../../redux/api/publicationApi";
 
 const TopPublication = () => {
+
+  const {data} = usePublicationsQuery();
+  console.log(data);
   return (
     <div>
       <div className="mb-5 mt-11 flex justify-between items-center border-t border-[#DCDEDF] pt-11">
@@ -93,7 +97,7 @@ const TopPublication = () => {
             </tr>
           </thead>
           <tbody className=" text-[#36383A]">
-            {publicationData.slice(0, 1).map((item, index) => (
+            {data?.data.map((item, index) => (
               <tr key={index} className="border-t border-[#DCDEDF]">
                 <td className="px-3 py-3 text-nowrap">{item.title}</td>
                 <td className="px-3 py-3 text-nowrap">{item.genre}</td>
@@ -105,11 +109,22 @@ const TopPublication = () => {
                 <td className="px-3 py-3 text-nowrap">
                   ${item.price || "1500"}
                 </td>
-                <td className="px-3 py-3 text-nowrap">{item.title}</td>
-                <td className="px-3 py-3 text-nowrap">{item.title}</td>
+                <td className="px-3 py-3 text-nowrap">{item.sponsor}</td>
+                <td className="px-3 py-3 text-nowrap">{item.index}</td>
                 <td className="px-3 py-3 text-nowrap text-center">{item.doFollow}</td>
                 <td className="px-3 py-3 text-nowrap">{item.region}</td>
                 <td className="pr-2.5">
+                  
+                    {
+                      item?.niches?.map((title, i) => {
+                        if (title === "adult") return <AdultIcon key={i} />;
+                        if (title === "health") return <CardiologyIcon key={i} />;
+                        if (title === "cannabis") return <SpaIcon key={i} />;
+                        if (title === "crypto") return <BitcoinIcon key={i} />;
+                        if (title === "casino") return <CasinoIcon key={i} />;
+                        return null;
+                      })
+                  }
                   <span className="flex items-center gap-1">
                     <AdultIcon />
                     <CardiologyIcon />

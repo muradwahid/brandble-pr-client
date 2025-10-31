@@ -31,6 +31,7 @@ import SingleOrder from "../components/admin/Pages/TotalOrders/SingleOrder";
 import OrderDetails from "../components/admin/Pages/TotalOrders/OrderDetails";
 import Login from "../components/auth/Login";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
+import RegisterForm from "../components/auth/RegisterForm";
 
 
 const router = createBrowserRouter([
@@ -39,8 +40,8 @@ const router = createBrowserRouter([
     element: <Login/>,
   },
   {
-    path: "/register",
-    element: <Login/>,
+    path: "auth/signup",
+    element: <RegisterForm/>,
   },
   {
     path: "/",

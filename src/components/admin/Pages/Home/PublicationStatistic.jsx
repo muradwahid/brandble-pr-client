@@ -8,7 +8,7 @@ const PublicationStatistic = ({className,ref}) => {
     >
       <div className="overflow-y-scroll overflow-x-auto fillAvailableHeight pr-3">
         <div className="w-full bg-white rounded-md overflow-hidden mr-5">
-          <table className="font-poppins w-full h-full">
+          {/* <table className="font-poppins w-full h-full">
             <thead>
               <tr className="bg-[#DCDEDF] text-left">
                 <th className="text-[#5F6368] font-normal px-1.5 py-1">
@@ -39,7 +39,7 @@ const PublicationStatistic = ({className,ref}) => {
                   </tr>
                 ))}
             </tbody>
-          </table>
+          </table> */}
         </div>
       </div>
     </div>

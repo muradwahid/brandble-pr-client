@@ -2,8 +2,8 @@ import { tableData } from "../../../user/Pages/DashboardPage/data";
 import HBarChart from "./HBarChart";
 
 const RevenueStatistic = () => {
-  const totalRevenue = "15,000";
-  const runningOrders = 15;
+  const totalRevenue = "0";
+  const runningOrders = 0;
   return (
     <div className="mt-10 lg:flex flex-wrap">
       <div className="border-r border-[#DCDEDF] pr-4 flex-1">
@@ -46,7 +46,7 @@ const RevenueStatistic = () => {
                 <th className="px-3 py-3 text-[#5F6368] font-normal">Status</th>
               </tr>
             </thead>
-            <tbody className=" text-[#36383A]">
+            {/* <tbody className=" text-[#36383A]">
               {tableData.slice(0, 1).map((item, index) => (
                 <tr key={index} className="border-t border-[#DCDEDF]">
                   <td className="px-3 py-3">M9hvmC4hq07q1s</td>
@@ -67,7 +67,7 @@ const RevenueStatistic = () => {
                   </td>
                 </tr>
               ))}
-            </tbody>
+            </tbody> */}
           </table>
         </div>
       </div>

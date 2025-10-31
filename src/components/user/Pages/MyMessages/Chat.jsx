@@ -1,9 +1,9 @@
 import { FcManager } from "react-icons/fc";
 import { GoPaperAirplane } from "react-icons/go";
-import { LuCheckCheck } from "react-icons/lu";
 import "./style.css"
 
 const Chat = () => {
+  const adminId =""
   return (
     <div>
       <div className="message-chat-container border-l-2 border-[#D1DADB]">
@@ -14,7 +14,7 @@ const Chat = () => {
             </div>
             <span className="font-semibold text-lg text-gray-800">Admin</span>
           </div>
-          <span className="text-sm text-gray-500">#653BSBE2-11</span>
+          <span className="text-sm text-gray-500">{adminId}</span>
         </div>
 
         <div className="chat-messages flex flex-col">

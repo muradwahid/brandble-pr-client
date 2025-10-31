@@ -1,13 +1,20 @@
 import { NavLink, useLocation } from "react-router";
-import userImage from "../../../assets/profile.png";
 import { userNav } from "../../../utils/navData";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RxChevronDown, RxChevronRight, RxCross2, RxHamburgerMenu } from "react-icons/rx";
+import { useUserQuery } from "../../../redux/api/authApi";
+import { getUserInfo } from "../../../helpers/user/user";
+import { FaUser } from "react-icons/fa";
 
 const UserSidebar = () => {
+  const user = getUserInfo();
   const [toggle, setToggle] = useState(true);
   const location = useLocation()
+  const { data } = useUserQuery(user?.id);
 
+  useEffect(() => {
+    console.log(data);
+   },[data])
   const handleToggle = () => {
     setTimeout(() => {
       setToggle(!toggle);
@@ -46,15 +53,15 @@ const UserSidebar = () => {
         <div className="p-5 h-full flex flex-col justify-between">
           <div>
             {/* profile */}
-            <div className="md:flex gap-5 items-end border-b-[1px] border-[#b2b5b8] pb-5">
-              <div className="w-[60px] h-[60px] border">
-                <img className="w-full" src={'userImage'} alt="" />
-              </div>
+            <div className="md:flex gap-5 items-center border-b-[1px] border-[#b2b5b8] pb-5">
+             { data?.image?<div className="w-[60px] h-[60px] border">
+                <img className="w-full h-full" src={'userImage'} alt="" />
+              </div> : <FaUser className="text-2xl text-gray-500 cursor-pointer" />}
               <div className="flex flex-col">
-                {/* <h4 className="text-[#222425] text-[20px] font-glare ">
-                  John Doe
-                </h4> */}
-                {/* <small className="text-[#5F6368]">john.doe@gmail.com</small> */}
+                <h4 className="text-[#222425] text-[20px] font-glare">
+                  {data?.name}
+                </h4>
+                <small className="text-[#5F6368]">{data?.email}</small>
               </div>
             </div>
 

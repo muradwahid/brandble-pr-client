@@ -7,6 +7,7 @@ import {
 import Tooltip from "../../../ui/Tooltip";
 import HChart from "./HChart";
 import PublicationStatistic from "./PublicationStatistic";
+import { useOrderStatisticsQuery } from "../../../../redux/api/orderApi";
 
 const OrderStatus = () => {
   const [filter, setFilter] = useState("today");
@@ -14,13 +15,12 @@ const OrderStatus = () => {
   const [isStatistic, setIsStatistic] = useState(false);
   const statisticRef = useRef();
   const viewRef = useRef();
+  
+  const { data } = useOrderStatisticsQuery();
 
-  const newClient = 0;
-  const repeated = 0;
-  const totalOrders = newClient + repeated;
-  const percent = parseInt((repeated / totalOrders) * 100);
+  const percent = parseInt((Number(data?.repeatClient || 0) / Number(data?.totalOrders || 0)) * 100);
 
-  const totalMainOrder = 0;
+
   useEffect(() => {
     function handleClick(event) {
       if (
@@ -93,7 +93,7 @@ const OrderStatus = () => {
                 <div className="grid content-between w-full">
                   <div>
                     <p className="text-xl text-[#171819] font-medium">
-                      {totalOrders}
+                      {data?.totalOrders || 0}
                     </p>
                     <p className="text-[#5F6368] text-sm mt-1.5">
                       Number of orders
@@ -105,14 +105,14 @@ const OrderStatus = () => {
                         <p className="w-[16px] h-[16px] bg-[#7900FA] rounded-[6px]"></p>
                         <p className="text-[#5F6368] text-sm">New Client</p>
                       </div>
-                      <p className="text-[#5F6368] text-sm">{newClient}</p>
+                      <p className="text-[#5F6368] text-sm">{data?.newClient || 0}</p>
                     </div>
                     <div className="flex justify-between">
                       <div className="flex items-center gap-2">
                         <p className="w-[16px] h-[16px] bg-[#ff991f] rounded-[6px]"></p>
                         <p className="text-[#5F6368] text-sm">Repeat Client</p>
                       </div>
-                      <p className="text-[#5F6368] text-sm">{repeated}</p>
+                      <p className="text-[#5F6368] text-sm">{data?.repeatClient || 0}</p>
                     </div>
                   </div>
                 </div>
@@ -134,7 +134,7 @@ const OrderStatus = () => {
                 <div className="grid content-between w-full">
                   <div>
                     <p className="text-xl text-[#171819] font-medium">
-                      {totalMainOrder}
+                      {data?.totalOrders || 0}
                     </p>
                     <p className="text-[#5F6368] text-sm mt-1.5">
                       Number of orders
@@ -146,14 +146,14 @@ const OrderStatus = () => {
                         <p className="w-[16px] h-[16px] bg-[#7900FA] rounded-[6px]"></p>
                         <p className="text-[#5F6368] text-sm">Delivered</p>
                       </div>
-                      <p className="text-[#5F6368] text-sm">{newClient}</p>
+                      <p className="text-[#5F6368] text-sm">{data?.newClient || 0}</p>
                     </div>
                     <div className="flex justify-between">
                       <div className="flex items-center gap-2">
                         <p className="w-[16px] h-[16px] bg-[#ff991f] rounded-[6px]"></p>
                         <p className="text-[#5F6368] text-sm">In Progress</p>
                       </div>
-                      <p className="text-[#5F6368] text-sm">{repeated}</p>
+                      <p className="text-[#5F6368] text-sm">{data?.repeatClient || 0}</p>
                     </div>
                   </div>
                 </div>
@@ -175,7 +175,7 @@ const OrderStatus = () => {
                 </div>
                 <div className="flex gap-5 w-full">
                   <div className="grid content-between w-full">
-                    <div className="w-full grid gap-1">
+                    {/* <div className="w-full grid gap-1">
                       <div className="w-full flex items-center justify-between">
                         <p className="text-[#5F6368] text-sm">Hood Critic</p>
                         <span className="text-[#5F6368] group text-sm relative transition-all duration-200">
@@ -218,7 +218,7 @@ const OrderStatus = () => {
                           7.5 % <TrendingUpIcon />
                         </p>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

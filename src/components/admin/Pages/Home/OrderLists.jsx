@@ -110,7 +110,7 @@ const OrderLists = () => {
               </th>
             </tr>
           </thead>
-          <tbody className=" text-[#36383A]">
+          {/* <tbody className=" text-[#36383A]">
             {tableData.slice(0, 1).map((item, index) => (
               <tr key={index} className="border-t border-[#DCDEDF]">
                 <td className="px-3 py-3">M9hvmC4hq07q1s</td>
@@ -134,7 +134,7 @@ const OrderLists = () => {
                 </td>
               </tr>
             ))}
-          </tbody>
+          </tbody> */}
         </table>
       </div>
     </div>
