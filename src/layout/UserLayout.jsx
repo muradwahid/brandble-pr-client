@@ -8,7 +8,7 @@ const UserParentLayout = () => {
   const navigation = useNavigate();
   const isUserExist = isLoggedIn()
   if (!isUserExist) {
-    navigation("/auth/login", { replace: true });
+    navigation(import.meta.env.VITE_ROOT_CLIENT_URL , { replace: true });
   }
   const location = useLocation().pathname;
   const publication = location == "/user/publications" || location == "/user/checkout";
