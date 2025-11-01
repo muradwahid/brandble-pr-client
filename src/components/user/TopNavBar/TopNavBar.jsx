@@ -8,14 +8,16 @@ import siteLogo from "../../../assets/logo.png";
 import Cart from "../../ui/Card/Cart";
 import { FaUser } from "react-icons/fa";
 import { getUserInfo } from "../../../helpers/user/user";
-import { useUserQuery } from "../../../redux/api/authApi";
+import { useGetUserByCookieQuery, useUserQuery } from "../../../redux/api/authApi";
 const TopNavBar = () => {
   const btnRef = useRef();
   const [openCart, setOpenCart] = useState(false);
   const cartRef = useRef();
 
     const user = getUserInfo();
-    const { data } = useUserQuery(user?.id);
+  const { data } = useUserQuery(user?.id);
+  
+  const {data:userData } = useGetUserByCookieQuery();
 
   useEffect(() => {
     function handleClick(event) {
@@ -34,6 +36,13 @@ const TopNavBar = () => {
       document.removeEventListener("mousedown", handleClick);
     };
   }, [btnRef]);
+
+  useEffect(() => {
+    console.log("User Data from Cookie:", userData);
+    const cookies = document.cookie;
+    console.log("Cookies:", cookies);
+  }, [userData]);
+
   return (
     <nav className="w-full py-5 border-b-[1px] border-b-[#171819]">
       <div className="xl:w-[1400px] lg:w-4/5 md:w-5/6 w-[90%] mx-auto flex items-center justify-between relative">

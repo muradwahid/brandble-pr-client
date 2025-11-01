@@ -35,14 +35,14 @@ import RegisterForm from "../components/auth/RegisterForm";
 
 
 const router = createBrowserRouter([
-  {
-    path: "/auth/login",
-    element: <Login/>,
-  },
-  {
-    path: "auth/signup",
-    element: <RegisterForm/>,
-  },
+  // {
+  //   path: "/auth/login",
+  //   element: <Login/>,
+  // },
+  // {
+  //   path: "auth/signup",
+  //   element: <RegisterForm/>,
+  // },
   {
     path: "/",
     errorElement: <div></div>,
@@ -58,7 +58,7 @@ const router = createBrowserRouter([
       // },
       {
         path: "/user/profile", // This will render at /user
-        element:<PrivateRoute> <Profile /></PrivateRoute>,
+        element:<> <Profile /></>,
       },
       {
         path: "/user/dashboard", // This will render at /dashboard

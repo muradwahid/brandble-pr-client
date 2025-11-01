@@ -2,7 +2,7 @@ import { NavLink, useLocation } from "react-router";
 import { userNav } from "../../../utils/navData";
 import { useEffect, useState } from "react";
 import { RxChevronDown, RxChevronRight, RxCross2, RxHamburgerMenu } from "react-icons/rx";
-import { useUserQuery } from "../../../redux/api/authApi";
+import {  useSignoutUserMutation, useUserQuery } from "../../../redux/api/authApi";
 import { getUserInfo } from "../../../helpers/user/user";
 import { FaUser } from "react-icons/fa";
 
@@ -11,6 +11,7 @@ const UserSidebar = () => {
   const [toggle, setToggle] = useState(true);
   const location = useLocation()
   const { data } = useUserQuery(user?.id);
+  const [signout] = useSignoutUserMutation()
 
   useEffect(() => {
     console.log(data);
@@ -30,6 +31,16 @@ const UserSidebar = () => {
         item.subItems.some((subItem) => location.pathname.startsWith(subItem.path)))
     );
   };
+
+  const handleSignOut = async () => {
+    try {
+      await signout();
+      location(import.meta.env.VITE_ROOT_CLIENT_URL, { replace: true });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 
   return (
     <div>
@@ -103,7 +114,7 @@ const UserSidebar = () => {
               </div>
             </div>
           </div>
-          <div className="flex items-center text-[#222425] mt-1.5 gap-3 py-1.5 cursor-pointer transition-all duration-300 hover:bg-[#004A87] hover:pl-3 hover:text-white ">
+          <div onClick={handleSignOut} className="flex items-center text-[#222425] mt-1.5 gap-3 py-1.5 cursor-pointer transition-all duration-300 hover:bg-[#004A87] hover:pl-3 hover:text-white ">
             <button>Logout</button>
           </div>
         </div>

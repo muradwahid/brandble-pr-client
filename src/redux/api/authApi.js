@@ -41,6 +41,16 @@ export const authApi = baseApi.injectEndpoints({
       },
       providesTags: ["auth", 'update','signin'],
     }),
+    getUserByCookie: build.query({
+      query: () => {
+        return {
+          url: `get-user-by-cookie`,
+          method: "GET",
+          credentials: 'include',
+        };
+      },
+      providesTags: ["auth", 'update','signin'],
+    }),
     updateUser: build.mutation({
       query: (data) => ({
         url: `${AUTH_URL}/update/${data.id}`,
@@ -59,6 +69,15 @@ export const authApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["auth"],
     }),
+    signout: build.mutation({
+      query: () => {
+        return {
+          url: `signout`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["auth"],
+    }),
   }),
   overrideExisting: false,
 });
@@ -67,5 +86,7 @@ export const { useUsersQuery,
   useUserLoginMutation,
   useCreateUserMutation,
   useUserQuery,
+  useGetUserByCookieQuery,
   useUpdateUserMutation,
-  useDeleteUserMutation } = authApi;
+  useSignoutUserMutation
+} = authApi;
