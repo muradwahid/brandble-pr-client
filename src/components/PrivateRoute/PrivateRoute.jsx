@@ -11,7 +11,8 @@ const PrivateRoute = ({ children }) => {
 
   if (!userInfo || !loggedIn) {
     
-    return <Navigate to={import.meta.env.VITE_ROOT_CLIENT_URL} state={{ from: location }} replace />;
+    return window.location.replace(`${import.meta.env.VITE_ROOT_CLIENT_URL}/signin`);
+    //<Navigate to={import.meta.env.VITE_ROOT_CLIENT_URL} state={{ from: location }} replace />;
   }
 
   const isAdmin = userInfo.role === "admin" || userInfo.role === "super-admin";

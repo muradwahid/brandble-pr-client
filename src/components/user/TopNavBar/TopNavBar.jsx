@@ -41,6 +41,7 @@ const TopNavBar = () => {
     console.log("User Data from Cookie:", userData);
     const cookies = document.cookie;
     console.log("Cookies:", cookies);
+    console.log({user,data});
   }, [userData]);
 
   return (
