@@ -1,14 +1,13 @@
-import {Outlet, useLocation, useNavigate } from "react-router";
+import {Outlet, useLocation } from "react-router";
 import UserSidebar from "../components/user/Sidebar/UserSidebar";
 import TopNavBar from "../components/user/TopNavBar/TopNavBar";
 import Footer from "../components/ui/Footer/Footer";
 import { isLoggedIn } from "../helpers/user/user";
 
 const UserParentLayout = () => {
-  const navigation = useNavigate();
   const isUserExist = isLoggedIn()
   if (!isUserExist) {
-    navigation(import.meta.env.VITE_ROOT_CLIENT_URL , { replace: true });
+    window.location.replace(`${import.meta.env.VITE_ROOT_CLIENT_URL}/signin`);
   }
   const location = useLocation().pathname;
   const publication = location == "/user/publications" || location == "/user/checkout";

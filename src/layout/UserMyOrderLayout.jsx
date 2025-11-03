@@ -1,10 +1,10 @@
-import { Navigate, Outlet } from 'react-router';
+import { Outlet } from 'react-router';
 import { isLoggedIn } from '../helpers/user/user';
 
 const UserMyOrderLayout = () => {
   const isUserExist = isLoggedIn()
   if (!isUserExist) {
-    <Navigate to={import.meta.env.VITE_ROOT_CLIENT_URL} replace />;
+    window.location.replace(`${import.meta.env.VITE_ROOT_CLIENT_URL}/signin`);
   }
   return (
     <>
