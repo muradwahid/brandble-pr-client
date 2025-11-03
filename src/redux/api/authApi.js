@@ -72,7 +72,7 @@ export const authApi = baseApi.injectEndpoints({
     signout: build.mutation({
       query: () => {
         return {
-          url: `signout`,
+          url: `${AUTH_URL}/signout`,
           method: "DELETE",
         };
       },
@@ -88,5 +88,5 @@ export const { useUsersQuery,
   useUserQuery,
   useGetUserByCookieQuery,
   useUpdateUserMutation,
-  useSignoutUserMutation
+  useSignoutMutation
 } = authApi;

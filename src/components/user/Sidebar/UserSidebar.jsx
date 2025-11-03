@@ -2,7 +2,7 @@ import { NavLink, useLocation } from "react-router";
 import { userNav } from "../../../utils/navData";
 import { useEffect, useState } from "react";
 import { RxChevronDown, RxChevronRight, RxCross2, RxHamburgerMenu } from "react-icons/rx";
-import {  useSignoutUserMutation, useUserQuery } from "../../../redux/api/authApi";
+import {  useSignoutMutation, useUserQuery } from "../../../redux/api/authApi";
 import { getUserInfo } from "../../../helpers/user/user";
 import { FaUser } from "react-icons/fa";
 
@@ -11,7 +11,7 @@ const UserSidebar = () => {
   const [toggle, setToggle] = useState(true);
   const location = useLocation()
   const { data } = useUserQuery(user?.id);
-  const [signout] = useSignoutUserMutation()
+  const [signout] = useSignoutMutation()
 
   useEffect(() => {
     console.log(data);
