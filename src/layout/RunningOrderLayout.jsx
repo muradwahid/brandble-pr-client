@@ -6,9 +6,9 @@ import { isLoggedIn } from "../helpers/user/user";
 
 const RunningOrderLayout = () => {
   const isUserExist = isLoggedIn()
-  if (!isUserExist) {
-    <Navigate to={import.meta.env.VITE_ROOT_CLIENT_URL} replace />;
-  }
+  // if (!isUserExist) {
+  //   window.location.replace(`${import.meta.env.VITE_ROOT_CLIENT_URL}/signin`);
+  // }
   return (
     <div className="flex flex-col h-screen">
       {/* header */}

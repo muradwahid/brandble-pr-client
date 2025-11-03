@@ -44,7 +44,7 @@ export const authApi = baseApi.injectEndpoints({
     getUserByCookie: build.query({
       query: () => {
         return {
-          url: `get-user-by-cookie`,
+          url: `${AUTH_URL}/get-user-by-cookie`,
           method: "GET",
           credentials: 'include',
         };

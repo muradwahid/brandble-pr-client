@@ -20,9 +20,9 @@ const Profile = () => {
   } = useForm();
 
 
-  const {id} = getUserInfo();
+  const user = getUserInfo();
 
-  const { data = {} } = useUserQuery(id || '');
+  const { data = {} } = useUserQuery(user?.id || '');
 
   const [updateUser, { isLoading }] = useUpdateUserMutation();
 
@@ -56,7 +56,7 @@ const Profile = () => {
     if (formData) {
 
       try {
-        await updateUser({ id, body: formData });
+        await updateUser({ id:user?.id, body: formData });
         toast.success("User profile updated successfully");
       } catch (err) {
         // console.error(err.message);

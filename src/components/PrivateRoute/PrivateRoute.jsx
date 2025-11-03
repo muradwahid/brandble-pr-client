@@ -9,14 +9,14 @@ const PrivateRoute = ({ children }) => {
   const location = useLocation(); 
   const currentPath = location.pathname; 
 
-  if (!userInfo || !loggedIn) {
+  // if (!userInfo || !loggedIn) {
     
-    return window.location.replace(`${import.meta.env.VITE_ROOT_CLIENT_URL}/signin`);
-    //<Navigate to={import.meta.env.VITE_ROOT_CLIENT_URL} state={{ from: location }} replace />;
-  }
+  //   return window.location.replace(`${import.meta.env.VITE_ROOT_CLIENT_URL}/signin`);
+  //   //<Navigate to={import.meta.env.VITE_ROOT_CLIENT_URL} state={{ from: location }} replace />;
+  // }
 
-  const isAdmin = userInfo.role === "admin" || userInfo.role === "super-admin";
-  const isClient = userInfo.role === "client";
+  const isAdmin = userInfo?.role === "admin" || userInfo?.role === "super-admin";
+  const isClient = userInfo?.role === "client";
 
   if (isClient && currentPath.startsWith('/admin')) {
     return <Navigate to="/user/dashboard" state={{ from: location }} replace />;
