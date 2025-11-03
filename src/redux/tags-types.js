@@ -1,3 +1,2 @@
-export const tagTypesList = ["user", "auth", "faculty", "admin", "academicFaculty", "academicDepartment", "academicSemester",
-]
+export const tagTypesList = ["auth", "chat", "order","publication", "won-article", "write-article", "favorite", "genre", "niche", "indexed", "sponsor", "dofollow","payment"]
 

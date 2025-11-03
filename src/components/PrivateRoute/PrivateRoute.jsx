@@ -10,6 +10,7 @@ const PrivateRoute = ({ children }) => {
   const currentPath = location.pathname; 
 
   if (!userInfo || !loggedIn) {
+    
     return <Navigate to={import.meta.env.VITE_ROOT_CLIENT_URL} state={{ from: location }} replace />;
   }
 
