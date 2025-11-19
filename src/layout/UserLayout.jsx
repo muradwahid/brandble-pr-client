@@ -7,7 +7,7 @@ import { isLoggedIn } from "../helpers/user/user";
 const UserParentLayout = () => {
   const isUserExist = isLoggedIn()
   if (!isUserExist) {
-    window.location.replace(`${import.meta.env.VITE_ROOT_CLIENT_URL}/signin`);
+    window.location.href=`${import.meta.env.VITE_ROOT_CLIENT_URL}/signin`
   }
   const location = useLocation().pathname;
   const publication = location == "/user/publications" || location == "/user/checkout";

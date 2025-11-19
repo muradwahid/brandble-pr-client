@@ -32,7 +32,7 @@ const UserSidebar = () => {
   const handleSignOut = async () => {
     try {
       await signout();
-      window.location.replace(`${import.meta.env.VITE_ROOT_CLIENT_URL}/signin`);
+      window.location.href=`${import.meta.env.VITE_ROOT_CLIENT_URL}/signin`;
     } catch (error) {
       console.error(error);
     }

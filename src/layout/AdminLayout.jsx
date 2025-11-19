@@ -6,7 +6,7 @@ import { isAdminLoggedId } from "../helpers/user/user";
 const AdminLayout = () => {
   const isUserExist = isAdminLoggedId()
   if (!isUserExist) {
-    window.location.replace(`${import.meta.env.VITE_ROOT_CLIENT_URL}/signin`);
+    window.location.href=`${import.meta.env.VITE_ROOT_CLIENT_URL}/signin`
   }
 
   return (

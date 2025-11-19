@@ -1,5 +1,5 @@
 // components/PaymentMethodSelector.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 
 const PaymentMethodSelector = ({ onPaymentSuccess, savedPaymentMethods }) => {
