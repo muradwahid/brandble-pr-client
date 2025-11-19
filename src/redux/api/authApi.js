@@ -41,6 +41,15 @@ export const authApi = baseApi.injectEndpoints({
       },
       providesTags: ["auth", 'update','signin'],
     }),
+    getAdmin: build.query({
+      query: () => {
+        return {
+          url: `${AUTH_URL}/get-admin-role`,
+          method: "GET",
+        };
+      },
+      providesTags: ["auth"],
+    }),
     getUserByCookie: build.query({
       query: () => {
         return {
@@ -86,6 +95,7 @@ export const { useUsersQuery,
   useUserLoginMutation,
   useCreateUserMutation,
   useUserQuery,
+  useGetAdminQuery,
   useGetUserByCookieQuery,
   useUpdateUserMutation,
   useSignoutMutation

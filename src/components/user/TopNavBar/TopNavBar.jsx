@@ -9,12 +9,16 @@ import Cart from "../../ui/Card/Cart";
 import { FaUser } from "react-icons/fa";
 import { getUserInfo } from "../../../helpers/user/user";
 import { useGetUserByCookieQuery, useUserQuery } from "../../../redux/api/authApi";
+import NavBarNotification from "../Pages/NavBarNotification/NavBarNotification";
 const TopNavBar = () => {
-  const btnRef = useRef();
+  const btnRef = useRef(null);
   const [openCart, setOpenCart] = useState(false);
+  const [toggleNotification, seToggleNotification] = useState(false);
   const cartRef = useRef();
+  const notificationRef = useRef(null);
+  const bellIconRef = useRef(null);
 
-    const user = getUserInfo();
+  const user = getUserInfo();
   const { data } = useUserQuery(user?.id);
   
   const {data:userData } = useGetUserByCookieQuery();
@@ -38,15 +42,32 @@ const TopNavBar = () => {
   }, [btnRef]);
 
   useEffect(() => {
-    console.log("User Data from Cookie:", userData);
+    function handleClick(event) {
+      if (
+        notificationRef.current &&
+        !notificationRef.current.contains(event.target) &&
+        bellIconRef.current &&
+        !bellIconRef.current.contains(event.target)
+      ) {
+        seToggleNotification(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClick);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, [bellIconRef]);
+
+  useEffect(() => {
     const cookies = document.cookie;
     console.log("Cookies:", cookies);
     console.log({user,data});
   }, [userData]);
 
   return (
-    <nav className="w-full py-5 border-b-[1px] border-b-[#171819]">
-      <div className="xl:w-[1400px] lg:w-4/5 md:w-5/6 w-[90%] mx-auto flex items-center justify-between relative">
+    <nav className="w-full border-b-[1px] border-b-[#171819]">
+      <div className="py-5 xl:w-[1400px] lg:w-4/5 md:w-5/6 w-[90%] mx-auto flex items-center justify-between relative">
         <Link to="/user/profile">
           <img className="w-[116px] h-[52px]" src={siteLogo} alt="" />
         </Link>
@@ -57,7 +78,10 @@ const TopNavBar = () => {
           </div>
         </div>
         <div className="flex items-center gap-8">
-          <BellIcon className="cursor-pointer" />
+          <div ref={bellIconRef} onClick={() => seToggleNotification(!toggleNotification)}>
+            <BellIcon className="cursor-pointer" />
+          </div>
+            {toggleNotification &&<NavBarNotification ref={notificationRef} seToggleNotification={seToggleNotification} />}
           <div ref={btnRef} onClick={() => setOpenCart(!openCart)}>
             <CartIcon className="cursor-pointer" />
           </div>

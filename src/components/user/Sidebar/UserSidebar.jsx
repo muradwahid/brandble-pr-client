@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from "react-router";
 import { userNav } from "../../../utils/navData";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { RxChevronDown, RxChevronRight, RxCross2, RxHamburgerMenu } from "react-icons/rx";
 import {  useSignoutMutation, useUserQuery } from "../../../redux/api/authApi";
 import { getUserInfo } from "../../../helpers/user/user";
@@ -13,9 +13,6 @@ const UserSidebar = () => {
   const { data } = useUserQuery(user?.id);
   const [signout] = useSignoutMutation()
 
-  useEffect(() => {
-    console.log(data);
-   },[data])
   const handleToggle = () => {
     setTimeout(() => {
       setToggle(!toggle);

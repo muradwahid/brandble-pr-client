@@ -4,10 +4,11 @@ import { Link, useParams } from 'react-router';
 import { LeftArrowIcon } from '../../../../../../../utils/icons';
 import OrderStatusAndChat from '../OrderStatusAndChat';
 import { MdAttachFile, MdOutlineAddLink } from 'react-icons/md';
+import { useOrderQuery } from '../../../../../../../redux/api/orderApi';
 
 const Details = () => {
-    const { id } = useParams();
-    const orderDetails = tableData.find((order) => order.id === id);
+  const { id } = useParams();
+  const { data, isLoading } = useOrderQuery(id)
   return (
     <div className="w-full h-full">
       {/* back button */}
@@ -294,7 +295,7 @@ const Details = () => {
         </div>
 
         {/* order status and order message */}
-        <OrderStatusAndChat orderDetails={orderDetails} />
+        <OrderStatusAndChat orderDetails={data} />
       </div>
     </div>
   );

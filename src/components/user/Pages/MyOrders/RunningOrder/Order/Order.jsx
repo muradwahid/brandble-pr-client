@@ -2,12 +2,16 @@ import React from "react";
 import { BsFileEarmarkText } from "react-icons/bs";
 import { Link, useParams } from "react-router";
 import { LeftArrowIcon } from "../../../../../../utils/icons";
-import { tableData } from "../data";
 import OrderStatusAndChat from "./OrderStatusAndChat";
+import { useOrderQuery } from "../../../../../../redux/api/orderApi";
+import { formattedDate } from "../../../../../../utils/function";
 
 const Order = () => {
   const { id } = useParams();
-  const orderDetails = tableData.find((order) => order.id === id);
+  const { data, isLoading } = useOrderQuery(id)
+  if (isLoading) {
+    return <>loading</>
+  }
   return (
     <div className="w-full h-full">
       {/* back button */}
@@ -59,7 +63,7 @@ const Order = () => {
                       <Link to={`/user/orders/running/${id}/details`}>
                         <div
                           className="tooltip"
-                          data-tip={orderDetails.publication}
+                          data-tip='Click to download'
                         >
                           <BsFileEarmarkText className="text-[#36383A] text-[20px]" />
                         </div>
@@ -67,17 +71,17 @@ const Order = () => {
                     </td>
                     <td className="px-3 py-3">
                       <Link to={`/user/orders/running/${id}/details`}>
-                        {orderDetails.id}
+                        {data.id}
                       </Link>
                     </td>
                     <td className="px-3 py-3">
                       <Link to={`/user/orders/running/${id}/details`}>
-                        {orderDetails.publication}
+                        {data.publication.map(p=>p.title).join(', ')}
                       </Link>
                     </td>
                     <td className="px-3 py-3">
                       <Link to={`/user/orders/running/${id}/details`}>
-                        {orderDetails.date}
+                        {formattedDate(data.createdAt)}
                       </Link>
                     </td>
                   </tr>
@@ -100,7 +104,7 @@ const Order = () => {
         </div>
 
         {/* order status and order message */}
-        <OrderStatusAndChat orderDetails={orderDetails} />
+        <OrderStatusAndChat orderDetails={data} />
       </div>
     </div>
   );

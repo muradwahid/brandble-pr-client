@@ -1,6 +1,6 @@
-import { tableData } from "./data";
+import { formattedDate } from "../../../../utils/function";
 
-const Table = () => {
+const Table = ({ data }) => {
   return (
     <div className="mt-6 overflow-x-auto">
       <h5 className="text-[#222425] font-medium text-[18px] mb-4 font-glare">
@@ -23,36 +23,36 @@ const Table = () => {
           </tr>
         </thead>
         <tbody className=" text-[#36383A]">
-          {tableData.map((item, index) => (
+          {data.map((order, index) => (
             <tr
               key={index}
               className="border-t border-[#DCDEDF] hover:bg-[#DCDEDF] transition-all duration-300 "
             >
               <td className="px-3 py-3">{index + 1}</td>
-              <td className="px-3 py-3">{item.id}</td>
-              <td className="px-3 py-3">{item.publication}</td>
-              <td className="px-3 py-3">{item.service}</td>
-              <td
-                className={`px-3 py-3 ${
-                  item.submitted ? "text-[#00875A]" : "text-[#FF5630]"
+              <td className="px-3 py-3"><p className="max-w-[200px] truncate">{order.id}</p></td>
+              <td className="px-3 py-3">{order.publication.map(item => item.title).join(', ')}</td>
+              <td className="px-3 py-3">{order.orderType === 'wonArticle' ?'Publish My Own Article':'Write Article'}</td>
+               <td
+                className={`px-3 py-3 capitalize ${
+                  order.detailsSubmitted ==='not-yet' ?"text-[#FF5630]":  "text-[#00875A]" 
                 }`}
               >
-                {item.submitted ? "Submitted" : "Not Yet"}
+                {order.detailsSubmitted === 'not-yet' ? "Not Yet" : order.detailsSubmitted }
               </td>
-              <td className="px-3 py-3">{item.date}</td>
+              <td className="px-3 py-3">{formattedDate(order.createdAt)}</td>
               <td className="pr-2.5">
                 <button
                   className={` text-white cursor-pointer py-1 px-4 capitalize font-medium w-full ${
-                    item.status === "pending"
+                    order.status === "pending"
                       ? "bg-[#FFAB00]"
-                      : item.status == "processing"
+                      : order.status == "processing"
                       ? "bg-[#36B37E]"
                       : "bg-[#008CFF]"
                   }`}
                 >
-                  {item.status}
+                  {order.status}
                 </button>
-              </td>
+              </td>  
             </tr>
           ))}
         </tbody>

@@ -7,7 +7,8 @@ const Notification = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const totalItems = 50; // Example: total number of items
     const itemsPerPage = 10; // Example: items to display per page
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const notificationData = [];
   
     const handlePageChange = (page) => {
       if (page >= 1 && page <= totalPages) {
@@ -18,10 +19,13 @@ const Notification = () => {
     };
   return (
     <div className="w-full max-w-3xl md:mx-auto">
+      {
+        notificationData.length >0 ?
+      <div className="w-full">
       <h2 className="md:text-2xl text-[20px] text-[#222425] font-glare mb-6">
         Notifications
       </h2>
-      {/* <div className="bg-white border border-[#DCDEDF]">
+      <div className="bg-white border border-[#DCDEDF]">
         <div className="flex justify-end items-center p-4 ">
           <a
             href="#"
@@ -180,8 +184,8 @@ const Notification = () => {
             </div>
           </div>
         </div>
-      </div> */}
-      {/* <div className="sm:flex items-center justify-end md:gap-28 sm:gap-10 my-8">
+      </div>
+      <div className="sm:flex items-center justify-end md:gap-28 sm:gap-10 my-8">
         <select
           defaultValue="10"
           className="text-[#878C91] text-[14px] border border-[#B2B5B8] px-2 py-[5.5px] focus:outline-2 focus:outline-[#004A87] md:mt-0 mt-1.5 sm:mb-0 mb-5 "
@@ -199,10 +203,12 @@ const Notification = () => {
           currentPage={currentPage}
           onPageChange={handlePageChange}
         />
-      </div> */}
+      </div> 
+      </div>:
       <div className="h-[50dvh] flex items-center justify-center ">
         <h1 className="text-3xl text-center leading-[150%]">No new notifications. You’ll see updates here as they come in.</h1>
       </div>
+      }
     </div>
   );
 };

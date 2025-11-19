@@ -3,12 +3,12 @@ import { DownloadIcon } from "../../../../utils/icons";
 const PaymentHistory = () => {
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between mb-3 mt-6">
+      {/* <div className="flex items-center justify-between mb-3 mt-6">
         <p className="font-glare text-[#777980] font-normal">History</p>
         <button className="bg-[#24A4FF] flex cursor-pointer items-center gap-2.5 py-2.5 px-4 text-xs font-medium text-white">
           <DownloadIcon className="fill-white w-2.5" /> Download
         </button>
-      </div>
+      </div> */}
       {/* <div className="overflow-x-auto">
         <table className="min-w-full border-collapse border border-[#DCDEDF] payment-history-table">
           <thead className="bg-[#DCDEDF]">
@@ -254,6 +254,12 @@ const PaymentHistory = () => {
           </tbody>
         </table>
       </div> */}
+
+      <div className="h-[50dvh] flex items-center justify-center ">
+        <h1 className="text-3xl text-center leading-[150%]">No payment history found.</h1>
+      </div>
+      
+
     </div>
   );
 };

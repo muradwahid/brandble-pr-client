@@ -24,6 +24,15 @@ export const orderApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["all-orders"],
     }),
+    runningOrder: build.query({
+      query: () => {
+        return {
+          url: `${ORDER_URL}/running-orders`,
+          method: "GET",
+        };
+      },
+      providesTags: ["order"],
+    }),
     order: build.query({
       query: (id) => {
         return {
@@ -65,6 +74,7 @@ export const orderApi = baseApi.injectEndpoints({
 export const { useOrdersQuery,
   useAddOrderMutation,
   useOrderStatisticsQuery,
+  useRunningOrderQuery,
   useOrderQuery,
   useUpdateOrderMutation,
   useDeleteOrderMutation, } = orderApi;

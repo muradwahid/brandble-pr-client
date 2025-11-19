@@ -1,31 +1,93 @@
 import { PiMagnifyingGlassLight } from "react-icons/pi";
 import Table from "./Table";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Pagination from "../../../common/Pagination";
 import Chat from "./Chat";
+import { useOrdersQuery } from "../../../../redux/api/orderApi";
+import { debounce } from "lodash";
 
 const DashboardPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalItems = 90; // Example: total number of items
-  const itemsPerPage = 10; // Example: items to display per page
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchTerm, setSearchTerm] = useState();
+  const [statusFilter, setStatusFilter] = useState();
+
+  // Query parameters based on your server interface
+  const queryParams = {
+    page: currentPage,
+    limit: itemsPerPage,
+    ...(searchTerm && { searchTerm }),
+    ...(statusFilter && { status: statusFilter }),
+  };
+console.log(queryParams);
+  const { data, isLoading, isFetching } = useOrdersQuery(queryParams);
+
+  const meta = data?.meta || { page: 1, limit: 10, total: 0 };
+  const ordersData = data?.orders?.data || [];
+
+  // Calculate total pages
+  const totalPages = Math.ceil(meta.total / meta.limit);
+
+  // Debounced search function
+  const debouncedSearch = useCallback(
+    debounce((searchValue) => {
+      setSearchTerm(searchValue);
+      setCurrentPage(1); // Reset to first page when searching
+    }, 500),
+    []
+  );
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    debouncedSearch(value);
+  };
+
+  const handleStatusChange = (e) => {
+    setStatusFilter(e.target.value);
+    // setCurrentPage(1);
+  };
+
+  const handleItemsPerPageChange = (e) => {
+    const value = parseInt(e.target.value);
+    setItemsPerPage(value);
+    // setCurrentPage(1);
+  };
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
-      // Here you would typically fetch new data based on the selected page
-      console.log(`Fetching data for page: ${page}`);
     }
   };
+
+  // Reset filters
+  // const resetFilters = () => {
+  //   setSearchTerm("");
+  //   setStatusFilter("");
+  //   setSortBy("createdAt");
+  //   setSortOrder("desc");
+  //   setCurrentPage(1);
+  //   // Clear the input field
+  //   const searchInput = document.getElementById("tableSearch");
+  //   if (searchInput) searchInput.value = "";
+  // };
+
+  useEffect(() => {
+    console.log('status : ', statusFilter);
+   },[statusFilter])
+  // console.log({ data });
+  if (isLoading) { 
+    return <div className="h-[70vh] w-full flex justify-center items-center">Loading...</div>;
+  }
+
   return (
-    <div className="w-full">
+    <div className="w-full overflow-x-auto">
       <div className="lg:flex justify-between items-center border-b border-[#DCDEDF] pb-4">
         <div className="md:flex gap-8 items-center w-full">
           <h3 className="text-2xl text-[#222425] font-glare">
             Dashboard
           </h3>
           <div className="w-full flex items-center justify-between">
-            <select className="text-[#878C91] text-[14px] border border-[#B2B5B8] lg:w-[180px] lg:h-[34px] w-[120px] h-[26px] px-2 rounded-[4px] focus:outline-2 focus:outline-[#004A87] md:mt-0 mt-1.5">
+            <select value={statusFilter} onChange={handleStatusChange} className="text-[#878C91] text-[14px] border border-[#B2B5B8] lg:w-[180px] lg:h-[34px] w-[120px] h-[26px] px-2 rounded-[4px] focus:outline-2 focus:outline-[#004A87] md:mt-0 mt-1.5">
               <option className="text-[#878C91]" disabled defaultValue="status">
                 Status
               </option>
@@ -38,6 +100,8 @@ const DashboardPage = () => {
                 type="text"
                 id="tableSearch"
                 placeholder="Search Here..."
+                onChange={handleSearchChange}
+   
                 className="border border-[#B2B5B8] py-1.5 text-[14px] lg:w-[180px] lg:h-[34px] w-[120px] h-[26px] px-2 rounded-[4px] focus:outline-2 focus:outline-[#004A87]"
               />
               <label
@@ -50,9 +114,11 @@ const DashboardPage = () => {
           </div>
         </div>
       </div>
-      {/* <Table />
+      <Table data={ordersData} />
       <div className="flex items-center md:justify-end justify-between gap-5 md:gap-28 sm:gap-10 my-8">
         <select
+          value={itemsPerPage}
+          onChange={handleItemsPerPageChange}
           defaultValue="10"
           className="text-[#878C91] text-[14px] border border-[#B2B5B8] sm:px-2 sm:py-[5.5px] focus:outline-2 focus:outline-[#004A87] sm:h-auto h-[27px]"
         >
@@ -69,7 +135,7 @@ const DashboardPage = () => {
           currentPage={currentPage}
           onPageChange={handlePageChange}
         />
-      </div> */}
+      </div> 
       <div className="h-[50dvh] flex items-center justify-center">
       <h1 className="text-3xl">Your running order is empty.</h1>
       </div>

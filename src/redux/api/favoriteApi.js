@@ -6,34 +6,44 @@ export const favoriteApi = baseApi.injectEndpoints({
     favorites: build.query({
       query: (id) => {
         return {
-          url: `${FAVORITE_URL}/${id}`,
+          url: `${FAVORITE_URL}/all-favorite/${id}`,
           method: "GET",
         };
       },
       providesTags: ["favorite"],
     }),
-        addFavorite: build.mutation({
-            query: (data) => ({
-            url: `${FAVORITE_URL}/create`,
-                method: "POST",
-                data,
-            }),
-            invalidatesTags: ["dofollow"],
+    favoriteIds: build.query({
+      query: (id) => {
+        return {
+          url: `${FAVORITE_URL}/all-favoriteIds/${id}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["favorite"],
+    }),
+    addFavorite: build.mutation({
+        query: (data) => ({
+        url: `${FAVORITE_URL}/create`,
+            method: "POST",
+            data,
         }),
+        invalidatesTags: ["favorite"],
+    }),
 
         deleteFavorite: build.mutation({
             query: (id) => {
-                const indexId = typeof id === "object" && id !== null ? id.id : id;
                 return {
-                  url: `${FAVORITE_URL}/${indexId}`,
+                  url: `${FAVORITE_URL}/remove/${id}`,
                     method: "DELETE",
                 };
             },
-            invalidatesTags: ["dofollow"],
+            invalidatesTags: ["favorite"],
         }),
     }),
 });
 
-export const { useFavoritesQuery,
+export const {
+  useFavoritesQuery,
+  useFavoriteIdsQuery,
     useAddFavoriteMutation,
     useDeleteFavoriteMutation, } = favoriteApi;

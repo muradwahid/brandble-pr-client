@@ -29,9 +29,11 @@ import Messages from "../components/admin/Pages/Messages/Messages";
 import Payments from "../components/admin/Pages/Payments/Payments";
 import SingleOrder from "../components/admin/Pages/TotalOrders/SingleOrder";
 import OrderDetails from "../components/admin/Pages/TotalOrders/OrderDetails";
-import Login from "../components/auth/Login";
+// import Login from "../components/auth/Login";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
-import RegisterForm from "../components/auth/RegisterForm";
+// import RegisterForm from "../components/auth/RegisterForm";
+import AdminChatDashboard from "../components/user/Chat/AdminChatDashboard";
+import UserChat from "../components/user/Chat/UserChat";
 
 
 const router = createBrowserRouter([
@@ -51,6 +53,14 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Navigate to="/user/profile" replace />,
+      },
+      {
+        path: "/user/chat",
+        element: <AdminChatDashboard />,
+      },
+      {
+        path: "/user/chat/user",
+        element: <UserChat />,
       },
       // {
       //   //index: true, // This will render at /dashboard

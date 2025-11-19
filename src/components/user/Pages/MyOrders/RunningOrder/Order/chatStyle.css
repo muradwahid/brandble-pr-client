@@ -4,7 +4,7 @@
   width: 100%;
   /* max-width: 900px; */
   /* Max width for desktop */
-  height: 90vh;
+  height: 700px;
   /* Full height on smaller screens, fixed height on larger */
   max-height: 700px;
   /* Max height for desktop */
@@ -29,6 +29,7 @@
   flex-grow: 1;
   overflow-y: auto;
   padding: 1.5rem;
+  height: 500px;
 }
 
 .order-details-message-bubble {
@@ -100,9 +101,10 @@
 .order-details-input-field {
   flex-grow: 1;
   outline: none;
-  padding: 0.75rem 1rem;
+  padding: 10px 1rem;
   /* border-radius: 0.75rem; */
   /* background-color: #f3f4f6; */
+  height: 100px;
 }
 
 /* Tablet breakpoint (typically 768px and up) */
@@ -116,5 +118,6 @@
 @media (min-width: 1024px) {
   .order-details-message-bubble {
     max-width: 50%;
+
   }
 }

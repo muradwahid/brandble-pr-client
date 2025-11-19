@@ -119,7 +119,7 @@
 
 // src/services/socketService.js
 import { io } from 'socket.io-client';
-import { getToken } from '../utils/auth';
+import { getFromLocalStorage } from '../utils/local-storage';
 
 class SocketService {
   constructor() {
@@ -133,7 +133,7 @@ class SocketService {
       return this.socket;
     }
 
-    const token = getToken();
+    const token = getFromLocalStorage('accessToken');
 
     this.socket = io(import.meta.env.VITE_SOCKET_URL, {
       auth: {

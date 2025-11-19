@@ -17,7 +17,7 @@ import SkeletonCard from '../../../common/SkeletonCard';
 import { getFromLocalStorage, setToLocalStorage } from '../../../../utils/local-storage';
 import toast from 'react-hot-toast';
 import { getUserInfo } from "../../../../helpers/user/user";
-import { useAddFavoriteMutation } from "../../../../redux/api/favoriteApi";
+import { useAddFavoriteMutation, useFavoriteIdsQuery } from "../../../../redux/api/favoriteApi";
 
 const Publications = () => {
 
@@ -29,13 +29,12 @@ const Publications = () => {
   const itemsPerPage = 10; // Example: items to display per page
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const [toggle, setToggle] = useState(false);
-  const [activeIdx, setActiveIdx] = useState(null);
 
   const [addFavorite] = useAddFavoriteMutation();
+  const { data: favorites, isLoading: favoritesLoading } = useFavoriteIdsQuery(user.id)
 
-  const { data } = usePublicationsQuery()
+  const { data, isLoading } = usePublicationsQuery()
   const { meta = {} } = data || {}
-  const isLoading = false;
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
@@ -43,6 +42,8 @@ const Publications = () => {
       console.log(`Fetching data for page: ${page}`);
     }
   };
+
+ 
 
 const addToCard = (data) => {
   const existingData = JSON.parse(getFromLocalStorage("brandableCardData")) || [];
@@ -71,7 +72,8 @@ const addToCard = (data) => {
       return;
     }
     try {
-      await addFavorite({ userId: user.id, itemId }).unwrap();
+      const favoriteData = await addFavorite({ userId: user.id, itemId }).unwrap();
+      console.log({favoriteData});
       toast.success("Added to favorites!");
     // eslint-disable-next-line no-unused-vars
     } catch (error) {
@@ -79,6 +81,13 @@ const addToCard = (data) => {
     }
   }
   const cmCls = "text-[#878C91] text-[12px] font-[12px] flex items-center";
+
+  if (favoritesLoading) {
+    return
+  }
+
+  console.log({ favorites,user });
+
   return (
     <div className="w-full">
       {/* back button */}
@@ -140,13 +149,10 @@ const addToCard = (data) => {
                         {item?.genre}
                       </p>
                       <div
-                        onClick={() => {
-                          handleAddToFavorite(item?.id);
-                          setActiveIdx(index)
-                        }}
+                        onClick={() => {handleAddToFavorite(item?.id);}}
                         className="absolute top-1 right-1 cursor-pointer"
                       >
-                        {index === activeIdx ? (
+                        {favorites?.includes(item?.id) ? (
                           <IoMdHeart className="text-[#FF5630]" />
                         ) : (
                           <IoIosHeartEmpty />
