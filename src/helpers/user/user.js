@@ -1,7 +1,7 @@
 import { setToLocalStorage } from "../../utils/local-storage";
 import { jwtDecode } from "jwt-decode";
 
-function getCookie(name) {
+export function getCookie(name) {
   const matches = document.cookie.match(new RegExp(
     '(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)'
   ));
@@ -9,7 +9,6 @@ function getCookie(name) {
 }
 
 const accessToken = getCookie('accessToken');
-
 export const storeUserInfo = ({ accessToken }) => {
   setToLocalStorage('accessToken', accessToken);
 };

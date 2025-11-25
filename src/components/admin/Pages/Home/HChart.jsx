@@ -78,13 +78,15 @@ import {
 //     </g>
 //   );
 // };
-const HChart = () => {
-  const data = [
-    { name: "Group A", value: 400, color: "#f00" },
-    { name: "Group B", value: 300 },
-    { name: "Group C", value: 300 },
-    { name: "Group D", value: 200 },
-  ];
+
+// `${publication?.growthRate} - ${publication?.revenueThisMonth}`
+const HChart = ({ publications = [] }) => {
+  const data = publications?.map((publication) => {
+    return {
+      name: publication?.title,
+      value: publication?.revenueThisMonth
+    }
+   })
   const COLORS = ["#008CFF", "#EF873A", "#FFBB28", "#DCDEDF", "#006AC2"];
   return (
     <div className="-mt-9">

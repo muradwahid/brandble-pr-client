@@ -1,6 +1,6 @@
 import { PiMagnifyingGlassLight } from "react-icons/pi";
 import Table from "./Table";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import Pagination from "../../../common/Pagination";
 import Chat from "./Chat";
 import { useOrdersQuery } from "../../../../redux/api/orderApi";
@@ -19,8 +19,7 @@ const DashboardPage = () => {
     ...(searchTerm && { searchTerm }),
     ...(statusFilter && { status: statusFilter }),
   };
-console.log(queryParams);
-  const { data, isLoading, isFetching } = useOrdersQuery(queryParams);
+  const { data, isLoading } = useOrdersQuery(queryParams);
 
   const meta = data?.meta || { page: 1, limit: 10, total: 0 };
   const ordersData = data?.orders?.data || [];
@@ -59,22 +58,7 @@ console.log(queryParams);
     }
   };
 
-  // Reset filters
-  // const resetFilters = () => {
-  //   setSearchTerm("");
-  //   setStatusFilter("");
-  //   setSortBy("createdAt");
-  //   setSortOrder("desc");
-  //   setCurrentPage(1);
-  //   // Clear the input field
-  //   const searchInput = document.getElementById("tableSearch");
-  //   if (searchInput) searchInput.value = "";
-  // };
 
-  useEffect(() => {
-    console.log('status : ', statusFilter);
-   },[statusFilter])
-  // console.log({ data });
   if (isLoading) { 
     return <div className="h-[70vh] w-full flex justify-center items-center">Loading...</div>;
   }

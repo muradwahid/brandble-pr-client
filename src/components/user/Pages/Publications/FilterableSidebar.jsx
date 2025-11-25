@@ -1,7 +1,8 @@
 import { RxMagnifyingGlass } from "react-icons/rx";
 import "./style.css";
 import { AdultIcon, BitcoinIcon, CardiologyIcon, CasinoIcon, SpaIcon } from "../../../../utils/icons";
-const FilterableSidebar = ({className}) => {
+import PriceRangeSlider from "../../../common/PriceRangeSlider";
+const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publication, setPublication, domainAuthority, setDomainAuthority, domainRating, setDomainRating, location, setLocation, genre, setGenre, doFollow, setDoFollow, indexed, setIndexed, niche, setNiche, range, setRange }) => {
 
 
   const ninche = [
@@ -32,30 +33,33 @@ const FilterableSidebar = ({className}) => {
     },
   ]
 
+  const handleReset = () => { 
+    setSearch('');
+    setSortBy('');
+    setPublication('')
+    setDomainAuthority('')
+    setDomainRating('')
+    setLocation('')
+    setGenre('')
+    setDoFollow('')
+    setIndexed('')
+    setNiche('')
+  }
+
+
   const commonCls = "w-full px-4 py-2 border border-[#DCDEDF] text-[14px]  text-[#878C91] placeholder-[#878C91] bg-[#F6F7F7] focus:outline outline-[#004A87]";
   const labelCls = "block text-[#002747] text-[14px] mb-1";
   return (
     <div className={className}>
       <div className="bg-white h-full w-full md:w-60 max-w-60 border-r border-[#DCDEDF] pr-6">
         <div className="mb-3">
-          <label className="block text-gray-700 text-lg font-medium mb-3">
-            Price Range
-          </label>
-          <div className="flex justify-between items-center text-gray-600 text-sm mb-2">
-            <span>$0</span>
-            <span>$1000</span>
-          </div>
-          <div className="relative custom-slider-track">
-            <div
-              className="custom-slider-thumb left"
-              style={{ left: "0%" }}
-            ></div>
-
-            <div
-              className="custom-slider-thumb right"
-              style={{ left: "100%" }}
-            ></div>
-          </div>
+          <PriceRangeSlider
+            min={0}
+            max={5000}
+            step={100}
+            valueMin={range.min || 0}
+            valueMax={range.max|| 5000}
+            onChange={({ min, max }) => setRange({ min, max })} />
         </div>
 
         <div className="mb-3">
@@ -66,6 +70,7 @@ const FilterableSidebar = ({className}) => {
             <input
               type="text"
               id="publication-search"
+              onChange={e => setSearch(e.target.value)}
               placeholder="Search Publication Here..."
               className={`pl-8 ${commonCls}`}
             />
@@ -78,11 +83,11 @@ const FilterableSidebar = ({className}) => {
             Sort by
           </label>
           <div className="relative">
-            <select id="sort-by" className={`appearance-none ${commonCls}`}>
-              <option>Price (Asc)</option>
-              <option>Price (Desc)</option>
-              <option>Date (Asc)</option>
-              <option>Date (Desc)</option>
+            <select value={sortBy} onChange={e=>setSortBy(e.target.value)} id="sort-by" className={`appearance-none ${commonCls}`}>
+              <option value="">Price (Asc)</option>
+              <option value="priceDesc">Price (Desc)</option>
+              <option value="dateAsc">Date (Asc)</option>
+              <option value="dateDesc">Date (Desc)</option>
             </select>
             <div className="custom-dropdown-arrow">
               <svg
@@ -109,11 +114,13 @@ const FilterableSidebar = ({className}) => {
           </label>
           <div className="relative">
             <select
+              value={publication}
+              onChange={e=>setPublication(e.target.value)}
               id="publication-dropdown"
               className={`appearance-none ${commonCls}`}
             >
-              <option>Publication (Asc)</option>
-              <option>Publication (Desc)</option>
+              <option value=''>Publication (Asc)</option>
+              <option value='desc' >Publication (Desc)</option>
             </select>
             <div className="custom-dropdown-arrow">
               <svg
@@ -142,9 +149,11 @@ const FilterableSidebar = ({className}) => {
             <select
               id="domain-authority"
               className={`appearance-none ${commonCls}`}
+              value={domainAuthority}
+              onChange={e=>setDomainAuthority(e.target.value)}
             >
-              <option>Domain Authority (Asc)</option>
-              <option>Domain Authority (Desc)</option>
+              <option value={''}>Domain Authority (Asc)</option>
+              <option value={'desc'}>Domain Authority (Desc)</option>
             </select>
             <div className="custom-dropdown-arrow">
               <svg
@@ -172,10 +181,12 @@ const FilterableSidebar = ({className}) => {
           <div className="relative">
             <select
               id="domain-rating"
+              value={domainRating}
               className={`appearance-none ${commonCls}`}
+              onChange={e=>setDomainRating(e.target.value)}
             >
-              <option>Domain Rating (Asc)</option>
-              <option>Domain Rating (Desc)</option>
+              <option value={''}>Domain Rating (Asc)</option>
+              <option value={'desc'}>Domain Rating (Desc)</option>
             </select>
             <div className="custom-dropdown-arrow">
               <svg
@@ -201,7 +212,7 @@ const FilterableSidebar = ({className}) => {
             Location
           </label>
           <div className="relative">
-            <select id="location" className={`appearance-none ${commonCls}`}>
+            <select value={location} onChange={e=>setLocation(e.target.value)} id="location" className={`appearance-none ${commonCls}`}>
               <option>Select Location</option>
               <option>USA</option>
               <option>Europe</option>
@@ -231,7 +242,7 @@ const FilterableSidebar = ({className}) => {
             Genre
           </label>
           <div className="relative">
-            <select id="genre" className={`appearance-none ${commonCls}`}>
+            <select value={genre} onChange={e=>setGenre(e.target.value)} id="genre" className={`appearance-none ${commonCls}`}>
               <option>Genre</option>
               <option>News</option>
               <option>Sports</option>
@@ -261,9 +272,9 @@ const FilterableSidebar = ({className}) => {
             Do Follow
           </label>
           <div className="relative">
-            <select id="do-follow" className={`appearance-none ${commonCls}`}>
-              <option>Yes</option>
-              <option>No</option>
+            <select value={doFollow} onChange={e=>setDoFollow(e.target.value)} id="do-follow" className={`appearance-none ${commonCls}`}>
+              <option value={'yes'}>Yes</option>
+              <option value={'no'}>No</option>
             </select>
             <div className="custom-dropdown-arrow">
               <svg
@@ -289,9 +300,9 @@ const FilterableSidebar = ({className}) => {
             Indexed
           </label>
           <div className="relative">
-            <select id="indexed" className={`appearance-none ${commonCls}`}>
-              <option>Yes</option>
-              <option>No</option>
+            <select value={indexed} onChange={e=>setIndexed(e.target.value)} id="indexed" className={`appearance-none ${commonCls}`}>
+              <option value={'yes'}>Yes</option>
+              <option value={'no'}>No</option>
             </select>
             <div className="custom-dropdown-arrow">
               <svg
@@ -318,7 +329,8 @@ const FilterableSidebar = ({className}) => {
             {ninche.map((item, index) => (
               <div
                 key={index}
-                className="border border-[#B2B5B8] py-1.5 px-2 flex items-center gap-2 cursor-pointer"
+                onClick={()=>setNiche(item.title)}
+                className={`border border-[#B2B5B8] py-1.5 px-2 flex items-center gap-2 cursor-pointer ${item.title === niche ?'bg-[#eeeeee]':''}`}
               >
                 {item.icon}
                 <span className="text-[#878C91] text-[12px] m-0 p-0">
@@ -330,7 +342,7 @@ const FilterableSidebar = ({className}) => {
         </div>
 
         <div className="text-right">
-          <button className="bg-[#171819] hover:bg-gray-700 py-1.5 px-6 text-[#F2F2F3] transition duration-300 ease-in-out cursor-pointer rounded-sm">
+          <button onClick={()=>handleReset()} className="bg-[#171819] hover:bg-gray-700 py-1.5 px-6 text-[#F2F2F3] transition duration-300 ease-in-out cursor-pointer rounded-sm">
             Reset Filter
           </button>
         </div>

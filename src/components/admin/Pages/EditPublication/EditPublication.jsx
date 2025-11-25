@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import countries from "../../../../assets/countries.json";
-import { AddImageIcon, ArrowDownIcon } from "../../../../utils/icons";
+import { AddImageIcon, ArrowDownIcon, LoadingIcon } from "../../../../utils/icons";
 import MultiSelectToken from "../../../ui/MultiSelectToken/MultiSelectToken";
 import SelectControl from "../../../ui/SelectControl/SelectControl";
 import { RxCross2 } from "react-icons/rx";
@@ -43,7 +43,7 @@ const EditPublication = () => {
     formState: { errors }, setValue,
   } = useForm();
 
-  const [updatePublication] = useUpdatePublicationMutation();
+  const [updatePublication, {isLoading}] = useUpdatePublicationMutation();
 
 
 
@@ -87,18 +87,6 @@ const EditPublication = () => {
         toast.error(err.message);
       }
 
-      //   const response = await fetch(`http://localhost:5000/api/v1/publication/${id}`, {
-      //   method: 'PATCH',
-      //   body: formData,
-
-      // });
-
-      // if (!response.ok) {
-      //   const errorData = await response.json();
-      //   console.error('Server error details:', errorData);
-      //   throw new Error(`HTTP error! status: ${response.status}`);
-      // }
-
     }
   }
 
@@ -120,7 +108,6 @@ const EditPublication = () => {
   };
 
 
-  // console.log(singlePublication)
 
   return (
     <div className="border border-[#F2F2F3] p-6 w-4/5 mx-auto singlePublicationAdmin">
@@ -151,7 +138,7 @@ const EditPublication = () => {
                   alt=""
 
                 />}
-              {!(imagePreview || !singlePublication?.logo) && (
+              {!(imagePreview || singlePublication?.logo) && (
                 <AddImageIcon className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
               )}
             </div>
@@ -227,14 +214,14 @@ const EditPublication = () => {
                 Niche
               </p>
               <MultiSelectToken
-                value={niches || []}
+                value={niches}
                 {...register("niches")}
                 options={nichesData?.niches || []}
+                placeholder='Ex: Health'
                 onChange={(value) => {
                   setNiches(value);
                   setValue("niches", value);
                 }}
-                placeholder='Ex: Health'
                 onAddNiche={(v) => handleAddNiche(v)}
                 isLoading={addNicheLoading}
               />
@@ -318,7 +305,7 @@ const EditPublication = () => {
                 key={singlePublicationLoading}
                 options={sponsorsData?.sponsors || []}
                 label="Option"
-                value={singlePublication?.sponsored}
+                value={singlePublication?.sponsor}
                 register={register}
                 isNotRequired={false}
                 inputType="radio"
@@ -427,11 +414,14 @@ const EditPublication = () => {
 
           </div>
           <div className="flex justify-end">
-            <input
-              type="submit"
-              value="Update"
-              className="font-poppins text-white bg-[#002747] px-11 py-3 mt-9 cursor-pointer"
-            />
+                        <button
+                          disabled={isLoading}
+                          type="submit"
+              className="font-poppins text-white bg-[#002747] px-11 py-3 mt-9 cursor-pointer flex items-center gap-3"
+                        >
+              Update
+                          {isLoading &&<LoadingIcon fill='#fff' style={{ height: "20px" }} />}
+                        </button>
           </div>
         </div>
       </form>

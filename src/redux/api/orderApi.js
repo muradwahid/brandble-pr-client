@@ -5,7 +5,7 @@ export const orderApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     orders: build.query({
       query: (arg) => ({
-        url: `${ORDER_URL}/all-orders`,
+        url: `${ORDER_URL}/user/all-orders`,
         method: "GET",
         params: arg,
       }),
@@ -13,6 +13,62 @@ export const orderApi = baseApi.injectEndpoints({
         return {
           orders: response,
         };
+      },
+      providesTags: ["order","create"],
+    }),
+    adminOrders: build.query({
+      query: (arg) => ({
+        url: `${ORDER_URL}/admin/all-orders`,
+        method: "GET",
+        params: arg,
+      }),
+      transformResponse: (response) => {
+        return {
+          orders: response,
+        };
+      },
+      providesTags: ["order","create"],
+    }),
+    userOrders: build.query({
+      query: (arg) => ({
+        url: `${ORDER_URL}/user-all-orders`,
+        method: "GET",
+        params: arg,
+      }),
+      transformResponse: (response) => {
+        return response
+      },
+      providesTags: ["order","create"],
+    }),
+    adminPaymentsStatistic: build.query({
+      query: () => ({
+        url: `${ORDER_URL}/admin/payment-revenue-statistics`,
+        method: "GET",
+      }),
+      transformResponse: (response) => {
+        return response
+      },
+      providesTags: ["order","create"],
+    }),
+    specificUserOrders: build.query({
+      query: ({userId,...arg}) => ({
+        url: `${ORDER_URL}/specific-user-orders/${userId}`,
+        method: "GET",
+        params: arg,
+      }),
+      transformResponse: (response) => {
+        return response
+      },
+      providesTags: ["order","create"],
+    }),
+    orderRevenue: build.query({
+      query: (arg) => ({
+        url: `${ORDER_URL}/revenue-statistics`,
+        method: "GET",
+        params: arg,
+      }),
+      transformResponse: (response) => {
+        return response
       },
       providesTags: ["order","create"],
     }),
@@ -51,9 +107,26 @@ export const orderApi = baseApi.injectEndpoints({
       },
       providesTags: ["order"],
     }),
+    upcomingOrders: build.query({
+      query: () => {
+        return {
+          url: `${ORDER_URL}/orders-upcoming-deadlines`,
+          method: "GET",
+        };
+      },
+      providesTags: ["order"],
+    }),
     updateOrder: build.mutation({
       query: (data) => ({
         url: `${ORDER_URL}/${data.id}`,
+        method: "PATCH",
+        data: data.body,
+      }),
+      invalidatesTags: ["order"],
+    }),
+    updateOrderStatus: build.mutation({
+      query: (data) => ({
+        url: `${ORDER_URL}/${data.id}/status`,
         method: "PATCH",
         data: data.body,
       }),
@@ -71,10 +144,18 @@ export const orderApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useOrdersQuery,
+export const {
+  useOrdersQuery,
+  useAdminOrdersQuery,
+  useUserOrdersQuery,
+  useAdminPaymentsStatisticQuery,
+  useSpecificUserOrdersQuery,
   useAddOrderMutation,
   useOrderStatisticsQuery,
+  useUpcomingOrdersQuery,
   useRunningOrderQuery,
   useOrderQuery,
+  useOrderRevenueQuery,
   useUpdateOrderMutation,
+  useUpdateOrderStatusMutation,
   useDeleteOrderMutation, } = orderApi;

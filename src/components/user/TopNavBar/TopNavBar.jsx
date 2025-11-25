@@ -8,7 +8,7 @@ import siteLogo from "../../../assets/logo.png";
 import Cart from "../../ui/Card/Cart";
 import { FaUser } from "react-icons/fa";
 import { getUserInfo } from "../../../helpers/user/user";
-import { useGetUserByCookieQuery, useUserQuery } from "../../../redux/api/authApi";
+import { useUserQuery } from "../../../redux/api/authApi";
 import NavBarNotification from "../Pages/NavBarNotification/NavBarNotification";
 const TopNavBar = () => {
   const btnRef = useRef(null);
@@ -21,7 +21,6 @@ const TopNavBar = () => {
   const user = getUserInfo();
   const { data } = useUserQuery(user?.id);
   
-  const {data:userData } = useGetUserByCookieQuery();
 
   useEffect(() => {
     function handleClick(event) {
@@ -59,11 +58,6 @@ const TopNavBar = () => {
     };
   }, [bellIconRef]);
 
-  useEffect(() => {
-    const cookies = document.cookie;
-    console.log("Cookies:", cookies);
-    console.log({user,data});
-  }, [userData]);
 
   return (
     <nav className="w-full border-b-[1px] border-b-[#171819]">

@@ -53,16 +53,16 @@ const RunningOrder = () => {
     return <div className="h-[70vh] w-full flex justify-center items-center">Loading...</div>;
   }
 
-  const detailsSubmitted = (val, id) => { 
+
+  const detailsSubmitted = (val, id, hrefTo) => { 
     const detail = val==='not-yet'? 'Not Yet' : val
-    return <Link className={`${val === 'not-yet' ? 'text-[#FF5630]' :'#00875A'}`} to={`/user/orders/running/${id}`}>
+    return <Link className={`${val === 'not-yet' ? 'text-[#FF5630]' : '#00875A'}`} to={hrefTo}>
       {detail}
     </Link>
   }
-
   return (
     <div>
-        {data.length>0 ? <div className="overflow-x-auto">
+        {data?.length>0 ? <div className="overflow-x-auto">
         <div className="flex justify-between items-center mb-5 border-b-2 border-[#DCDEDF] pb-3 flex-wrap gap-1.5">
           <h2 className="md:text-2xl text-[20px] text-[#222425] font-glare">
             Orders
@@ -101,35 +101,36 @@ const RunningOrder = () => {
             </tr>
           </thead>
           <tbody className=" text-[#36383A]">
-            {searchData?.map((item, index) => (
-              <tr
+            {searchData?.map((item, index) => {
+              const hrefTo = item.orderType === 'wonArticle' ? `/user/orders/running/${item.id}` : `/user/orders/running/${item.id}/details`;
+              return <tr
                 key={index}
                 className="border-t border-[#DCDEDF] hover:bg-[#DCDEDF] transition-all duration-300 "
               >
                 <td className="px-3 py-3">
-                  <Link to={`/user/orders/running/${item.id}`}>
+                  <Link to={hrefTo}>
                     {index + 1}
                   </Link>
                 </td>
-                <td className="px-3 py-3 text-[#006AC2] cursor-pointer">
-                  <Link to={`/user/orders/running/${item.id}`}>{item.orderId}</Link>
+                <td className="px-3 py-3 text-[#006AC2] cursor-pointer mx-w-[200px] truncate">
+                  <Link to={hrefTo} cla>{item.id}</Link>
                 </td>
                 <td className="px-3 py-3 cursor-pointer">
-                  <Link to={`/user/orders/running/${item.id}`}>
-                    {item.publication.map(item => item.title).join(', ')}
+                  <Link to={hrefTo}>
+                    {item.publication.title}
                   </Link>
                 </td>
                 <td className="px-3 py-3 cursor-pointer">
             
-                    {detailsSubmitted(item.detailsSubmitted,item.id)}
+                  {detailsSubmitted(item.detailsSubmitted, item.id, hrefTo)}
                 </td>
                 <td className="px-3 py-3 cursor-pointer">
-                  <Link to={`/user/orders/running/${item.id}`}>
+                  <Link to={hrefTo}>
                     {formattedDate(item.createdAt)}
                   </Link>
                 </td>
                 <td className="px-3 py-3">
-                  <Link to={`/user/orders/running/${item.id}`}>
+                  <Link to={hrefTo}>
                     {formattedDate(item.updatedAt)}
                   </Link>
                 </td>
@@ -147,7 +148,7 @@ const RunningOrder = () => {
                   </button>
                 </td>
               </tr>
-            ))}
+            })}
           </tbody>
         </table> 
       </div>:

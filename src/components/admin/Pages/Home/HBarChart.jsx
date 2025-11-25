@@ -9,51 +9,10 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-const HBarChart = () => {
-  const [data] = useState([
-    {
-      name: "Sat",
-      uv: 3000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: "Sun",
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: "Mon",
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: "Tue",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: "Wed",
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: "Thu",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: "Fri",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-  ]);
+const HBarChart = ({ data = {}, isLoading }) => {
+
+
+  const revenueData = data?.week || []
   const [activeIndex, setActiveIndex] = useState(0);
 
   const handleClick = (data, index) => {
@@ -67,19 +26,23 @@ const HBarChart = () => {
     return `$${value}`;
   };
 
+  if (isLoading) {
+    return;
+  }
+
   return (
     <div className="revenue-statistic-barChart">
       <ResponsiveContainer width="100%" height={250}>
-        <BarChart width={150} height={40} data={data}>
+        <BarChart width={150} height={40} data={revenueData}>
           <Bar dataKey="uv" onMouseOver={handleClick}>
-            {data.map((entry, index) => (
+            {revenueData?.map((entry, index) => (
               <Cell
                 cursor="pointer"
                 radius={[4, 4, 4, 4]}
                 fill={
                   index === activeIndex
                     ? "#36B37E"
-                    : index === data.length - 1
+                    : index === revenueData?.length - 1
                     ? "#222425" // Color for last index
                     : "#F2F2F3"
                 }

@@ -3,6 +3,7 @@ import Chat from './Chat';
 import { formattedDate } from '../../../../../../utils/function';
 
 const OrderStatusAndChat = ({ orderDetails }) => {
+  console.log({ orderDetails });
   return (
     <div className="w-full md:w-[30%] space-y-16">
       {/* order status */}
@@ -26,7 +27,7 @@ const OrderStatusAndChat = ({ orderDetails }) => {
         </div>
         <div>
           <p className="text-[#5F6368] text-sm mb-1.5">Publication</p>
-          <p className="text-[#36383A]">{orderDetails.publication.map(p=>p.title).join(', ')}</p>
+          <p className="text-[#36383A]">{orderDetails?.publication?.title}</p>
         </div>
         <div>
           <p className="text-[#5F6368] text-sm mb-1.5">Amount</p>

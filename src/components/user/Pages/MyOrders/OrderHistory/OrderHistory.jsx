@@ -7,27 +7,50 @@ import { formattedDate } from "../../../../../utils/function";
 
 const OrderHistory = () => {
 
-
   const [tooltip, setTooltip] = useState({ visible: false, text: 'Copy ID' });
   const hideTimer = useRef(null);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const totalItems = 40; // Example: total number of items
-  const itemsPerPage = 10; // Example: items to display per page
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [inputSearch, setInputSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
 
-  
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(inputSearch);
+      setCurrentPage(1);
+    }, 500); 
 
-  const { data, isLoading } = useOrdersQuery()
-  const ordersData = data?.orders?.data || []
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [inputSearch]);
+
+  const { data, isLoading } = useOrdersQuery({
+    page: currentPage,
+    limit: itemsPerPage,
+    ...(debouncedSearch && { searchTerm: debouncedSearch })
+  });
+
+  // Extract data from response
+  const ordersData = data?.orders?.data || [];
+  const meta = data?.orders?.meta || {
+    total: 0,
+    page: 1,
+    limit: itemsPerPage
+  };
+
+  const totalPages = Math.ceil(meta?.total / itemsPerPage);
+
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
-      // Here you would typically fetch new data based on the selected page
-      console.log(`Fetching data for page: ${page}`);
     }
   };
 
+  const handleSearchChange = (e) => {
+    setInputSearch(e.target.value);
+  };
 
 
   const handleCopy = async (orderId) => {
@@ -65,17 +88,19 @@ const OrderHistory = () => {
 
   return (
     <div className="w-full max-w-3xl md:mx-auto">
-{ordersData.length >0?      <div className="w-full">
+      {meta?.total >0?      <div className="w-full">
       <div className="flex justify-between items-center mb-4  flex-wrap gap-1.5">
         <h2 className="md:text-2xl text-[20px] text-[#222425] font-glare">
           History
         </h2>
         <div className="flex gap-1.5">
           <input
-            type="text"
-            id="orderSearch"
-            placeholder="Search Here..."
-            className="w-full border border-[#DCDEDF] py-1 px-3 text-[14px] focus:outline-2 focus:outline-[#004A87] text-[#5F6368] placeholder-[#5F6368] bg-white rounded-sm"
+              type="text"
+              id="orderSearch"
+              placeholder="Search Here..."
+              className="w-full border border-[#DCDEDF] py-1 px-3 text-[14px] focus:outline-2 focus:outline-[#004A87] text-[#5F6368] placeholder-[#5F6368] bg-white rounded-sm"
+              onChange={(e) => handleSearchChange(e)}
+              value={inputSearch}
           />
           <button className="border border-[#DCDEDF] px-2 rounded-sm cursor-pointer">
             <label htmlFor="orderSearch">
@@ -90,15 +115,15 @@ const OrderHistory = () => {
           ordersData.map((order) => <div key={order.id} className="border border-[#DCDEDF] p-2.5 mb-5">
             <div className="flex items-center justify-between">
               <div onClick={() => handleCopy(order.id)} className=" text-[#878C91] md:text-[16px] text-[14px] flex items-center gap-3" onMouseLeave={() => setTooltip(t => ({ ...t, visible: false }))} onMouseEnter={() => setTooltip(t => ({ ...t, visible: true }))}>
-                {order.id} <div className="relative">
+                {order.id} <div className="relative group">
                   <CopyIcon className="fill-[#878C91] cursor-pointer" />
-                {tooltip.visible && (
-                  <span className="absolute -top-8 left-1/2 transform -translate-x-1/2
+                  {/* {tooltip.visible && ( */}
+                  <span className="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 transform -translate-x-1/2
                          bg-gray-800 text-white text-xs rounded px-2 py-1
                          whitespace-nowrap">
                     {tooltip.text}
                   </span>
-                )}
+                {/* )} */}
                 </div>
               </div>
               <p className={` text-white text-sm font-medium md:px-7 px-4 py-1 capitalize tracking-wide ${order.status === "pending"
@@ -121,7 +146,7 @@ const OrderHistory = () => {
               <div className="text-[#878C91] text-sm">
                 <div className="flex gap-3">
                   <p className="">Sponsored</p>
-                  <p className="capitalize">: {order?.publication[0]?.sponsor}</p>
+                  <p className="capitalize">: {order?.publication?.sponsor}</p>
                 </div>
                 <div className="flex gap-3 mt-1">
                   <p className="">Date</p>
@@ -134,13 +159,13 @@ const OrderHistory = () => {
                   <p className="">
                     :{" "}
                     <span className="bg-[#DCDEDF] px-3 py-0.5">
-                      {order?.publication[0]?.genre}
+                      {order?.publication?.genre}
                     </span>
                   </p>
                 </div>
                 <div className="flex gap-3 mt-1">
                   <p className="">Region</p>
-                  <p className="">: {order?.publication[0]?.region}</p>
+                  <p className="">: {order?.publication?.region}</p>
                 </div>
               </div>
             </div>
@@ -149,8 +174,9 @@ const OrderHistory = () => {
       </div>
       <div className="sm:flex items-center justify-between md:gap-28 sm:gap-10 my-8">
         <select
-          defaultValue="10"
-          className="text-[#878C91] text-[14px] border border-[#B2B5B8] px-2 py-[5.5px] focus:outline-2 focus:outline-[#004A87] md:mt-0 mt-1.5 sm:mb-0 mb-5 "
+            className="text-[#878C91] text-[14px] border border-[#B2B5B8] px-2 py-[5.5px] focus:outline-2 focus:outline-[#004A87] md:mt-0 mt-1.5 sm:mb-0 mb-5 "
+            value={itemsPerPage}
+            onChange={(e) => setItemsPerPage(e.target.value)}
         >
           <option value="5" defaultValue="5">
             5 Result

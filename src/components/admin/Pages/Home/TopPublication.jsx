@@ -1,5 +1,3 @@
-import { publicationData } from "../../../user/Pages/Publications/data";
-
 import {
   AdultIcon,
   AmericaIcon,
@@ -23,7 +21,7 @@ import { usePublicationsQuery } from "../../../../redux/api/publicationApi";
 const TopPublication = () => {
 
   const {data} = usePublicationsQuery();
-  console.log(data);
+
   return (
     <div>
       <div className="mb-5 mt-11 flex justify-between items-center border-t border-[#DCDEDF] pt-11">

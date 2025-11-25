@@ -9,9 +9,11 @@ import { formattedDate } from "../../../../../../utils/function";
 const Order = () => {
   const { id } = useParams();
   const { data, isLoading } = useOrderQuery(id)
+
   if (isLoading) {
-    return <>loading</>
+    return <div className="h-[70vh] w-full flex justify-center items-center">Loading...</div>;
   }
+
   return (
     <div className="w-full h-full">
       {/* back button */}
@@ -57,49 +59,42 @@ const Order = () => {
                 <tbody className=" text-[#36383A]">
                   <tr className="border-b border-[#DCDEDF] hover:bg-[#F6F7F7] transition-all duration-300">
                     <td className="px-3 py-3">
-                      <Link to={`/user/orders/running/${id}/details`}>1</Link>
+                      1
                     </td>
                     <td className="px-3 py-3">
-                      <Link to={`/user/orders/running/${id}/details`}>
-                        <div
+                      <a
+                        href={JSON.parse(data.wonArticle?.file)[0]}
                           className="tooltip"
-                          data-tip='Click to download'
+                        data-tip='Click to download'
+                        download
                         >
                           <BsFileEarmarkText className="text-[#36383A] text-[20px]" />
-                        </div>
-                      </Link>
+                        </a>
                     </td>
                     <td className="px-3 py-3">
-                      <Link to={`/user/orders/running/${id}/details`}>
                         {data.id}
-                      </Link>
                     </td>
                     <td className="px-3 py-3">
-                      <Link to={`/user/orders/running/${id}/details`}>
-                        {data.publication.map(p=>p.title).join(', ')}
-                      </Link>
+                        {data?.publication?.title}
                     </td>
                     <td className="px-3 py-3">
-                      <Link to={`/user/orders/running/${id}/details`}>
                         {formattedDate(data.createdAt)}
-                      </Link>
                     </td>
                   </tr>
                 </tbody>
               </table>
             </div>
             {/* message */}
-            <div className="w-full mt-14">
-              <p className="text-[#5F6368] text-sm mb-3">Message</p>
-              <div className="text-[#222425] bg-[#F6F7F7] border border-[#DCDEDF] p-3 w-full">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nihil
-                officiis quaerat enim, consequatur rerum vitae nesciunt deserunt
-                aliquam amet architecto, facere accusamus deleniti libero
-                tenetur, illo sequi non voluptas expedita similique ex facilis
-                hic. Molestias tenetur vel ratione, esse nisi cum officia sed
-                quibusdam quam exercitationem officiis tempora aperiam minus.
+            {
+              data?.wonArticle?.message && <div className="w-full mt-14">
+                <p className="text-[#5F6368] text-sm mb-3">Message</p>
+                <div className="text-[#222425] bg-[#F6F7F7] border border-[#DCDEDF] p-3 w-full">
+                  {data?.wonArticle?.message}
+                </div>
               </div>
-            </div>
+
+            }
+    
           </div>
         </div>
 

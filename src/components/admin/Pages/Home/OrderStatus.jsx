@@ -8,6 +8,7 @@ import Tooltip from "../../../ui/Tooltip";
 import HChart from "./HChart";
 import PublicationStatistic from "./PublicationStatistic";
 import { useOrderStatisticsQuery } from "../../../../redux/api/orderApi";
+import { usePublicationStatisticQuery } from "../../../../redux/api/publicationApi";
 
 const OrderStatus = () => {
   const [filter, setFilter] = useState("today");
@@ -16,11 +17,10 @@ const OrderStatus = () => {
   const statisticRef = useRef();
   const viewRef = useRef();
   
-  const { data } = useOrderStatisticsQuery();
-
+  const { data, isLoading } = useOrderStatisticsQuery();
+  const { data:publicationStatistic, isLoading:publicationStatisticLoading} = usePublicationStatisticQuery()
   const percent = parseInt((Number(data?.repeatClient || 0) / Number(data?.totalOrders || 0)) * 100);
-
-
+  const publications = publicationStatistic?.publications || []
   useEffect(() => {
     function handleClick(event) {
       if (
@@ -38,6 +38,17 @@ const OrderStatus = () => {
       document.removeEventListener("mousedown", handleClick);
     };
   }, [viewRef]);
+
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  const handleGrowthScale = (val) => { 
+    const firstNonWhitespace = val.trimStart().charAt(0);
+    return firstNonWhitespace === '+'
+  }
+
   return (
     <div className="w-full">
       <div>
@@ -77,10 +88,10 @@ const OrderStatus = () => {
             <div className="md:border-r md:border-b-0 border-b border-[#DCDEDF] pr-6 flex-1 md:pb-0 pb-5">
               <div className="flex items-center mb-11 justify-between">
                 <p className="text-[#5F6368]">Total Orders</p>
-                {/* <div className="flex items-center gap-3 text-[#de350b] bg-[rgba(255,143,115,0.5)] border border-[#FF8F73] rounded-[4px] px-2 py-1 ml-5 shadow-md shadow-[rgba(255,143,115,0.3)]">
+                <div className="flex items-center gap-3 text-[#de350b] bg-[rgba(255,143,115,0.5)] border border-[#FF8F73] rounded-[4px] px-2 py-1 ml-5 shadow-md shadow-[rgba(255,143,115,0.3)]">
                   <p className="text-xs font-medium">3.5 %</p>{" "}
                   <TrendingDownIcon />
-                </div> */}
+                </div>
               </div>
               <div className="flex gap-5">
                 <div className="w-[31px] h-[126px] rounded-sm overflow-hidden relative">
@@ -112,7 +123,7 @@ const OrderStatus = () => {
                         <p className="w-[16px] h-[16px] bg-[#ff991f] rounded-[6px]"></p>
                         <p className="text-[#5F6368] text-sm">Repeat Client</p>
                       </div>
-                      <p className="text-[#5F6368] text-sm">{data?.repeatClient || 0}</p>
+                      <p className="text-[#5F6368] text-sm">{data?.repeatClients || 0}</p>
                     </div>
                   </div>
                 </div>
@@ -146,14 +157,14 @@ const OrderStatus = () => {
                         <p className="w-[16px] h-[16px] bg-[#7900FA] rounded-[6px]"></p>
                         <p className="text-[#5F6368] text-sm">Delivered</p>
                       </div>
-                      <p className="text-[#5F6368] text-sm">{data?.newClient || 0}</p>
+                      <p className="text-[#5F6368] text-sm">{data?.delivered || 0}</p>
                     </div>
                     <div className="flex justify-between">
                       <div className="flex items-center gap-2">
                         <p className="w-[16px] h-[16px] bg-[#ff991f] rounded-[6px]"></p>
                         <p className="text-[#5F6368] text-sm">In Progress</p>
                       </div>
-                      <p className="text-[#5F6368] text-sm">{data?.repeatClient || 0}</p>
+                      <p className="text-[#5F6368] text-sm">{data?.inProgress || 0}</p>
                     </div>
                   </div>
                 </div>
@@ -174,64 +185,45 @@ const OrderStatus = () => {
                   </div>
                 </div>
                 <div className="flex gap-5 w-full">
-                  <div className="grid content-between w-full">
-                    {/* <div className="w-full grid gap-1">
-                      <div className="w-full flex items-center justify-between">
-                        <p className="text-[#5F6368] text-sm">Hood Critic</p>
-                        <span className="text-[#5F6368] group text-sm relative transition-all duration-200">
-                          15
-                          <Tooltip
-                            className={`absolute bg-white border w-[150px] border-[#F2F2F3] `}
-                          >
-                            15 Order placed this month
-                          </Tooltip>
-                        </span>
-                        <p className="text-[#36b37e] text-sm flex items-center gap-1">
-                          7.5 % <TrendingUpIcon />
-                        </p>
+                  {
+                    publications?.length > 0 ? <div className="grid content-between w-full">
+                      <div className="w-full grid gap-1">
+                        {
+                          publications?.slice(0, 3)?.map((publication) => <div key={publication?.id} className="w-full flex items-center justify-between">
+                            <p className="text-[#5F6368] text-sm">Hood Critic</p>
+                            <span className="text-[#5F6368] group text-sm relative transition-all duration-200">
+                              {publication?.ordersThisMonth}
+                              <Tooltip
+                                className={`absolute bg-white border w-[150px] border-[#F2F2F3] `}
+                              >
+                                {publication?.ordersThisMonth} Order placed this month
+                              </Tooltip>
+                            </span>
+                            {handleGrowthScale(publication?.growthRate) ? <p className="text-[#36b37e] text-sm flex items-center gap-1">
+                              {publication?.growthRate} <TrendingUpIcon />
+                            </p> : <p className="text-[#de350b] text-sm flex items-center gap-1">
+                                {publication?.growthRate}<TrendingDownIcon />
+                            </p>}
+  
+
+                          </div>)
+                        }
                       </div>
-                      <div className="w-full flex items-center justify-between">
-                        <p className="text-[#5F6368] text-sm">Hood Critic</p>
-                        <span className="text-[#5F6368] group text-sm relative transition-all duration-200">
-                          15
-                          <Tooltip
-                            className={`absolute bg-white border w-[150px] border-[#F2F2F3] `}
-                          >
-                            15 Order placed this month
-                          </Tooltip>
-                        </span>
-                        <p className="text-[#36b37e] text-sm flex items-center gap-1">
-                          7.5 % <TrendingUpIcon />
-                        </p>
-                      </div>
-                      <div className="w-full flex items-center justify-between">
-                        <p className="text-[#5F6368] text-sm">Hood Critic</p>
-                        <span className="text-[#5F6368] group text-sm relative transition-all duration-200">
-                          15
-                          <Tooltip
-                            className={`absolute bg-white border w-[150px] border-[#F2F2F3] `}
-                          >
-                            15 Order placed this month
-                          </Tooltip>
-                        </span>
-                        <p className="text-[#36b37e] text-sm flex items-center gap-1">
-                          7.5 % <TrendingUpIcon />
-                        </p>
-                      </div>
-                    </div> */}
-                  </div>
+                    </div>:null
+                  }
+    
                 </div>
               </div>
             </div>
             <div className="home-publication-rechart-wrapper">
-              <HChart />
+              <HChart publications={publications} />
               <div
                 className="text-[#5F6368] text-sm text-end underline cursor-pointer relative left-0"
                 onClick={() => setIsStatistic(true)}
                 ref={viewRef}
               >
                 view all
-                {isStatistic && <PublicationStatistic ref={statisticRef} />}
+                {isStatistic &&<PublicationStatistic ref={statisticRef} publications={publications} handleGrowthScale={handleGrowthScale} publicationStatisticLoading={publicationStatisticLoading} />}
               </div>
             </div>
           </div>

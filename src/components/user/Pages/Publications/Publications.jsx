@@ -23,26 +23,65 @@ const Publications = () => {
 
   const user = getUserInfo();
 
-  // eslint-disable-next-line no-unused-vars
+  const [search, setSearch] = useState('')
+  const [range, setRange] = useState({ min: '', max:''});
+  const [sortBy, setSortBy] = useState();
+  const [publication, setPublication] = useState();
+  const [domainAuthority, setDomainAuthority] = useState();
+  const [domainRating, setDomainRating] = useState();
+  const [location, setLocation] = useState();
+  const [genre, setGenre] = useState();
+  const [doFollow, setDoFollow] = useState();
+  const [indexed, setIndexed] = useState();
+  const [niche, setNiche] = useState();
+
+  const [itemsPerPage,setItemsPerPage] = useState(10);
+
+
   const [currentPage, setCurrentPage] = useState(1);
-  const totalItems = 90; // Example: total number of items
-  const itemsPerPage = 10; // Example: items to display per page
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
   const [toggle, setToggle] = useState(false);
 
-  const [addFavorite] = useAddFavoriteMutation();
-  const { data: favorites, isLoading: favoritesLoading } = useFavoriteIdsQuery(user.id)
+  const filters = {
+    ...(search && { searchTerm: search.trim() }),
+    ...(range.min && { minPrice: range.min.toString() }),
+    ...(range.max && { maxPrice: range.max.toString() }),
+    ...(niche && { niche }),
+    ...(genre && { genre }),
+    ...(doFollow && { doFollow: doFollow }),
+    ...(indexed && { index: indexed}),
+    ...(location && { region:location }),
+    ...(niche && { niche }),
+    ...(publication && { title: publication }),
 
-  const { data, isLoading } = usePublicationsQuery()
+    ...(domainAuthority && { da: domainAuthority }),
+    ...(domainRating && { dr: domainRating }),
+
+    ...(sortBy && {
+      sortBy: sortBy === 'priceAsc' || sortBy === 'priceDesc' ? 'price' : 'createdAt',
+      sortOrder: sortBy === 'priceAsc' || sortBy === 'dateAsc' ? 'asc' : 'desc',
+    }),
+
+    // Pagination
+    page: currentPage,
+    limit: itemsPerPage,
+  };
+
+
+  const { data, isLoading } = usePublicationsQuery(filters);
+
+
+
   const { meta = {} } = data || {}
+
   const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) {
+    if (page >= 1 && page <= meta?.totalPage) {
       setCurrentPage(page);
-      // Here you would typically fetch new data based on the selected page
-      console.log(`Fetching data for page: ${page}`);
     }
   };
 
+  const [addFavorite] = useAddFavoriteMutation();
+  const { data: favorites, isLoading: favoritesLoading } = useFavoriteIdsQuery(user.id)
  
 
 const addToCard = (data) => {
@@ -72,8 +111,8 @@ const addToCard = (data) => {
       return;
     }
     try {
-      const favoriteData = await addFavorite({ userId: user.id, itemId }).unwrap();
-      console.log({favoriteData});
+      await addFavorite({ userId: user.id, itemId }).unwrap();
+
       toast.success("Added to favorites!");
     // eslint-disable-next-line no-unused-vars
     } catch (error) {
@@ -85,8 +124,6 @@ const addToCard = (data) => {
   if (favoritesLoading) {
     return
   }
-
-  console.log({ favorites,user });
 
   return (
     <div className="w-full">
@@ -107,6 +144,7 @@ const addToCard = (data) => {
         {/* filterable sidebar */}
         <FilterableSidebar
           className={`md:ml-[0px] md:block ${toggle ? "block" : "hidden"}`}
+          {...{ setSearch, sortBy, setSortBy, range, setRange, publication, setPublication, domainAuthority, setDomainAuthority, domainRating, setDomainRating, location, setLocation, genre, setGenre, doFollow, setDoFollow, indexed, setIndexed, niche, setNiche }}
         />
 
         {/* publication items*/}
@@ -121,6 +159,7 @@ const addToCard = (data) => {
                 <input
                   type="text"
                   placeholder="Search Here..."
+                  onChange={e => setSearch(e.target.value)}
                   className="w-full lg:w-[498px] md:w-[250px] border border-[#B2B5B8] py-1.5 px-3 text-[14px] focus:outline-2 focus:outline-[#004A87] text-[#5F6368] placeholder-[#5F6368] bg-[#F6F7F7]"
                 />
               </div>
@@ -224,6 +263,7 @@ const addToCard = (data) => {
               <select
                 defaultValue="10"
                 className="text-[#878C91] text-[14px] border border-[#B2B5B8] px-2 py-[5.5px] focus:outline-2 focus:outline-[#004A87] md:mt-0 mt-1.5 sm:mb-0 mb-5 "
+                onChange={e => setItemsPerPage(e.target.value)}
               >
                 <option value="5" defaultValue="5">
                   5 Result

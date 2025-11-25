@@ -117,7 +117,7 @@ const SinglePublication = () => {
               <p>:</p>
             </div>
             <p className="text-[#5F6368] font-glare font-normal">
-              {data?.genre?.title}
+              {data?.genre}
             </p>
           </div>
           <div className="flex items-center gap-4">
@@ -134,7 +134,7 @@ const SinglePublication = () => {
               <p>Sponsored</p>
               <p>:</p>
             </div>
-            <p className="text-[#5F6368] font-glare font-normal">{data?.sponsored?.title}</p>
+            <p className="text-[#5F6368] font-glare font-normal">{data?.sponsor}</p>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-[#5F6368] font-glare font-normal flex items-center w-24 justify-between">
@@ -142,7 +142,7 @@ const SinglePublication = () => {
               <p>:</p>
             </div>
             <p className="text-[#5F6368] font-glare font-normal capitalize">
-              {data?.index?.title}
+              {data?.index}
             </p>
           </div>
           <div className="flex items-center gap-4">
@@ -151,7 +151,7 @@ const SinglePublication = () => {
               <p>:</p>
             </div>
             <p className="text-[#5F6368] font-glare font-normal capitalize">
-              {data?.doFollow?.title}
+              {data?.doFollow}
             </p>
           </div>
           <div className="flex items-center gap-4">

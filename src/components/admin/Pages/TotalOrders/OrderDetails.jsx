@@ -1,12 +1,16 @@
-// import { useParams } from 'react-router';
-// import { tableData } from '../../../user/Pages/DashboardPage/data';
 import { MdAttachFile, MdOutlineAddLink } from "react-icons/md";
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
 import OrderStatus from "./OrderStatus";
+import { useOrderQuery } from "../../../../redux/api/orderApi";
 
 const OrderDetails = () => {
-  // const { id } = useParams();
-  // const orderDetails = tableData.find((order) => order.id === "653BSBE2-1O");
+    const { id } = useParams();
+  const { data, isLoading } = useOrderQuery(id)
+  const writeArticle = data?.writeArticle;
+
+  if (isLoading) {
+    return <div className="w-full h-full flex justify-center items-center">Loading...</div>
+  }
   return (
     <div className="w-full h-full">
       <h2 className="font-poppins text-[#5F6368] mb-6">Order Details</h2>
@@ -28,7 +32,7 @@ const OrderDetails = () => {
                       Full Name
                     </p>
                     <p className="text-[#222425] font-normal  leading-[140%]">
-                      Nicholi Johnson
+                      {data?.user?.name}
                     </p>
                   </div>
                   <div className="space-y-1 w-[30%]">
@@ -36,7 +40,7 @@ const OrderDetails = () => {
                       Designation
                     </p>
                     <p className="text-[#222425] font-normal  leading-[140%]">
-                      CEO
+                      {data?.user?.designation}
                     </p>
                   </div>
                 </div>
@@ -45,7 +49,7 @@ const OrderDetails = () => {
                     Company Name
                   </p>
                   <p className="text-[#222425] font-normal  leading-[140%]">
-                    Brandable PR Inc.
+                    {data?.user?.company}
                   </p>
                 </div>
               </div>
@@ -65,9 +69,8 @@ const OrderDetails = () => {
                   </p>
                   <p className="flex gap-2">
                     <MdOutlineAddLink className="text-[#878C91] mt-0.5" />
-                    <Link download className="text-[#006AC2] break-all">
-                      https://docs.google.com/document/d/11zlsmYxMaukBmpAWsjcR2Uezfb0Pl
-                      YDO/edit?
+                    <Link to={writeArticle?.socialMediaLink} className="text-[#006AC2] break-all">
+                      {writeArticle?.socialMediaLink}
                     </Link>
                   </p>
                 </div>
@@ -78,9 +81,8 @@ const OrderDetails = () => {
                   </p>
                   <p className="flex gap-2">
                     <MdOutlineAddLink className="text-[#878C91] mt-0.5" />
-                    <Link download className="text-[#006AC2] break-all">
-                      https://docs.google.com/document/d/11zlsmYxMaukBmpAWsjcR2Uezfb0Pl
-                      YDO/edit?
+                    <Link to={writeArticle?.blockContentLink} className="text-[#006AC2] break-all">
+                      {writeArticle?.blockContentLink}
                     </Link>
                   </p>
                 </div>
@@ -92,9 +94,8 @@ const OrderDetails = () => {
                   </p>
                   <p className="flex gap-2">
                     <MdOutlineAddLink className="text-[#878C91] mt-0.5" />
-                    <Link download className="text-[#006AC2] break-all">
-                      https://docs.google.com/document/d/11zlsmYxMaukBmpAWsjcR2Uezfb0Pl
-                      YDO/edit?
+                    <Link to={writeArticle?.additionalLink} download className="text-[#006AC2] break-all">
+                      {writeArticle?.additionalLink}
                     </Link>
                   </p>
                 </div>
@@ -113,12 +114,7 @@ const OrderDetails = () => {
                     What is the main goal of this PR campaign?
                   </p>
                   <p className="text-[#5F6368] leading-[150%]">
-                    Increasing awareness of their healthcare services and
-                    residential facilities tailored for doctors. Establishing
-                    credibility by showcasing expertise, quality care, and
-                    unique offerings like housing solutions for physicians.
-                    Fostering community engagement to position Doctors' Hope as
-                    a reliable and patient-centered institution.
+                    {writeArticle?.mainGoal}
                   </p>
                 </div>
                 <div className="space-y-3">
@@ -126,19 +122,7 @@ const OrderDetails = () => {
                     What is the main message or theme that you want?
                   </p>
                   <p className="text-[#5F6368] leading-[150%]">
-                    Doctors' Hope Private Ltd. is dedicated to empowering
-                    doctors with supportive residences and delivering
-                    exceptional healthcare to strengthen the heart of our
-                    community.
-                    <br />
-                    <br />
-                    Healing Homes: Highlighting the unique residential
-                    facilities designed for doctors, fostering their well-being
-                    and professional growth. Caring Hearts: Emphasizing
-                    compassionate, patient-centered medical care provided by a
-                    trusted hospital in Dhaka. Community Strength: Showcasing a
-                    commitment to improving health and building trust across
-                    Bangladesh.
+                    {writeArticle?.mainTheme}
                   </p>
                 </div>
                 <div className="space-y-3">
@@ -146,12 +130,7 @@ const OrderDetails = () => {
                     What specific points or information do you want to include?
                   </p>
                   <p className="text-[#5F6368]  leading-[150%]">
-                    Highlight Doctors' Hope’s distinctive combination of a
-                    private hospital and residential facilities tailored for
-                    doctors. Example: "Doctors' Hope is more than a
-                    hospital—it’s a home for physicians, offering modern
-                    residences to support their professional and personal
-                    lives."
+                    {writeArticle?.points}
                   </p>
                 </div>
                 <div className="space-y-4">
@@ -159,8 +138,7 @@ const OrderDetails = () => {
                     Who is the target audience?
                   </p>
                   <p className="text-[#5F6368]  leading-[150%]">
-                    Doctors and Medical Professionals, Patients and Their
-                    Families.
+                    {writeArticle?.audience}
                   </p>
                 </div>
                 <div className="space-y-4">
@@ -169,31 +147,9 @@ const OrderDetails = () => {
                     can share with the editor.
                   </p>
                   <div>
-                    <ul className="space-y-5 list-decimal list-inside text-[#5F6368] leading-[140%]">
-                      <li>
-                        Doctors' Hope: Where Physicians Find Home and Patients
-                        Find Care"
-                        <ul className="list-disc list-inside text-[#5F6368] leading-[140%]">
-                          <li>
-                            Highlights the dual role of residential and
-                            healthcare services, appealing to both doctors and
-                            patients.
-                          </li>
-                        </ul>
-                      </li>
-                      <ul className="list-decimal list-inside text-[#5F6368] leading-[140%]">
-                        <li>
-                          "Healing Dhaka: Doctors' Hope Combines Compassion with
-                          Community"
-                          <ul className="list-disc list-inside text-[#5F6368] leading-[140%]">
-                            <li>
-                              Emphasizes local impact and compassionate care,
-                              targeting the Dhaka community and patients.
-                            </li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </ul>
+                    <p className="space-y-5 list-decimal list-inside text-[#5F6368] leading-[140%]">
+                      {writeArticle?.wishList}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -214,12 +170,7 @@ const OrderDetails = () => {
                     (what should you audience be looking forward to)?
                   </p>
                   <p className="text-[#5F6368] leading-[150%]">
-                    Doctors' Hope may introduce new medical specialties or
-                    advanced equipment, as private hospitals in Dhaka often
-                    upgrade to stay competitive. Look for updates on their
-                    website or Facebook page for announcements about new
-                    departments (e.g., cardiology, oncology) or diagnostic
-                    tools.
+                    {writeArticle?.announcement}
                   </p>
                 </div>
                 <div className="space-y-3 mt-8">
@@ -229,10 +180,7 @@ const OrderDetails = () => {
                     effective and successful article?
                   </p>
                   <p className="text-[#5F6368] leading-[150%]">
-                    Healthcare PR thrives on human connection. Stories of
-                    doctors living in Doctors' Hope residences or patients
-                    receiving life-changing care can make the article relatable
-                    and memorable.
+                    {writeArticle?.additionalContent}
                   </p>
                 </div>
               </div>
@@ -253,11 +201,13 @@ const OrderDetails = () => {
                   </p>
                   <p className="flex gap-2">
                     <MdAttachFile className="text-[#878C91] mt-0.5" />
-                    <Link download className="text-[#006AC2] break-all">
-                      Unhappy-businessman-520108
+                    <Link download to={writeArticle?.personImage} className="text-[#006AC2] break-all">
+                      {writeArticle?.personImage}
                     </Link>
                   </p>
                 </div>
+                {
+                  writeArticle?.serviceImage &&<>
                 <div className="space-y-3">
                   <p className="text-[#222425] font-glare">
                     Upload one photo of your brand/product/service you want to
@@ -266,50 +216,38 @@ const OrderDetails = () => {
                   <div className="space-y-2">
                     <p className="flex gap-2">
                       <MdAttachFile className="text-[#878C91] mt-0.5" />
-                      <Link download className="text-[#006AC2] break-all">
-                        Unhappy-businessman-520108
-                      </Link>
-                    </p>
-                    <p className="flex gap-2">
-                      <MdAttachFile className="text-[#878C91] mt-0.5" />
-                      <Link download className="text-[#006AC2] break-all">
-                        Unhappy-businessman-520108
-                      </Link>
-                    </p>
-                    <p className="flex gap-2">
-                      <MdAttachFile className="text-[#878C91] mt-0.5" />
-                      <Link download className="text-[#006AC2] break-all">
-                        Unhappy-businessman-520108
-                      </Link>
+                          <Link download to={writeArticle?.serviceImage} className="text-[#006AC2] break-all">
+                            {writeArticle?.serviceImage}
+                          </Link>
                     </p>
                   </div>
                 </div>
-                <div className="space-y-3">
-                  <p className="text-[#222425] font-glare">
-                    Upload your company or brand logo. (Optional)
-                  </p>
-                  <div className="space-y-2">
-                    <p className="flex gap-2">
-                      <MdAttachFile className="text-[#878C91] mt-0.5" />
-                      <Link download className="text-[#006AC2] break-all">
-                        Unhappy-businessman-520108
-                      </Link>
+
+                  </>
+                }
+                {
+                  writeArticle?.brandLogo && <div className="space-y-3">
+                    <p className="text-[#222425] font-glare">
+                      Upload your company or brand logo. (Optional)
                     </p>
-                    <p className="flex gap-2">
-                      <MdAttachFile className="text-[#878C91] mt-0.5" />
-                      <Link download className="text-[#006AC2] break-all">
-                        Unhappy-businessman-520108
-                      </Link>
-                    </p>
+                    <div className="space-y-2">
+                      <p className="flex gap-2">
+                        <MdAttachFile className="text-[#878C91] mt-0.5" />
+                        <Link download to={writeArticle?.brandLogo} className="text-[#006AC2] break-all">
+                          {writeArticle?.brandLogo}
+                        </Link>
+                      </p>
+                    </div>
                   </div>
-                </div>
+                }
+           
               </div>
             </div>
           </div>
         </div>
       {/* order status */}
       <div className="md:w-[30%] w-full">
-        <OrderStatus />
+        <OrderStatus data={data} />
       </div>
       </div>
     </div>

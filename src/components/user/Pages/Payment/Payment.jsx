@@ -11,14 +11,16 @@ import { useOutsideClick } from "../../../../hooks/useOutsideClick";
 const Payment = () => {
   const [activeTab, setActiveTab] = useState("method");
   const [activePayment, setActivePayment] = useState("");
+  const [search, setSearch] = useState("");
   const [remove,setRemove] = useState(false);
   const [makeDefault, setMakeDefault] = useState(false);
+
+  
 
   const ref=useOutsideClick(() => { 
     setRemove(false);
     setMakeDefault(false);
   })
-
   return (
     <div className="w-full max-w-[850px] md:mx-auto">
       {remove && <RemoveModal onChange={setRemove} ref={ref} activePayment={activePayment} setActivePayment={setActivePayment} />}
@@ -36,6 +38,7 @@ const Payment = () => {
               type="text"
               id="orderSearch"
               placeholder="Search Here..."
+              onChange={e=>setSearch(e.target.value)}
               className=" border w-full border-[#DCDEDF] py-1 px-3 text-[14px] focus:outline-2 focus:outline-[#004A87] text-[#5F6368] placeholder-[#B2B5B8] bg-white rounded-sm"
             />
             <button className="border border-[#DCDEDF] px-2 rounded-sm cursor-pointer">
@@ -78,7 +81,7 @@ const Payment = () => {
         />
       )}
       {/* payment history */}
-      {activeTab == "history" && <PaymentHistory />}
+      {activeTab == "history" && <PaymentHistory search={search} />}
     </div>
   );
 };

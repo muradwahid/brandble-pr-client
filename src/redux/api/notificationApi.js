@@ -1,63 +1,65 @@
-
 import { baseApi } from "./baseApi";
 
-const NICHE_URL = "/niche";
-export const nicheApi = baseApi.injectEndpoints({
+const NOTIFICATION_URL = "/notifications";
+export const notificationApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    niches: build.query({
-      query: (arg) => ({
-        url: `${NICHE_URL}/get-all`,
+    getNotifications: build.query({
+      query: (params) => ({
+        url: `${NOTIFICATION_URL}/my-notifications`,
         method: "GET",
-        params: arg,
+        params,
       }),
       transformResponse: (response) => {
         return {
-          niches: response,
+          data: response.data,
+          meta: response.meta,
         };
       },
-      providesTags: ["niche"],
+      providesTags: ["Notification"],
     }),
-    addNiche: build.mutation({
-      query: (data) => ({
-        url: `${NICHE_URL}/create`,
-        method: "POST",
-        data,
-      }),
-      invalidatesTags: ["niche"],
-    }),
-    niche: build.query({
-      query: (id) => {
-        const nicheId = typeof id === "object" && id !== null ? id.id : id;
-        return {
-          url: `${NICHE_URL}/${nicheId}`,
-          method: "GET",
-        };
-      },
-      providesTags: ["niche"],
-    }),
-    updateNiche: build.mutation({
-      query: (data) => ({
-        url: `${NICHE_URL}/${data.id}`,
+
+    // Mark single notification as read
+    markAsRead: build.mutation({
+      query: (id) => ({
+        url: `${NOTIFICATION_URL}/${id}/read`,
         method: "PATCH",
-        data: data.body,
       }),
-      invalidatesTags: ["niche"],
+      invalidatesTags: ["Notification"],
     }),
-    deleteNiche: build.mutation({
-      query: (id) => {
-        const nicheId = typeof id === "object" && id !== null ? id.id : id;
-        return {
-          url: `${NICHE_URL}/${nicheId}`,
-          method: "DELETE",
-        };
-      },
-      invalidatesTags: ["niche"],
+
+    // Mark all notifications as read
+    markAllAsRead: build.mutation({
+      query: () => ({
+        url: `${NOTIFICATION_URL}/mark-all-read`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["Notification"],
+    }),
+
+    // Get unread count
+    getUnreadCount: build.query({
+      query: () => ({
+        url: `${NOTIFICATION_URL}/unread-count`,
+        method: "GET",
+      }),
+      providesTags: ["Notification"],
+    }),
+
+    // Delete notification
+    deleteNotification: build.mutation({
+      query: (id) => ({
+        url: `${NOTIFICATION_URL}/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Notification"],
     }),
   }),
 });
 
-export const { useNichesQuery,
-  useAddNicheMutation,
-  useNicheQuery,
-  useUpdateNicheMutation,
-  useDeleteNicheMutation, } = nicheApi;
+export const {
+  useGetNotificationsQuery,
+  useMarkAsReadMutation,
+  useMarkAllAsReadMutation,
+  useGetUnreadCountQuery,
+  useDeleteNotificationMutation,
+} = notificationApi;

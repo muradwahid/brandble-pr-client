@@ -41,9 +41,7 @@ const Chat = () => {
       chatInitializedRef.current = true;
 
       try {
-        console.log('Auto-creating chat with admin:', admin.id);
         const chatRoom = await chatApi.getChatRoom(null, user.id, admin.id);
-        console.log('Chat room created:', chatRoom);
 
         if (chatRoom && chatRoom.id) {
           setSelectedChat(chatRoom);
@@ -55,7 +53,6 @@ const Chat = () => {
           // Join chat room via socket
           if (socket && isConnected) {
             socket.emit('join_chat_room', chatRoom.id);
-            console.log('Joined chat room:', chatRoom.id);
           }
         }
       } catch (error) {
@@ -76,21 +73,18 @@ const Chat = () => {
     if (!socket) return;
 
     const handleNewMessage = (message) => {
-      console.log('New message received:', message);
       if (selectedChat && message.chatRoomId === selectedChat.id) {
         setMessages(prev => [...prev, message]);
       }
     };
 
     const handleUserTyping = (data) => {
-      console.log('User typing:', data);
       if (selectedChat && data.userId !== user.id) {
         setTypingUsers(prev => [...new Set([...prev, data.userId])]);
       }
     };
 
     const handleUserStopTyping = (data) => {
-      console.log('User stopped typing:', data);
       setTypingUsers(prev => prev.filter(id => id !== data.userId));
     };
 
@@ -201,7 +195,7 @@ const Chat = () => {
   }
 
   return (
-    <div>
+    <div className="p-4">
       <div className="chat-container">
         <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white rounded-t-xl md:rounded-t-lg">
           <div className="flex items-center gap-3">

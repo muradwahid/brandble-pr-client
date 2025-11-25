@@ -41,6 +41,15 @@ export const authApi = baseApi.injectEndpoints({
       },
       providesTags: ["auth", 'update','signin'],
     }),
+    userAllInfo: build.query({
+      query: () => {
+        return {
+          url: `${AUTH_URL}/user-all-info`,
+          method: "GET",
+        };
+      },
+      providesTags: ["auth", 'update','signin'],
+    }),
     getAdmin: build.query({
       query: () => {
         return {
@@ -94,6 +103,7 @@ export const authApi = baseApi.injectEndpoints({
 export const { useUsersQuery,
   useUserLoginMutation,
   useCreateUserMutation,
+  useUserAllInfoQuery,
   useUserQuery,
   useGetAdminQuery,
   useGetUserByCookieQuery,

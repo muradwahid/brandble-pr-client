@@ -1,47 +1,69 @@
 import { useState } from "react";
 import AdminPagination from "../../../common/AdminPagination";
-import { publicationData } from "../../../user/Pages/Publications/data";
 import { EmailIcon, PhoneIcon } from "../../../../utils/icons";
-import { tableData } from "../../../user/Pages/DashboardPage/data";
+import { useSpecificUserOrdersQuery } from "../../../../redux/api/orderApi";
+import { useParams } from "react-router";
+import { useUserQuery } from "../../../../redux/api/authApi";
+import { formattedDate } from "../../../../utils/function";
 
 const SingleUser = () => {
+  // eslint-disable-next-line no-unused-vars
+  const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-  const totalItems = 90; // Example: total number of items
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
 
-  const orderDetails = tableData.find((order) => order.id === 'fsadf');
+  const { id } = useParams()
+
+  const { data: userData, isLoading: userLoading } = useUserQuery(id);
+
+  const { data } = useSpecificUserOrdersQuery({
+    userId:id,
+    searchTerm: search,
+    page: currentPage,
+    limit: itemsPerPage,
+  });
+
+  const orders = data?.data || [];
+  const meta = data?.meta;
+
+  const totalPages = meta?.totalPage || 1;
 
   const handlePageChange = (page) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
-      // Here you would typically fetch new data based on the selected page
-      console.log(`Fetching data for page: ${page}`);
     }
   };
+
+  if (userLoading) {
+    return <div className="text-[#5F6368] flex items-center justify-center h-[60dvh] w-full">Loading...</div>
+  }
+
   return (
     <div>
       <div>
         <h3 className="text-[#5F6368] font-poppins mb-4">User Profile</h3>
         <div className="flex gap-2 items-end">
-          <div className="h-[80px] w-[80px] bg-[#5F6368] rounded-sm">
-            <img src="" alt="" />
+          <div className={`h-[80px] w-[80px] ${!userData?.image ?'bg-[#5F6368]':''} rounded-sm`}>
+            <img src={userData?.image} alt="" className="h-full w-full rounded-sm"/>
           </div>
           <div className="">
-            <p className="text-[#36383A] mb-2">User Name</p>
+            <p className="text-[#36383A] mb-2">{userData?.name}</p>
             <div className="text-[#878C91] text-sm flex items-center md:gap-[60px] flex-wrap gap-3.5">
-              <p>CEO & Founder</p>
-              <p className="flex items-center gap-2">
-                <EmailIcon /> demo@gmail.com
-              </p>
-              <p className="flex items-center gap-2">
-                <PhoneIcon /> +11111111
-              </p>
+              {userData?.designation && <p>{userData?.designation}</p>}
+{ userData?.email &&             <p className="flex items-center gap-2">
+                <EmailIcon /> {userData?.email}
+              </p>}
+              {userData?.phoneNumber &&              <p className="flex items-center gap-2">
+                <PhoneIcon /> {userData?.phoneNumber}
+              </p>}
             </div>
           </div>
         </div>
       </div>
-      <h3 className="text-[#5F6368] font-poppins border-b border-[#DCDEDF] mb-4 mt-9">
+
+      {
+        meta?.total > 0? <>
+      <h3 className="text-[#5F6368] font-poppins border-b border-[#DCDEDF] pb-4 mb-4 mt-9">
         Orders
       </h3>
       <div className=" w-full overflow-x-auto pb-3">
@@ -64,18 +86,23 @@ const SingleUser = () => {
               </tr>
             </thead>
             <tbody className=" text-[#36383A]">
-              {publicationData.slice(0, 1).map((item, index) => (
+              {orders && orders?.map((order, index) => (
                 <tr key={index} className="border-t border-[#DCDEDF]">
-                  <td className="px-3 py-3 text-nowrap">0{index + 1}</td>
+                  <td className="px-3 py-3 text-nowrap">{(index + currentPage) > 9 ? index + currentPage : '0' + (index + currentPage)}</td>
                   <td className="px-3 py-3 text-nowrap text-[#006AC2] cursor-pointer">
-                    653BSBE2-1O
+                    {order?.id}
                   </td>
-                  <td className="px-3 py-3 text-nowrap">New York Times</td>
-                  <td className="px-3 py-3 text-nowrap">04/15/2025</td>
-                  <td className="px-3 py-3 text-nowrap">04/15/2025</td>
+                  <td className="px-3 py-3 text-nowrap">{order?.publication?.title}</td>
+                  <td className="px-3 py-3 text-nowrap">{formattedDate(order?.createdAt)}</td>
+                  <td className="px-3 py-3 text-nowrap">{order?.status == 'published' ? formattedDate(order?.createdAt) :'00/00/0000'}</td>
                   <td className="px-3 py-3 text-nowrap">
-                    <button className="text-white bg-[#008CFF] px-3 py-1 w-full">
-                      Published
+                    <button className={`text-white px-3 py-1 w-full capitalize ${order.status === "pending"
+                        ? "bg-[#FFAB00]"
+                        : order.status == "processing"
+                          ? "bg-[#36B37E]"
+                          : "bg-[#008CFF]"
+                  }`}>
+                      {order?.status}
                     </button>
                   </td>
                 </tr>
@@ -102,6 +129,10 @@ const SingleUser = () => {
           <option value="30">30 Result</option>
         </select>
       </div>
+        </> : <div className="flex items-center justify-center h-[60dvh] w-full">
+            <p className="text-[#5F6368] font-medium capitalize text-2xl">No orders found</p>
+        </div>
+      }
     </div>
   );
 };

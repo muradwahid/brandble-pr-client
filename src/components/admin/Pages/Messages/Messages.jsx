@@ -1,10 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { chatList } from "../../../user/Pages/MyMessages/data";
 import { PiMagnifyingGlassLight } from "react-icons/pi";
 import { ShieldIcon } from "../../../../utils/icons";
-import Chat from "./Chat";
 import { getUserInfo } from "../../../../helpers/user/user";
-import { useUserQuery } from "../../../../redux/api/authApi";
 import { useSocket } from "../../../../contexts/SocketContext";
 import { chatApi } from "../../../../services/chatApi";
 import { GoPaperAirplane } from "react-icons/go";
@@ -14,7 +11,6 @@ import { LuCheckCheck } from "react-icons/lu";
 const Messages = () => {
   const user = getUserInfo();
   
-  const { data } = useUserQuery(user.id);
   const [search, setSearch] = useState();
  const [activeTab, setActiveTab] = useState('users');
     const [userChats, setUserChats] = useState([]);
@@ -22,10 +18,12 @@ const Messages = () => {
     const [selectedChat, setSelectedChat] = useState(null);
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
+    // eslint-disable-next-line no-unused-vars
     const [loading, setLoading] = useState(false);
     const [typingUsers, setTypingUsers] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
   const [searchUserChats, setSearchUserChats] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [searchOrderChats, setSearchOrderChats] = useState([]);
     const typingTimeoutRef = useRef();
   
@@ -200,10 +198,12 @@ const Messages = () => {
 //   setOrderChats(filteredOrders);
 // }
   
+    // eslint-disable-next-line no-unused-vars
     const getLastMessage = (chat) => {
       return chat.messages[0]?.content || 'No messages yet';
     };
   
+    // eslint-disable-next-line no-unused-vars
     const getTypingIndicator = () => {
       if (typingUsers.length === 0) return null;
   
@@ -387,7 +387,7 @@ const Messages = () => {
           
             <div className="chat-messages flex flex-col w-full">
               {
-                selectedChat ? messages.map(message => <div className={`flex items-start mb-2 ${message.sender.id === user.id ? 'justify-end' : 'justify-start'}`}>
+                selectedChat ? messages.map((message,idx) => <div key={idx} className={`flex items-start mb-2 ${message.sender.id === user.id ? 'justify-end' : 'justify-start'}`}>
                   <div className={`${message.sender.id === user.id ? 'message-bubble message-sent shadow-md' : 'message-bubble message-received'}`}>
                     {message.content}
                     <div className="text-right text-xs text-gray-500 mt-1 flex items-center gap-1 justify-end">

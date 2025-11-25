@@ -2,22 +2,22 @@ import { useEffect, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 import "./style.css";
-import { Link, useNavigate } from "react-router";
 import { getFromLocalStorage, setToLocalStorage } from '../../../../utils/local-storage';
 import toast from 'react-hot-toast';
+// eslint-disable-next-line no-unused-vars
 import { useMethodsQuery, useProcessPaymentMutation } from "../../../../redux/api/stripepaymentApi";
 import { useAddOrderMutation } from "../../../../redux/api/orderApi";
 import { getUserInfo } from "../../../../helpers/user/user";
+import { LoadingIcon } from "../../../../utils/icons";
 
-const Cart = ({ setCheckoutPopup, selectedMethod }) => {
-  const navigation = useNavigate();
-  const { data:allMehotd } = useMethodsQuery();
+const Cart = ({ selectedMethod, setSelectOrderId, setCheckoutPopup }) => {
+  // const { data:allMehotd } = useMethodsQuery();
   const [cartItems, setCartItems] = useState(() => {
     const savedData = getFromLocalStorage("brandableCardData");
     return savedData ? JSON.parse(savedData) : [];
   });
-  const [processPayment, { isLoading }] = useProcessPaymentMutation()
-  const [ addOrder, { isLoading: addOrderLoading }] = useAddOrderMutation()
+  const [processPayment] = useProcessPaymentMutation()
+  const [addOrder, { isLoading}] = useAddOrderMutation()
 
   const [subtotal, setSubtotal] = useState(0);
   useEffect(() => {
@@ -27,19 +27,16 @@ const Cart = ({ setCheckoutPopup, selectedMethod }) => {
     setSubtotal(total);
   }, [cartItems]);
 
-  // Handler for checkbox changes
   const handleCheckboxChange = (id) => {
-    setCartItems(prevItems => {
-      const updatedItems = prevItems.map(item => {
-        if (item.id === id) {
-          return { ...item, isChecked: !item.isChecked };
-        }
-        return item;
-      });
-
-      // Save to localStorage after state update
-      setToLocalStorage("brandableCardData", JSON.stringify(updatedItems));
-      return updatedItems;
+    setCartItems(prevItems =>
+      prevItems.map(item => ({
+        ...item,
+        isChecked: item.id === id
+      }))
+    );
+    setCartItems(prev => {
+      localStorage.setItem("brandableCardData", JSON.stringify(prev));
+      return prev;
     });
   };
 
@@ -63,18 +60,21 @@ const Cart = ({ setCheckoutPopup, selectedMethod }) => {
       if (result.data.status === 'succeeded') {
         const publicationIds = cartItems?.map(item => item.isChecked && item.id)
         const orderData = {
-          publicationIds,
-          methodId: result.data.paymentMethod.id,
+          publicationId:publicationIds[0],
+          methodId: result.data.paymentIntentId,
           amount: result.data.amount,
           userId: getUserInfo()?.id,
+          paymentMethodId:result.data.paymentMethod.id
         }
         const orderResult = await addOrder(orderData)
+        console.log("orderResult",orderResult);
         if (orderResult?.data?.id) {
-          navigation(`/user/checkout/order-submit/${orderResult?.data?.id}`, { replace: true });
+          setCheckoutPopup(true)
+          setSelectOrderId(orderResult?.data?.id)
         }
       }
     } catch (err) {
-      console.err(err)
+      console.error(err)
     }
   }
 
@@ -100,7 +100,7 @@ const Cart = ({ setCheckoutPopup, selectedMethod }) => {
               <input
                 type="checkbox"
                 key={item.checked}
-                checked={item?.checked == 'true' ?true: false}
+                checked={item?.isChecked}
                 onChange={() => handleCheckboxChange(item.id)}
                 className="custom-checkbox h-5 w-5 mr-2"
               />
@@ -186,9 +186,10 @@ const Cart = ({ setCheckoutPopup, selectedMethod }) => {
           // onClick={() => setCheckoutPopup(true)}
           // to="/user/checkout"
           onClick={handleCheckout}
-          className="bg-[#002747] text-[18px] text-white py-2 px-8 hover:bg-[#002747]/90 transition cursor-pointer w-full inline-block mt-4 text-center"
+          disabled={isLoading}
+          className="bg-[#002747] text-[18px] text-white py-2 px-8 hover:bg-[#002747]/90 transition cursor-pointer w-full flex  justify-center items-center gap-3 mt-4 text-center"
         >
-          Confirm Purchase
+          Confirm Purchase {isLoading && <LoadingIcon fill='#fff' style={{ height: "20px" }} />}
         </button>
       </div>
     </div>

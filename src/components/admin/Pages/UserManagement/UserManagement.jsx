@@ -1,22 +1,40 @@
-import React, { useState } from 'react';
-import { publicationData } from '../../../user/Pages/Publications/data';
+import { useState } from 'react';
 import { ArticlePublishedIcon, DraftIcon, EmailIcon, GenreIcon, LoginIcon, OrderBox, RegistrationIcon, UserIcon } from '../../../../utils/icons';
 import AdminPagination from '../../../common/AdminPagination';
-import { useUsersQuery } from '../../../../redux/api/authApi';
+import { useUserAllInfoQuery } from '../../../../redux/api/authApi';
+import { formattedDate } from '../../../../utils/function';
+import { Link } from 'react-router';
 
 const UserManagement = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(10);
-    const totalItems = 1; // Example: total number of items
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  // eslint-disable-next-line no-unused-vars
+  const [search, setSearch] = useState('');
+
+  // Build query params
+  const queryParams = {
+    page: currentPage,
+    limit: itemsPerPage,
+    ...(search && { searchTerm: search }),
+  };
+  
+  const { data,isLoading} = useUserAllInfoQuery(queryParams);
+
+  const userData = data?.data || [];
+  const meta = data?.meta || {};
+  const totalItems = meta.total || 0;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-  const { data } = useUsersQuery()
-    const handlePageChange = (page) => {
-      if (page >= 1 && page <= totalPages) {
-        setCurrentPage(page);
-        // Here you would typically fetch new data based on the selected page
-        console.log(`Fetching data for page: ${page}`);
-      }
-    };
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
+      setCurrentPage(page);
+    }
+  };
+
+  if (isLoading) {
+    return <div className='flex items-center justify-center h-[60dvh] w-full'>Loading...</div>;
+  }
+
   return (
     <div>
       <h2 className="text-[#5F6368] font-poppins leading-[140%] mb-5">
@@ -58,39 +76,38 @@ const UserManagement = () => {
                     <ArticlePublishedIcon /> Article Published
                   </span>
                 </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
+                {/* <th className="px-3 py-2 text-[#5F6368] font-normal">
                   <span className=" flex items-center gap-1.5 text-nowrap">
                     <GenreIcon /> Genres
                   </span>
-                </th>
+                </th> */}
                 <th className="px-3 py-2 text-[#5F6368] font-normal">
                   <span className=" flex items-center gap-1.5 text-nowrap">
                     <RegistrationIcon /> Joining Date
                   </span>
                 </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
+                {/* <th className="px-3 py-2 text-[#5F6368] font-normal">
                   <span className=" flex items-center gap-1.5 text-nowrap">
                     <LoginIcon /> Last Login
                   </span>
-                </th>
+                </th> */}
               </tr>
             </thead>
             <tbody className=" text-[#5F6368] text-sm">
-              {data?.users.map((item, index) => (
-                <tr key={index} className="border-t border-[#DCDEDF]">
-                  <td className="px-3 py-3 text-nowrap">{index + 1}</td>
-                  <td className="px-3 py-3 text-nowrap">{item?.name}</td>
+              {userData?.map((user,index) => (
+                <tr key={user?.id} className="border-t border-[#DCDEDF]">
+                  <td className="px-3 py-3 text-nowrap"><Link to={`/admin/users/${user?.id}`}>{index + 1}</Link></td>
+                  <td className="px-3 py-3 text-nowrap"><Link to={`/admin/users/${user?.id}`}>{user?.name}</Link></td>
                   <td className="px-3 py-3 text-nowrap text-center overflow-hidden whitespace-nowrap text-ellipsis">
-                    demo@gmail.com
+                    <Link to={`/admin/users/${user?.id}`}>{user?.email}</Link>
                   </td>
-                  <td className="px-3 py-3 text-nowrap text-center">0</td>
-                  <td className="px-3 py-3 text-nowrap text-center">0</td>
-                  <td className="px-3 py-3 text-nowrap">0</td>
-                  <td className="px-3 py-3 text-nowrap overflow-hidden whitespace-nowrap text-ellipsis">
+                  <td className="px-3 py-3 text-nowrap text-center">{user?.totalOrders}</td>
+                  <td className="px-3 py-3 text-nowrap text-center">{user?.runningOrders}</td>
+                  <td className="px-3 py-3 text-nowrap">{user?.publishedOrders}</td>
+                  {/* <td className="px-3 py-3 text-nowrap overflow-hidden whitespace-nowrap text-ellipsis">
                     
-                  </td>
-                  <td className="px-3 py-3 text-nowrap">13/10/2025</td>
-                  <td className="px-3 py-3 text-nowrap">13/10/2025</td>
+                  </td> */}
+                  <td className="px-3 py-3 text-nowrap">{formattedDate(user?.createdAt)}</td>
                 </tr>
               ))}
             </tbody>

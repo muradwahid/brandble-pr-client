@@ -38,7 +38,6 @@ const UserSidebar = () => {
     }
   };
 
-
   return (
     <div>
       {toggle && (

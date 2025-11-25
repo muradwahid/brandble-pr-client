@@ -2,7 +2,7 @@ import React from "react";
 import { IoCheckmarkCircleOutline } from "react-icons/io5";
 import { Link } from "react-router";
 
-const CheckoutPopup = ({ setCheckoutPopup }) => {
+const CheckoutPopup = ({ setCheckoutPopup, selectOrderId }) => {
   return (
     <div className="fixed inset-0 bg-[#22242580] flex justify-center items-center p-4 backdrop-blur-[2px]">
       <div className="bg-white shadow-2xl px-20 pt-20 pb-7 w-full max-w-2xl relative">
@@ -29,7 +29,7 @@ const CheckoutPopup = ({ setCheckoutPopup }) => {
         <div className="flex justify-center space-x-4">
           <Link
             onClick={() => setCheckoutPopup(false)}
-            to="/user/checkout/order-submit"
+            to={`/user/checkout/order-submit/${selectOrderId}`}
             className="bg-[#002747] text-[18px] text-white py-2 px-8 hover:bg-[#002747]/90 transition cursor-pointer w-full inline-block text-center"
           >
             Submit Information

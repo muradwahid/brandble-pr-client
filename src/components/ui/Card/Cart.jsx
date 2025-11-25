@@ -28,17 +28,15 @@ const Cart = ({ ref, setOpenCart }) => {
 
   // Handler for checkbox changes
   const handleCheckboxChange = (id) => {
-    setCartItems(prevItems => {
-      const updatedItems = prevItems.map(item => {
-        if (item.id === id) {
-          return { ...item, isChecked: !item.isChecked };
-        }
-        return item;
-      });
-
-      // Save to localStorage after state update
-      setToLocalStorage("brandableCardData", JSON.stringify(updatedItems));
-      return updatedItems;
+    setCartItems(prevItems =>
+      prevItems.map(item => ({
+        ...item,
+        isChecked: item.id === id
+      }))
+    );
+    setCartItems(prev => {
+      localStorage.setItem("brandableCardData", JSON.stringify(prev));
+      return prev;
     });
   };
 

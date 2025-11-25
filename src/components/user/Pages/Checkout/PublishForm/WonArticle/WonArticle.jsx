@@ -33,7 +33,7 @@ const WonArticle = ({ setPublishPopup }) => {
 
     if (file?.length) {
       if (formData) {
-        // console.log(formData)
+
         try {
           const response = await addWonArticle(formData);
           if (response?.data?.id) {

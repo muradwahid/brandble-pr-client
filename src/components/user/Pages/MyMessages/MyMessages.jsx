@@ -181,7 +181,6 @@ const MyMessages = () => {
       .map((chat) => {
         const chats = [];
         const otherUser = getOtherUser(chat);
-        console.log(otherUser,"other user");
         otherUser.id.toLowerCase().includes(val.toLowerCase()) &&
           chats.push(chat);
         return chats;
@@ -190,36 +189,10 @@ const MyMessages = () => {
     setSearchUserChats(filteredUsers || orderChats);
   };
 
-  // const searchOrder = () => {
-  //   const filteredOrders = orderChats.map(chat => {
-  //     const chats = [];
-  //     const otherUser = getOtherUser(chat);
-  //     otherUser.id.toLowerCase().includes(search.toLowerCase()) && chats.push(chat);
-  //     return chats;
-  //   }).flat();
-  //   setOrderChats(filteredOrders);
-  // }
-
-  // const getLastMessage = (chat) => {
-  //   return chat.messages[0]?.content || "No messages yet";
-  // };
-
-  // const getTypingIndicator = () => {
-  //   if (typingUsers.length === 0) return null;
-
-  //   const typingUser = getOtherUser(selectedChat);
-  //   return (
-  //     <div className="text-xs text-gray-500 italic">
-  //       {typingUser?.name} is typing...
-  //     </div>
-  //   );
-  // };
-
   if (loading) {
-    return;
+    return <div className="w-full h-[70dvh] flex items-center justify-center text-gray-500">Loading...</div>;
   }
 
-  console.log({searchUserChats,orderChats});
 
   const activeCls = "bg-[#E6F4FF] border-l-[#008CFF] border-b-[#008CFF]";
   return (

@@ -30,7 +30,7 @@ const Table = ({ data }) => {
             >
               <td className="px-3 py-3">{index + 1}</td>
               <td className="px-3 py-3"><p className="max-w-[200px] truncate">{order.id}</p></td>
-              <td className="px-3 py-3">{order.publication.map(item => item.title).join(', ')}</td>
+              <td className="px-3 py-3">{order.publication.title}</td>
               <td className="px-3 py-3">{order.orderType === 'wonArticle' ?'Publish My Own Article':'Write Article'}</td>
                <td
                 className={`px-3 py-3 capitalize ${

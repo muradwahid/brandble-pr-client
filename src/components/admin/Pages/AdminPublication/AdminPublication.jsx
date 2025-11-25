@@ -38,8 +38,7 @@ const AdminPublication = () => {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const totalItems = 90; // Example: total number of items
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
 
   const targetRef = useRef(null);
   const buttonRef = useRef(null);
@@ -51,11 +50,13 @@ const AdminPublication = () => {
   // query["sortOrder"] = sortOrder;
 
   const { data, isLoading } = usePublicationsQuery(query);
+  const { meta = {} } = data || {};
+
+  const totalPages = Math.ceil(meta.total / itemsPerPage);
+
   const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) {
+    if (page >= 1 && page <= meta?.totalPage) {
       setCurrentPage(page);
-      // Here you would typically fetch new data based on the selected page
-      console.log(`Fetching data for page: ${page}`);
     }
   };
 
@@ -82,7 +83,6 @@ const AdminPublication = () => {
     };
   }, [targetRef]);
 
-  // console.log(data.publications.meta.total)
 
 
   const handleSort = (val) => {
@@ -103,6 +103,11 @@ const AdminPublication = () => {
     });
   };
 
+  if (isLoading) {
+    return <div className="w-full h-[60dvh] flex justify-center items-center">Loading...</div>
+  }
+
+  console.log(meta);
 
   return (
     <div>

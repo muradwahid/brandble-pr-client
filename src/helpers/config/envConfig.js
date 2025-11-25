@@ -1,5 +1,4 @@
 export const getBaseUrl = () => {
-  console.log("api url : ",import.meta.env.VITE_API_BASE_URL);
   return import.meta.env.VITE_API_BASE_URL || "http://localhost:5050/api/v1";
 
 };

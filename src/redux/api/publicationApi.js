@@ -32,6 +32,15 @@ export const publicationApi = baseApi.injectEndpoints({
       },
       providesTags: ["niche"],
     }),
+    publicationStatistic: build.query({
+      query: () => {
+        return {
+          url: `${NICHE_URL}/statistics`,
+          method: "GET",
+        };
+      },
+      providesTags: ["niche"],
+    }),
     updatePublication: build.mutation({
       query: (data) => ({
         url: `${NICHE_URL}/${data.id}`,
@@ -56,5 +65,6 @@ export const publicationApi = baseApi.injectEndpoints({
 export const { usePublicationsQuery,
   useAddPublicationMutation,
   usePublicationQuery,
+  usePublicationStatisticQuery,
   useUpdatePublicationMutation,
   useDeletePublicationMutation } = publicationApi;

@@ -13,6 +13,7 @@ const Chat = ({orderId}) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [initializing, setInitializing] = useState(false);
   const [typingUsers, setTypingUsers] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
@@ -41,9 +42,8 @@ const Chat = ({orderId}) => {
       chatInitializedRef.current = true;
 
       try {
-        console.log('Auto-creating chat with admin:', admin.id);
         const chatRoom = await chatApi.getChatRoom(orderId, user.id, admin.id);
-        console.log('Chat room created:', chatRoom);
+
 
         if (chatRoom && chatRoom.id) {
           setSelectedChat(chatRoom);
@@ -55,7 +55,6 @@ const Chat = ({orderId}) => {
           // Join chat room via socket
           if (socket && isConnected) {
             socket.emit('join_chat_room', chatRoom.id);
-            console.log('Joined chat room:', chatRoom.id);
           }
         }
       } catch (error) {
@@ -77,21 +76,18 @@ const Chat = ({orderId}) => {
     if (!socket) return;
 
     const handleNewMessage = (message) => {
-      console.log('New message received:', message);
       if (selectedChat && message.chatRoomId === selectedChat.id) {
         setMessages(prev => [...prev, message]);
       }
     };
 
     const handleUserTyping = (data) => {
-      console.log('User typing:', data);
       if (selectedChat && data.userId !== user.id) {
         setTypingUsers(prev => [...new Set([...prev, data.userId])]);
       }
     };
 
     const handleUserStopTyping = (data) => {
-      console.log('User stopped typing:', data);
       setTypingUsers(prev => prev.filter(id => id !== data.userId));
     };
 
@@ -186,6 +182,7 @@ const Chat = ({orderId}) => {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
   const getTypingIndicator = () => {
     if (typingUsers.length === 0) return null;
 
@@ -195,11 +192,6 @@ const Chat = ({orderId}) => {
       </div>
     );
   }
-
-  useEffect(() => {
-    console.log(messages);
-
-   },[messages])
   return (
     <div className="w-full">
       <h2 className="text-[#222425] text-2xl font-glare mb-4">

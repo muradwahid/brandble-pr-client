@@ -1,15 +1,32 @@
+import {  useState } from "react";
+import { useUserOrdersQuery } from "../../../../redux/api/orderApi";
+import { formattedDate } from "../../../../utils/function";
 import { DownloadIcon } from "../../../../utils/icons";
+// import Invoice from "../../../common/Invoice";
+// import { useReactToPrint } from "react-to-print";
+// import jsPDF from "jspdf";
 
-const PaymentHistory = () => {
+const PaymentHistory = ({ search }) => {
+  const [singleOrder, setSingleOrder] = useState({});
+  // const invoiceRef = useRef();
+  const { data } = useUserOrdersQuery({
+    ...(search && { searchTerm: search })
+  });
+
+  const orderData = data?.data;
   return (
     <div className="w-full">
-      {/* <div className="flex items-center justify-between mb-3 mt-6">
+      <div className="flex items-center justify-between mb-3 mt-6">
         <p className="font-glare text-[#777980] font-normal">History</p>
         <button className="bg-[#24A4FF] flex cursor-pointer items-center gap-2.5 py-2.5 px-4 text-xs font-medium text-white">
           <DownloadIcon className="fill-white w-2.5" /> Download
         </button>
-      </div> */}
-      {/* <div className="overflow-x-auto">
+        {/* <div ref={invoiceRef}>
+          <Invoice data={mockInvoiceData}/>
+
+        </div> */}
+      </div> 
+       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse border border-[#DCDEDF] payment-history-table">
           <thead className="bg-[#DCDEDF]">
             <tr>
@@ -61,199 +78,42 @@ const PaymentHistory = () => {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white">
-            <tr>
-              <td className="px-3 py-2.5 whitespace-nowrap">
-                <input
-                  type="checkbox"
-                  name="check_all"
-                  className="accent-[#222425]  h-4 w-4 text-blue-600"
-                />
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                #90987657
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Write & Publish
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                $150
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Hood Critic
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Card
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                03/03/2025
-              </td>
-            </tr>
+          {
+            orderData?.map(order => <tbody className="bg-white">
+              <tr>
+                <td className="px-3 py-2.5 whitespace-nowrap">
+                  <input
+                    type="checkbox"
+                    checked={order.id === singleOrder.id}
+                    onClick={() => setSingleOrder(order)}
+                    className="accent-[#222425]  h-4 w-4 text-blue-600"
+                  />
+                </td>
+                <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
+                  {order.id}
+                </td>
+                <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
+                  {order.orderType === 'wonArticle' ? 'Won Article' :'Write & Publish'}
+                  
+                </td>
+                <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
+                  ${order.amount }
+                </td>
+                <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
+                  {order.publication?.title}
+                </td>
+                <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368] capitalize">
+                  {order.paymentMethod.type}
+                </td>
+                <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
+                  {formattedDate(order.createdAt)}
+                </td>
+              </tr>
 
-            <tr>
-              <td className="px-3 py-2.5 whitespace-nowrap">
-                <input
-                  type="checkbox"
-                  className="accent-[#222425]  h-4 w-4 text-blue-600"
-                />
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                #90987657
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Write & Publish
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                $150
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Hood Critic
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Card
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                03/03/2025
-              </td>
-            </tr>
-
-            <tr>
-              <td className="px-3 py-2.5 whitespace-nowrap">
-                <input
-                  type="checkbox"
-                  className="accent-[#222425]  h-4 w-4 text-blue-600"
-                />
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                #90987657
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Refine & Publish
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                $150
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Hood Critic
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Card
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                03/03/2025
-              </td>
-            </tr>
-
-            <tr>
-              <td className="px-3 py-2.5 whitespace-nowrap">
-                <input
-                  type="checkbox"
-                  className="accent-[#222425]  h-4 w-4 text-blue-600"
-                />
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                #90987657
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Write & Publish
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                $150
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Hood Critic
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Card
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                03/03/2025
-              </td>
-            </tr>
-
-            <tr>
-              <td className="px-3 py-2.5 whitespace-nowrap">
-                <input
-                  type="checkbox"
-                  className="accent-[#222425]  h-4 w-4 text-blue-600"
-                />
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                #90987657
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Refine & Publish
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                $150
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Hood Critic
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Card
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                03/03/2025
-              </td>
-            </tr>
-
-            <tr>
-              <td className="px-3 py-2.5 whitespace-nowrap">
-                <input
-                  type="checkbox"
-                  className="accent-[#222425]  h-4 w-4 text-blue-600"
-                />
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                #90987657
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Write & Publish
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                $150
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Hood Critic
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Card
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                03/03/2025
-              </td>
-            </tr>
-
-            <tr>
-              <td className="px-3 py-2.5 whitespace-nowrap">
-                <input
-                  type="checkbox"
-                  className="accent-[#222425]  h-4 w-4 text-blue-600"
-                />
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                #90987657
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Write & Publish
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                $150
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Hood Critic
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                Card
-              </td>
-              <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                03/03/2025
-              </td>
-            </tr>
-          </tbody>
+            </tbody>)
+          }
         </table>
-      </div> */}
+      </div> 
 
       <div className="h-[50dvh] flex items-center justify-center ">
         <h1 className="text-3xl text-center leading-[150%]">No payment history found.</h1>

@@ -19,8 +19,9 @@ import {
   UserIcon,
 } from "../../../../utils/icons";
 import AdminPagination from "../../../common/AdminPagination";
-import { publicationData } from "../../../user/Pages/Publications/data";
 import Dropdown from "./Dropdown";
+import { useAdminOrdersQuery } from "../../../../redux/api/orderApi";
+import { formattedDate } from "../../../../utils/function";
 
 const TotalOrders = () => {
   const [queryParams, setQueryParams] = useState({});
@@ -32,19 +33,27 @@ const TotalOrders = () => {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const totalItems = 1; // Example: total number of items
-  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+
+  const {data, isLoading,} = useAdminOrdersQuery({
+    page: currentPage,
+    limit: itemsPerPage,
+    ...queryParams,
+  });
+  const ordersData = data?.orders?.data || [];
+  const meta = data?.orders?.meta || { page: 1, limit: 10, total: 0 };
+  const totalPages = Math.ceil((meta.total || 0) / itemsPerPage);
 
   const targetRef = useRef(null);
   const buttonRef = useRef(null);
 
   const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) {
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
       setCurrentPage(page);
-      // Here you would typically fetch new data based on the selected page
-      console.log(`Fetching data for page: ${page}`);
+      // window.scrollTo(0, 0);
     }
   };
+
 
   useEffect(() => {
     function handleClick(event) {
@@ -68,7 +77,20 @@ const TotalOrders = () => {
       document.removeEventListener("mousedown", handleClick);
     };
   }, [targetRef]);
-  return (
+
+  const getOrderType = (type,id) => { 
+    return type === 'wonArticle' ? `/admin/orders/${id}` : `/admin/orders/${id}/details`;
+  }
+
+
+
+  if (isLoading) {
+    return <div className="text-[#5F6368] flex items-center justify-center h-[60dvh] w-full">Loading...</div>
+  }
+
+  return (<>
+    {
+      meta?.total >0?
     <div>
       <div className="flex justify-between items-center mb-4">
         <div className="flex gap-3">
@@ -159,16 +181,16 @@ const TotalOrders = () => {
             <CampaignIcon />
             <p className="text-[#878C91] text-sm">
               Sponsored{" "}
-              <span className="capitalize">{queryParams?.sponsored}</span>
+              <span className="capitalize">{queryParams?.sponsor}</span>
             </p>
             <ArrowDownIcon className="ml-2.5" />
             {activeFilter?.sponsored && (
               <Dropdown
                 ref={targetRef}
                 onClick={(val) =>
-                  setQueryParams({ ...queryParams, sponsored: val })
+                  setQueryParams({ ...queryParams, sponsor: val })
                 }
-                active={queryParams?.sponsored}
+                active={queryParams?.sponsor}
               />
             )}
           </div>
@@ -241,34 +263,34 @@ const TotalOrders = () => {
               </tr>
             </thead>
             <tbody className=" text-[#5F6368] text-sm">
-              {publicationData.slice(0, 1).map((item, index) => (
+              {ordersData && ordersData?.map((order, index) => (
                 <tr key={index} className="border-t border-[#DCDEDF]">
-                  <td className="px-3 py-3 text-nowrap">{index + 1}</td>
+                  <td className="px-3 py-3 text-nowrap">{index + 1 + (Number(currentPage) - 1) * Number(currentPage)}</td>
                   <td>
-                    <Link to={`/admin/orders/${item?.id}`} className="px-3 py-3 text-nowrap">90987657</Link>
+                    <Link to={getOrderType(order?.orderType,order?.id)} className="px-3 py-3 text-nowrap"><div className="max-w-60 truncate">{order?.id}</div></Link>
                   </td>
                   <td>
-                    <Link to={`/admin/orders/${item?.id}`} className="px-3 py-3 text-nowrap">Lee</Link>
+                    <Link to={getOrderType(order?.orderType,order?.id)} className="px-3 py-3 text-nowrap">{order?.user?.name}</Link>
                   </td>
                   <td>
-                    <Link to={`/admin/orders/${item?.id}`} className="px-3 py-3 text-nowrap text-[#222425]">
-                      Publish my own article
+                    <Link to={getOrderType(order?.orderType,order?.id)} className="px-3 py-3 text-nowrap text-[#222425]">
+                      {order?.orderType === "wonArticle" ? "Publish my own article" : "Write & Publish Article For Me"}
                     </Link>
                   </td>
                   <td>
-                    <Link to={`/admin/orders/${item?.id}`} className="px-3 py-3 text-nowrap">Hood Critic</Link>
+                    <Link to={getOrderType(order?.orderType,order?.id)} className="px-3 py-3 text-nowrap">{order?.publication?.title}</Link>
                   </td>
                   <td>
-                    <Link to={`/admin/orders/${item?.id}`} className="px-3 py-3 text-nowrap overflow-hidden whitespace-nowrap text-ellipsis w-[92px]">
-                      Health & Fitness
+                    <Link to={getOrderType(order?.orderType,order?.id)} className="px-3 py-3 text-nowrap overflow-hidden whitespace-nowrap text-ellipsis w-[92px]">
+                      {order?.publication?.genre}
                     </Link>
                   </td>
                   <td>
-                    <Link to={`/admin/orders/${item?.id}`} className="px-3 py-3 text-nowrap">{item.price || "1500"}</Link>$
+                    <Link to={getOrderType(order?.orderType,order?.id)} className="px-3 py-3 text-nowrap">{order?.amount}$</Link>
                   </td>
-                  <td className="px-3 py-3 text-nowrap">03/03/2025</td>
+                  <td className="px-3 py-3 text-nowrap">{formattedDate(order?.createdAt)}</td>
                   <td className="px-3 py-3 text-nowrap">
-                    <button className="bg-[#FFAB00] rounded-sm px-3 py-1 text-white">
+                    <button className={`rounded-sm px-3 py-1 text-white ${order?.status == 'processing'?'bg-[#36b37E]':order?.status=='published'?'bg-[#008cff]':'bg-[#FFAB00]'}`}>
                       Pending
                     </button>
                   </td>
@@ -296,7 +318,11 @@ const TotalOrders = () => {
           <option value="30">30 Result</option>
         </select>
       </div>
-    </div>
+    </div >: <div className="flex items-center justify-center h-[60dvh] w-full">
+    <p className="text-[#5F6368] font-medium capitalize text-2xl">No orders found</p>
+  </div>
+    }
+  </>
   );
 };
 

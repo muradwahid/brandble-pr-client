@@ -6,7 +6,8 @@ import CheckoutPopup from "./CheckoutPopup";
 
 const Checkout = () => {
   const [selectedMethod, setSelectedMethod] = useState('')
- const [checkoutPopup, setCheckoutPopup] = useState(false);
+  const [checkoutPopup, setCheckoutPopup] = useState(false);
+  const [selectOrderId,setSelectOrderId] = useState('')
 
   return (
     <div className="w-full">
@@ -20,9 +21,9 @@ const Checkout = () => {
       </button>
       <div className=" w-4/5 mx-auto mt-6 flex lg:gap-20 gap-10 lg:flex-row flex-col-reverse">
         <CheckoutForm {...{selectedMethod, setSelectedMethod} }/>
-        <Cart setCheckoutPopup={setCheckoutPopup} selectedMethod={selectedMethod} />
+        <Cart setCheckoutPopup={setCheckoutPopup} selectedMethod={selectedMethod} setSelectOrderId={setSelectOrderId} />
       </div>
-      {checkoutPopup && <CheckoutPopup setCheckoutPopup={setCheckoutPopup} />}
+      {checkoutPopup && <CheckoutPopup setCheckoutPopup={setCheckoutPopup} selectOrderId={selectOrderId}/>}
     </div>
   );
 };
