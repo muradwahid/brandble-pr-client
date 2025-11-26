@@ -67,7 +67,7 @@ const TopNavBar = () => {
         </Link>
         <div className="hidden md:block">
           <div className="flex gap-12">
-            <p className="text-[15px]">Publications</p>
+            <Link to={'/user/publications'}><p className="text-[15px]">Publications</p></Link>
             <p className="text-[15px]">Conferences</p>
           </div>
         </div>

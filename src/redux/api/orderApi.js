@@ -99,10 +99,11 @@ export const orderApi = baseApi.injectEndpoints({
       providesTags: ["order"],
     }),
     orderStatistics: build.query({
-      query: () => {
+      query: (arg) => {
         return {
           url: `${ORDER_URL}/statistics`,
           method: "GET",
+          params: arg,
         };
       },
       providesTags: ["order"],

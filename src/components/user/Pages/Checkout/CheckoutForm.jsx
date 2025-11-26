@@ -1,22 +1,83 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GoShieldLock } from "react-icons/go";
 import "./style.css";
-import { useMethodsQuery } from "../../../../redux/api/stripepaymentApi";
+import { useMethodsQuery, useSetupIntentMutation } from "../../../../redux/api/stripepaymentApi";
 import { getUserInfo } from "../../../../helpers/user/user";
 import { useUserQuery } from "../../../../redux/api/authApi";
+import { loadStripe } from "@stripe/stripe-js";
+import toast from "react-hot-toast";
+import { Elements } from "@stripe/react-stripe-js";
+import PaymentFormContent from "../../../common/PaymentFormContent";
 
 const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
-  
-  const { data, isLoading } = useMethodsQuery();
+    const [setupIntent] = useSetupIntentMutation();
+      const { data, isLoading: isLoadingMethods} = useMethodsQuery();
+      const [isLoading, setIsLoading] = useState(false);
+    const [clientSecret, setClientSecret] = useState('');
+    const [showForm, setShowForm] = useState(false);
   
       const user = getUserInfo();
-      const { data:userData } = useUserQuery(user?.id);
+  const { data: userData } = useUserQuery(user?.id);
+  
+  const handleAddButtonClick = async () => {
+    try {
+      setIsLoading(true);
+      setClientSecret(''); // Reset previous client secret
 
-  const inputCls = ` px-3 py-2 bg-[#F6F7F7] border border-[#DCDEDF] outline-none text-[#5F6368] placeholder-[#B2B5B8] placeholder:font-normal w-full`;
+      const intent = await setupIntent();
+      const intentData = intent.data
+      const clientSecret = intentData.client_secret;
+
+      if (clientSecret) {
+        setClientSecret(clientSecret);
+        setShowForm(true);
+      } else {
+        toast.error('Client secret not received from server');
+      }
+    // eslint-disable-next-line no-unused-vars
+    } catch (error) {
+      toast.error('There was a problem with setup. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleSuccess = () => {
+    // onSuccess();
+    setShowForm(false);
+    setClientSecret('');
+  };
+
+  const handleCancel = () => {
+    setShowForm(false);
+    setClientSecret('');
+  };
+
+  // Stripe Elements options
+  const options = {
+    clientSecret,
+    appearance: {
+      theme: 'stripe',
+      variables: {
+        colorPrimary: '#0070ba',
+        colorBackground: '#ffffff',
+        colorText: '#32325d',
+        colorDanger: '#df1b41',
+        fontFamily: 'Ideal Sans, system-ui, sans-serif',
+        spacingUnit: '4px',
+        borderRadius: '4px',
+      },
+    },
+  };
+
+  const publishableKey = 'pk_test_51SBK3hPFRWrLO59dZexPgeb8vS4wShG8puLDduyFCecL3oU7cPmhVvvCOj7rDaNrfaOHkjZ3Dku0fhj79c4m8rGj00JPtghTVR';
+  const stripePromise = loadStripe(publishableKey);
+
+
 
   useEffect(() => { 
     setSelectedMethod(data?.filter(method => method?.isDefault)[0]?.stripePaymentMethodId)
-  },[data, setSelectedMethod])
+  }, [data, setSelectedMethod])
+  const inputCls = ` px-3 py-2 bg-[#F6F7F7] border border-[#DCDEDF] outline-none text-[#5F6368] placeholder-[#B2B5B8] placeholder:font-normal w-full`;
 
   return (
     <div className="w-full flex-1">
@@ -138,7 +199,7 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
 
           {/* payment method */}
           {
-            !isLoading && 
+            !isLoadingMethods && 
           <div className="border border-[#F2F2F3] p-3.5">
             <div className="border-b border-[#DCDEDF] pb-3">
               <h3 className="text-[20px] text-[#222425] font-glare">
@@ -165,7 +226,7 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                         name="payment_card"
                         id={method?.stripePaymentMethodId}
                         checked={selectedMethod === method?.stripePaymentMethodId}
-                        onChange={() => selectedMethod(method?.stripePaymentMethodId)}
+                        onChange={() => setSelectedMethod(method?.stripePaymentMethodId)}
                         className="cursor-pointer accent-[#008CFF]"
                       />
                       <p className="text-[#222425] text-sm capitalize">
@@ -206,7 +267,7 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                         type="radio"
                         name="payment_card"
                           checked={selectedMethod === method?.stripePaymentMethodId}
-                          onChange={() => selectedMethod(method?.stripePaymentMethodId)}
+                              onChange={() => setSelectedMethod(method?.stripePaymentMethodId)}
                         className="cursor-pointer accent-[#008CFF]"
                       />
                       {/* <img
@@ -273,8 +334,22 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                   <p className="text-[#5F6368] text-sm">******6615</p>
                 </div>
               </div> */}
+                        {
+                        clientSecret && showForm &&
+                        <div className="fixed inset-0 bg-[#22242580] flex justify-center items-center p-4 backdrop-blur-[2px] z-50">
+                          <div className="w-full max-w-[500px] md:mx-auto h-auto bg-white p-8 brandable-stripe-pyments-element-container">
+                        <Elements stripe={stripePromise} options={options}>
+                            <PaymentFormContent
+                              clientSecret={clientSecret}
+                              onSuccess={handleSuccess}
+                              onCancel={handleCancel}
+                            />
+                          </Elements>
+                            </div>
+                        </div>
+                        }
               <div className="flex justify-end">
-                <button className="text-sm text-[#36383A] bg-[#DCDEDF] px-8 py-2.5 cursor-pointer hover:bg-[#bebfc0] transition-all duration-200">
+                    <button className="text-sm text-[#36383A] bg-[#DCDEDF] px-8 py-2.5 cursor-pointer hover:bg-[#bebfc0] transition-all duration-200" onClick={handleAddButtonClick} disabled={isLoading}>
                   New Payment Method
                 </button>
               </div>

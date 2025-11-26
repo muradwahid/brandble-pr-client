@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   ArrowDown,
   TrendingDownIcon,
+  TrendingUp2Icon,
   TrendingUpIcon,
 } from "../../../../utils/icons";
 import Tooltip from "../../../ui/Tooltip";
@@ -11,15 +12,19 @@ import { useOrderStatisticsQuery } from "../../../../redux/api/orderApi";
 import { usePublicationStatisticQuery } from "../../../../redux/api/publicationApi";
 
 const OrderStatus = () => {
-  const [filter, setFilter] = useState("today");
+  const [filter, setFilter] = useState("");
   const [toggle, setToggle] = useState(false);
   const [isStatistic, setIsStatistic] = useState(false);
   const statisticRef = useRef();
   const viewRef = useRef();
-  
-  const { data, isLoading } = useOrderStatisticsQuery();
+  const queryParams = {
+    ...(filter === 'today' && { today: '1' }),
+    ...(filter === 'thisWeek' && { thisWeek: '1' })
+  };
+
+  const { data, isLoading } = useOrderStatisticsQuery(queryParams);
   const { data:publicationStatistic, isLoading:publicationStatisticLoading} = usePublicationStatisticQuery()
-  const percent = parseInt((Number(data?.repeatClient || 0) / Number(data?.totalOrders || 0)) * 100);
+
   const publications = publicationStatistic?.publications || []
   useEffect(() => {
     function handleClick(event) {
@@ -49,6 +54,8 @@ const OrderStatus = () => {
     return firstNonWhitespace === '+'
   }
 
+  const percent = parseInt((Number(data?.currentPeriod?.repeatClient || 0) / Number(data?.currentPeriod?.totalOrders || 0)) * 100);
+
   return (
     <div className="w-full">
       <div>
@@ -72,7 +79,7 @@ const OrderStatus = () => {
             </p>
             <p
               onClick={() =>
-                setFilter((prev) => (prev == "today" ? "week" : "today"))
+                setFilter((prev) => (prev == "today" ? "thisWeek" : "today"))
               }
               className="flex items-center gap-12 font-poppins text-[20px] font-medium text-[#36383A] cursor-pointer tracking-[0.1px] p-2"
             >
@@ -88,10 +95,17 @@ const OrderStatus = () => {
             <div className="md:border-r md:border-b-0 border-b border-[#DCDEDF] pr-6 flex-1 md:pb-0 pb-5">
               <div className="flex items-center mb-11 justify-between">
                 <p className="text-[#5F6368]">Total Orders</p>
-                <div className="flex items-center gap-3 text-[#de350b] bg-[rgba(255,143,115,0.5)] border border-[#FF8F73] rounded-[4px] px-2 py-1 ml-5 shadow-md shadow-[rgba(255,143,115,0.3)]">
-                  <p className="text-xs font-medium">3.5 %</p>{" "}
-                  <TrendingDownIcon />
-                </div>
+                {/* {
+                  handleGrowthScale(data?.currentPeriod?.growthRate) ? <div className="flex items-center gap-3 text-[#36b37e] bg-[rgba(54,179,127,0.5)]  border border-[#36b37e] rounded-[4px] px-2 py-1 ml-5 shadow-md shadow-[rgba(54,179,127,0.3)]">
+                    <p className="text-xs font-medium">3.5 %</p>
+                    <TrendingUp2Icon className='h-[16px] fill-[#36b37e]' />
+                  </div> : <div className="flex items-center gap-3 text-[#de350b] bg-[rgba(255,143,115,0.5)] border border-[#FF8F73] rounded-[4px] px-2 py-1 ml-5 shadow-md shadow-[rgba(255,143,115,0.3)]">
+                    <p className="text-xs font-medium">3.5 %</p>
+                    <TrendingDownIcon />
+                  </div> 
+                } */}
+
+
               </div>
               <div className="flex gap-5">
                 <div className="w-[31px] h-[126px] rounded-sm overflow-hidden relative">
@@ -104,7 +118,7 @@ const OrderStatus = () => {
                 <div className="grid content-between w-full">
                   <div>
                     <p className="text-xl text-[#171819] font-medium">
-                      {data?.totalOrders || 0}
+                      {data?.currentPeriod?.totalOrders || 0}
                     </p>
                     <p className="text-[#5F6368] text-sm mt-1.5">
                       Number of orders
@@ -116,14 +130,14 @@ const OrderStatus = () => {
                         <p className="w-[16px] h-[16px] bg-[#7900FA] rounded-[6px]"></p>
                         <p className="text-[#5F6368] text-sm">New Client</p>
                       </div>
-                      <p className="text-[#5F6368] text-sm">{data?.newClient || 0}</p>
+                      <p className="text-[#5F6368] text-sm">{data?.currentPeriod?.newClient || 0}</p>
                     </div>
                     <div className="flex justify-between">
                       <div className="flex items-center gap-2">
                         <p className="w-[16px] h-[16px] bg-[#ff991f] rounded-[6px]"></p>
                         <p className="text-[#5F6368] text-sm">Repeat Client</p>
                       </div>
-                      <p className="text-[#5F6368] text-sm">{data?.repeatClients || 0}</p>
+                      <p className="text-[#5F6368] text-sm">{data?.currentPeriod?.repeatClients || 0}</p>
                     </div>
                   </div>
                 </div>
@@ -157,14 +171,14 @@ const OrderStatus = () => {
                         <p className="w-[16px] h-[16px] bg-[#7900FA] rounded-[6px]"></p>
                         <p className="text-[#5F6368] text-sm">Delivered</p>
                       </div>
-                      <p className="text-[#5F6368] text-sm">{data?.delivered || 0}</p>
+                      <p className="text-[#5F6368] text-sm">{data?.currentPeriod?.delivered || 0}</p>
                     </div>
                     <div className="flex justify-between">
                       <div className="flex items-center gap-2">
                         <p className="w-[16px] h-[16px] bg-[#ff991f] rounded-[6px]"></p>
                         <p className="text-[#5F6368] text-sm">In Progress</p>
                       </div>
-                      <p className="text-[#5F6368] text-sm">{data?.inProgress || 0}</p>
+                      <p className="text-[#5F6368] text-sm">{data?.currentPeriod?.inProgress || 0}</p>
                     </div>
                   </div>
                 </div>
@@ -190,7 +204,7 @@ const OrderStatus = () => {
                       <div className="w-full grid gap-1">
                         {
                           publications?.slice(0, 3)?.map((publication) => <div key={publication?.id} className="w-full flex items-center justify-between">
-                            <p className="text-[#5F6368] text-sm">Hood Critic</p>
+                            <p className="text-[#5F6368] text-sm">{publication?.title}</p>
                             <span className="text-[#5F6368] group text-sm relative transition-all duration-200">
                               {publication?.ordersThisMonth}
                               <Tooltip

@@ -1,7 +1,9 @@
 import { RxMagnifyingGlass } from "react-icons/rx";
-import "./style.css";
 import { AdultIcon, BitcoinIcon, CardiologyIcon, CasinoIcon, SpaIcon } from "../../../../utils/icons";
 import PriceRangeSlider from "../../../common/PriceRangeSlider";
+import countries from "../../../../assets/countries.json";
+
+import "./style.css";
 const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publication, setPublication, domainAuthority, setDomainAuthority, domainRating, setDomainRating, location, setLocation, genre, setGenre, doFollow, setDoFollow, indexed, setIndexed, niche, setNiche, range, setRange }) => {
 
 
@@ -212,11 +214,10 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
             Location
           </label>
           <div className="relative">
-            <select value={location} onChange={e=>setLocation(e.target.value)} id="location" className={`appearance-none ${commonCls}`}>
-              <option>Select Location</option>
-              <option>USA</option>
-              <option>Europe</option>
-              <option>Asia</option>
+            <select value={location} onChange={e => setLocation(e.target.value)} id="location" className={`appearance-none ${commonCls}`}>
+              <option defaultChecked>Select Location</option>
+              {countries && countries?.map((country, index) => <option key={index} value={country?.name} >{country?.name}</option>)}
+            
             </select>
             <div className="custom-dropdown-arrow">
               <svg

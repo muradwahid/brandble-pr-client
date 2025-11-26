@@ -5,7 +5,7 @@ import "./style.css";
 import { getFromLocalStorage, setToLocalStorage } from '../../../../utils/local-storage';
 import toast from 'react-hot-toast';
 // eslint-disable-next-line no-unused-vars
-import { useMethodsQuery, useProcessPaymentMutation } from "../../../../redux/api/stripepaymentApi";
+import { useProcessPaymentMutation } from "../../../../redux/api/stripepaymentApi";
 import { useAddOrderMutation } from "../../../../redux/api/orderApi";
 import { getUserInfo } from "../../../../helpers/user/user";
 import { LoadingIcon } from "../../../../utils/icons";
@@ -67,7 +67,6 @@ const Cart = ({ selectedMethod, setSelectOrderId, setCheckoutPopup }) => {
           paymentMethodId:result.data.paymentMethod.id
         }
         const orderResult = await addOrder(orderData)
-        console.log("orderResult",orderResult);
         if (orderResult?.data?.id) {
           setCheckoutPopup(true)
           setSelectOrderId(orderResult?.data?.id)

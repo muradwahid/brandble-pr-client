@@ -116,7 +116,7 @@ const PaymentFormContent = ({ clientSecret, onSuccess, onCancel }) => {
   };
   return (
     <div>
-   <form onSubmit={handleSubmit} className="stripe-form">
+      <form onSubmit={handleSubmit} className="stripe-form z-50">
         <PaymentElement 
           onChange={handleElementChange}
           
@@ -129,9 +129,9 @@ const PaymentFormContent = ({ clientSecret, onSuccess, onCancel }) => {
               'card',
               'us_bank_account',
             ],
-            fields: {
-              billingDetails:"auto"
-            }
+            // fields: {
+            //   billingDetails:"auto"
+            // }
           }}
         />
 

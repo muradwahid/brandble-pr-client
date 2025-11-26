@@ -14,6 +14,17 @@ export const publicationApi = baseApi.injectEndpoints({
       },
       providesTags: ["publication",'create'],
     }),
+    adminSearchPublications: build.query({
+      query: (arg) => ({
+        url: `${NICHE_URL}/admin/searchpublications`,
+        method: "GET",
+        params: arg,
+      }),
+      transformResponse: (response) => {
+        return response
+      },
+      providesTags: ["publication",'create'],
+    }),
     addPublication: build.mutation({
       query: (data) => ({
         url: `${NICHE_URL}/create`,
@@ -63,6 +74,7 @@ export const publicationApi = baseApi.injectEndpoints({
 });
 
 export const { usePublicationsQuery,
+  useAdminSearchPublicationsQuery,
   useAddPublicationMutation,
   usePublicationQuery,
   usePublicationStatisticQuery,

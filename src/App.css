@@ -125,6 +125,10 @@
   left:-1px;
 }
 
+.brandable-stripe-pyments-element-container .stripe-form .StripeElement iframe{
+  display: none !important;
+}
+
 @media screen and (min-width: 768px) {
   .maxHeightdvh{
     max-height: calc(100dvh - 40px);
