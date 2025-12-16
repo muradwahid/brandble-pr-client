@@ -62,7 +62,7 @@ const UserSidebar = () => {
             {/* profile */}
             <div className="md:flex gap-5 items-center border-b-[1px] border-[#b2b5b8] pb-5">
              { data?.image?<div className="w-[60px] h-[60px] border">
-                <img className="w-full h-full" src={data.image} alt="" />
+                <img className="w-full h-full object-contain" src={data.image} alt="" />
               </div> : <FaUser className="text-2xl text-gray-500 cursor-pointer" />}
               <div className="flex flex-col">
                 <h4 className="text-[#222425] text-[20px] font-glare">

@@ -11,10 +11,12 @@
   },
   "dependencies": {
     "@netlify/vite-plugin": "^2.5.1",
+    "@prisma/sdk": "^3.15.2",
     "@stripe/react-stripe-js": "^4.0.2",
     "@stripe/stripe-js": "^7.9.0",
     "@tailwindcss/vite": "^4.1.11",
     "axios": "^1.12.2",
+    "country-state-city": "^3.2.1",
     "jspdf": "^3.0.4",
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",

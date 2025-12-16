@@ -1,4 +1,4 @@
-import { setToLocalStorage } from "../../utils/local-storage";
+import { getFromLocalStorage, setToLocalStorage } from "../../utils/local-storage";
 import { jwtDecode } from "jwt-decode";
 
 export function getCookie(name) {
@@ -13,10 +13,19 @@ export const storeUserInfo = ({ accessToken }) => {
   setToLocalStorage('accessToken', accessToken);
 };
 
+// export const getUserInfo = () => {
+//   // const authToken = getFromLocalStorage('accessToken');
+//   if (accessToken) {
+//     const decodedData = jwtDecode(accessToken);
+//     return decodedData;
+//   } else {
+//     return null;
+//   }
+// };
 export const getUserInfo = () => {
-  // const authToken = getFromLocalStorage('accessToken');
-  if (accessToken) {
-    const decodedData = jwtDecode(accessToken);
+  const authToken = getFromLocalStorage('accessToken');
+  if (authToken) {
+    const decodedData = jwtDecode(authToken);
     return decodedData;
   } else {
     return null;
@@ -24,9 +33,13 @@ export const getUserInfo = () => {
 };
 
 export const isLoggedIn = () => {
-  // const authToken = getFromLocalStorage('accessToken');
-  return !!accessToken;
+  const authToken = getFromLocalStorage('accessToken');
+  return !!authToken;
 };
+// export const isLoggedIn = () => {
+//   const authToken = getFromLocalStorage('accessToken');
+//   return !!accessToken;
+// };
 
 export const isAdminLoggedId = () => { 
   const userInfo = getUserInfo()

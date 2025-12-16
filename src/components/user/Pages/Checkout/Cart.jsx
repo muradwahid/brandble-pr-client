@@ -28,17 +28,19 @@ const Cart = ({ selectedMethod, setSelectOrderId, setCheckoutPopup }) => {
   }, [cartItems]);
 
   const handleCheckboxChange = (id) => {
-    setCartItems(prevItems =>
-      prevItems.map(item => ({
-        ...item,
-        isChecked: item.id === id
-      }))
-    );
-    setCartItems(prev => {
-      localStorage.setItem("brandableCardData", JSON.stringify(prev));
-      return prev;
+    setCartItems(prevItems => {
+      const nextItems = prevItems.map(item =>
+        item.id === id
+          ? { ...item, isChecked: !item.isChecked } // toggle (undefined -> true -> false -> true...)
+          : item
+      );
+
+      // persist updated array
+      localStorage.setItem("brandableCardData", JSON.stringify(nextItems));
+      return nextItems;
     });
   };
+
 
   // Handler for deleting an item from the cart
   const removeFromCard = (id, title) => {
@@ -67,6 +69,7 @@ const Cart = ({ selectedMethod, setSelectOrderId, setCheckoutPopup }) => {
           paymentMethodId:result.data.paymentMethod.id
         }
         const orderResult = await addOrder(orderData)
+
         if (orderResult?.data?.id) {
           setCheckoutPopup(true)
           setSelectOrderId(orderResult?.data?.id)

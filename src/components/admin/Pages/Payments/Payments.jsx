@@ -75,8 +75,6 @@ const Payments = () => {
     { title: "Last Month", value: "lastMonth" },
   ];
 
-  console.log(meta);
-
   return (
     <div>
       <div>

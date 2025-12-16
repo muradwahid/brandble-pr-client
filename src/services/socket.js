@@ -135,7 +135,7 @@ class SocketService {
 
     const token = getFromLocalStorage('accessToken');
 
-    this.socket = io(import.meta.env.VITE_SOCKET_URL, {
+    this.socket = io('http://localhost:5050', {
       auth: {
         token: token
       },
@@ -232,7 +232,7 @@ class SocketService {
 
   sendMessage(roomId, content, type = 'text', fileUrl = null) {
     if (this.socket && this.isConnected) {
-      this.socket.emit('send-message', {
+      this.socket.emit('send_message', {
         roomId,
         content,
         type,

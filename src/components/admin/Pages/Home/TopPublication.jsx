@@ -114,12 +114,12 @@ const TopPublication = () => {
                 <td className="pr-2.5">
                   
                     {
-                      item?.niches?.map((title, i) => {
-                        if (title === "adult") return <AdultIcon key={i} />;
-                        if (title === "health") return <CardiologyIcon key={i} />;
-                        if (title === "cannabis") return <SpaIcon key={i} />;
-                        if (title === "crypto") return <BitcoinIcon key={i} />;
-                        if (title === "casino") return <CasinoIcon key={i} />;
+                      item?.niches?.map((niche, i) => {
+                        if (niche?.title?.toLowerCase() === "adult") return <AdultIcon key={i} />;
+                        if (niche?.title?.toLowerCase() === "health") return <CardiologyIcon key={i} />;
+                        if (niche?.title?.toLowerCase() === "cannabis") return <SpaIcon key={i} />;
+                        if (niche?.title?.toLowerCase() === "crypto") return <BitcoinIcon key={i} />;
+                        if (niche?.title?.toLowerCase() === "casino") return <CasinoIcon key={i} />;
                         return null;
                       })
                   }

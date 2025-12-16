@@ -28,7 +28,6 @@ const PaymentFormContent = ({ clientSecret, onSuccess, onCancel }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting form...",e);
 
     setIsLoading(true);
 
@@ -41,16 +40,15 @@ const PaymentFormContent = ({ clientSecret, onSuccess, onCancel }) => {
         },
         payment_method_data: {
           billing_details: {
-            // Email required করুন
-            email: '', // Stripe automatically collect করবে
-            name: '',  // Stripe automatically collect করবে
-            phone: '', // Stripe automatically collect করবে
+            email: '',
+            name: '',
+            phone: '',
             address: {
               line1: '',
               city: '',
               state: '',
               postal_code: '',
-              country: 'US', // Default country
+              country: 'US',
             }
           }
         },

@@ -1,10 +1,13 @@
 import { RxMagnifyingGlass } from "react-icons/rx";
 import { AdultIcon, BitcoinIcon, CardiologyIcon, CasinoIcon, SpaIcon } from "../../../../utils/icons";
 import PriceRangeSlider from "../../../common/PriceRangeSlider";
-import countries from "../../../../assets/countries.json";
 
 import "./style.css";
-const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publication, setPublication, domainAuthority, setDomainAuthority, domainRating, setDomainRating, location, setLocation, genre, setGenre, doFollow, setDoFollow, indexed, setIndexed, niche, setNiche, range, setRange }) => {
+import LocationFilter from "../../../common/LocationFilter";
+import { useState } from "react";
+const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publication, setPublication, domainAuthority, setDomainAuthority, domainRating, setDomainRating, location, setLocation, genre, setGenre, doFollow, setDoFollow, indexed, setIndexed, niche, setNiche, range, setRange, setScope }) => {
+
+  const [isLocationShow,setIsLocationShow] = useState(false);
 
 
   const ninche = [
@@ -46,8 +49,9 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
     setDoFollow('')
     setIndexed('')
     setNiche('')
+    setIsLocationShow(false);
+    setScope({});
   }
-
 
   const commonCls = "w-full px-4 py-2 border border-[#DCDEDF] text-[14px]  text-[#878C91] placeholder-[#878C91] bg-[#F6F7F7] focus:outline outline-[#004A87]";
   const labelCls = "block text-[#002747] text-[14px] mb-1";
@@ -214,9 +218,12 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
             Location
           </label>
           <div className="relative">
-            <select value={location} onChange={e => setLocation(e.target.value)} id="location" className={`appearance-none ${commonCls}`}>
+            <select onClick={()=>setIsLocationShow(true)} value={location} onChange={e => setLocation(e.target.value)} id="location" className={`appearance-none ${commonCls}`}>
               <option defaultChecked>Select Location</option>
-              {countries && countries?.map((country, index) => <option key={index} value={country?.name} >{country?.name}</option>)}
+              <option value='local'>Local</option>
+              <option value='national'>National</option>
+              <option value='regional'>Regional</option>
+              <option value='global'>Global</option>
             
             </select>
             <div className="custom-dropdown-arrow">
@@ -235,6 +242,7 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
                 ></path>
               </svg>
             </div>
+            {(location && isLocationShow) && <LocationFilter onChange={val => setScope(val)} setIsLocationShow={setIsLocationShow} scope={location} />}
           </div>
         </div>
 

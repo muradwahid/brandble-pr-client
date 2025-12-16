@@ -84,8 +84,12 @@ const PaymentHistory = ({ search }) => {
                 <td className="px-3 py-2.5 whitespace-nowrap">
                   <input
                     type="checkbox"
-                    checked={order.id === singleOrder.id}
-                    onClick={() => setSingleOrder(order)}
+                    checked={order?.id === singleOrder?.id}
+                    onChange={() =>
+                      setSingleOrder(prev =>
+                        prev?.id === order.id ? {} : order
+                      )
+                    }
                     className="accent-[#222425]  h-4 w-4 text-blue-600"
                   />
                 </td>

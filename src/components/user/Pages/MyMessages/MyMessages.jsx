@@ -296,7 +296,7 @@ const MyMessages = () => {
                     </div>
                   ))
                 ) : (
-                  <div className="grid place-items-center h-full">
+                  <div className="grid h-[50dvh] place-items-center">
                     <p className="text-[#878C91] text-2xl font-glare">
                       Start Chatting
                     </p>

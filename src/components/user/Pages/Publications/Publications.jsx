@@ -34,6 +34,7 @@ const Publications = () => {
   const [doFollow, setDoFollow] = useState();
   const [indexed, setIndexed] = useState();
   const [niche, setNiche] = useState();
+  const [scope, setScope] = useState({});
 
   const [itemsPerPage,setItemsPerPage] = useState(10);
 
@@ -50,13 +51,13 @@ const Publications = () => {
     ...(genre && { genre }),
     ...(doFollow && { doFollow: doFollow }),
     ...(indexed && { index: indexed}),
-    ...(location && { region:location }),
+    // ...(location && { region:location }),
     ...(niche && { niche }),
     ...(publication && { title: publication }),
 
     ...(domainAuthority && { da: domainAuthority }),
     ...(domainRating && { dr: domainRating }),
-
+    ...(scope && {...scope}),
     ...(sortBy && {
       sortBy: sortBy === 'priceAsc' || sortBy === 'priceDesc' ? 'price' : 'createdAt',
       sortOrder: sortBy === 'priceAsc' || sortBy === 'dateAsc' ? 'asc' : 'desc',
@@ -84,11 +85,11 @@ const Publications = () => {
   const { data: favorites, isLoading: favoritesLoading } = useFavoriteIdsQuery(user.id)
  
 
-const addToCard = (data) => {
+const addToCard = (cardData) => {
   const existingData = JSON.parse(getFromLocalStorage("brandableCardData")) || [];
   
   // Check if item already exists in cart
-  const isAlreadyInCart = existingData.some(item => item.id === data.id);
+  const isAlreadyInCart = existingData.some(item => item.id === cardData.id);
   
   if (isAlreadyInCart) {
     // Show error toast if item already exists
@@ -96,7 +97,7 @@ const addToCard = (data) => {
     return false; 
   } else {
     // Add new item to cart
-    const updatedData = [...existingData, data];
+    const updatedData = [...existingData, cardData];
     setToLocalStorage("brandableCardData", JSON.stringify(updatedData));
     
     // Show success toast
@@ -140,11 +141,11 @@ const addToCard = (data) => {
           Explore All of Our Publications
         </h2>
       </div>
-      <div className={`md:flex md:gap-6 ${toggle ? "flex gap-2.5" : ""}`}>
+      {meta?.total>0 ?<div className={`md:flex md:gap-6 ${toggle ? "flex gap-2.5" : ""}`}>
         {/* filterable sidebar */}
         <FilterableSidebar
           className={`md:ml-[0px] md:block ${toggle ? "block" : "hidden"}`}
-          {...{ setSearch, sortBy, setSortBy, range, setRange, publication, setPublication, domainAuthority, setDomainAuthority, domainRating, setDomainRating, location, setLocation, genre, setGenre, doFollow, setDoFollow, indexed, setIndexed, niche, setNiche }}
+          {...{ setSearch, sortBy, setSortBy, range, setRange, publication, setPublication, domainAuthority, setDomainAuthority, domainRating, setDomainRating, location, setLocation, genre, setGenre, doFollow, setDoFollow, indexed, setIndexed, niche, setNiche, setScope,scope }}
         />
 
         {/* publication items*/}
@@ -283,7 +284,7 @@ const addToCard = (data) => {
         }
 
 
-      </div>
+      </div> : <div class="h-[50dvh] flex items-center justify-center"><h1 class="text-3xl">No publications found.</h1></div>}
     </div>
   );
 };

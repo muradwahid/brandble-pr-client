@@ -133,7 +133,7 @@ const EditPublication = () => {
             <div className="h-[150px] w-[150px] bg-[#E6E6E6] relative cursor-pointer ">
               {(imagePreview || singlePublication?.logo) &&
                 <img
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-contain"
                   src={`${imagePreview || singlePublication?.logo}`}
                   alt=""
 
@@ -175,7 +175,7 @@ const EditPublication = () => {
             )}
           </label>
           <div className="grid md:grid-cols-2 grid-cols-1 gap-x-5 gap-y-6 mt-5  w-full">
-            <label htmlFor="">
+            <label htmlFor="da">
               <p className="font-glare text-[#5F6368] font-normal tracking-[-0.1px] mb-1.5">
                 Domain Authority (DA)
               </p>
@@ -267,15 +267,15 @@ const EditPublication = () => {
                 inputType="radio"
                 placeholder="Ex: Yes"
                 setValue={setValue}
-                name="genreId"
+                name="genre"
                 errorLabel="Genre"
                 value={singlePublication?.genre}
                 onAddOption={(v) => addGenre({ title: v })}
                 isLoading={addGenreLoading}
               />
-              {errors.genreId && (
+              {errors.genre && (
                 <span className="text-red-400 text-xs">
-                  {errors.genreId.message}
+                  {errors.genre.message}
                 </span>
               )}
             </div>
@@ -311,14 +311,14 @@ const EditPublication = () => {
                 inputType="radio"
                 placeholder="Ex: Yes"
                 setValue={setValue}
-                name="sponsorId"
+                name="sponsor"
                 errorLabel="Sponsored"
                 onAddOption={(v) => addSponsor({ title: v })}
                 isLoading={addSponsorLoading}
               />
-              {errors.sponsorId && (
+              {errors.sponsor && (
                 <span className="text-red-400 text-xs">
-                  {errors.sponsorId.message}
+                  {errors.sponsor.message}
                 </span>
               )}
             </label>
@@ -336,14 +336,14 @@ const EditPublication = () => {
                 inputType="radio"
                 placeholder="Ex: Yes"
                 setValue={setValue}
-                name="indexedId"
+                name="index"
                 errorLabel="Index"
                 onAddOption={(v) => addIndexed({ title: v })}
                 isLoading={addIndexLoading}
               />
-              {errors.indexedId && (
+              {errors.index && (
                 <span className="text-red-400 text-xs">
-                  {errors.indexedId.message}
+                  {errors.index.message}
                 </span>
               )}
             </label>
@@ -361,14 +361,14 @@ const EditPublication = () => {
                 inputType="radio"
                 placeholder="Ex: Yes"
                 setValue={setValue}
-                name="doFollowId"
+                name="doFollow"
                 errorLabel="Sponsored"
                 onAddOption={(v) => addDofollow({ title: v })}
                 isLoading={addDofollowLoading}
               />
-              {errors.doFollowId && (
+              {errors.doFollow && (
                 <span className="text-red-400 text-xs">
-                  {errors.doFollowId.message}
+                  {errors.doFollow.message}
                 </span>
               )}
             </label>

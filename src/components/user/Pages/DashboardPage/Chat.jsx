@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSocket } from "../../../../contexts/SocketContext";
 import { chatApi } from "../../../../services/chatApi";
 import { useGetAdminQuery } from "../../../../redux/api/authApi";
+import { formatDateSmart } from "../../../../utils/function";
 
 const Chat = () => {
   const [selectedChat, setSelectedChat] = useState(null);
@@ -204,7 +205,7 @@ const Chat = () => {
             </div>
             <span className="font-semibold text-lg text-gray-800">Admin</span>
           </div>
-          <span className="text-sm text-gray-500">Unread</span>
+          {/* <span className="text-sm text-gray-500">Unread</span> */}
         </div>
         <div className="chat-messages flex flex-col">
           {
@@ -215,8 +216,8 @@ const Chat = () => {
               >
                 <div className={`${message.sender.id === user.id ? 'message-bubble message-sent shadow-md' : 'message-bubble message-received'}`}>
                   {message.content}
-                  <div className="text-right text-xs text-gray-400 mt-1 flex items-center gap-1 justify-end">
-                    12:25 <LuCheckCheck />
+                  <div className={`text-right text-xs  mt-1 flex items-center gap-1 justify-end ${message.sender.id === user.id ?'text-white' :'text-gray-400'}`}>
+                    {formatDateSmart(message.createdAt)} <LuCheckCheck />
                   </div>
                 </div>
               </div>

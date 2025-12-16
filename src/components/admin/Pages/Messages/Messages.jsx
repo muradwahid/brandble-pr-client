@@ -6,6 +6,7 @@ import { useSocket } from "../../../../contexts/SocketContext";
 import { chatApi } from "../../../../services/chatApi";
 import { GoPaperAirplane } from "react-icons/go";
 import { LuCheckCheck } from "react-icons/lu";
+import { Link } from "react-router";
 
 
 const Messages = () => {
@@ -248,7 +249,17 @@ const Messages = () => {
 
     loadInitialChat();
   }, [userChats, orderChats, activeTab])
+  
+  console.log('selectedChat', selectedChat?.order?.orderType);
 
+  const redirectToOrderDetails = () => {
+    if (selectedChat && selectedChat?.order?.orderType) {
+      const redirectOrder = selectedChat.order.orderType==="wonArticle";
+      return redirectOrder ? `/admin/orders/${selectedChat.order.id}` : `/admin/orders/${selectedChat.order.id}/details`;
+    }
+  };
+  
+  console.log(redirectToOrderDetails(), selectChat?.order?.orderType);
 
   const activeCls = "bg-[#E6F4FF] border-l-[#008CFF] border-b-[#008CFF]";
   return (
@@ -343,7 +354,7 @@ const Messages = () => {
                       <ShieldIcon />
                     </div>
                   <div className="w-[140px] hidden lg:block">
-                    <p className="text-[#36383A] font-normal">{selectedChat && getOtherUser(selectedChat)?.id}</p>
+                    <p className="text-[#36383A] font-normal truncate">{selectedChat && getOtherUser(selectedChat)?.id}</p>
                     <div className="whitespace-nowrap overflow-hidden overflow-ellipsis text-[#878C91] text-[14px]">
                       Enter your message description here...
                     </div>
@@ -379,13 +390,13 @@ const Messages = () => {
                       </div>
                     )}
                     {activeTab === "orders" && (
-                      <span className=" text-[#B2B5B8] underline cursor-pointer">
+                <Link to={redirectToOrderDetails()} className=" text-[#B2B5B8] underline cursor-pointer">
                         See Order Details
-                      </span>
+                      </Link>
                     )}
                   </div>
           
-            <div className="chat-messages flex flex-col w-full">
+            <div className="chat-messages flex flex-col w-full max-h-[60dvh]">
               {
                 selectedChat ? messages.map((message,idx) => <div key={idx} className={`flex items-start mb-2 ${message.sender.id === user.id ? 'justify-end' : 'justify-start'}`}>
                   <div className={`${message.sender.id === user.id ? 'message-bubble message-sent shadow-md' : 'message-bubble message-received'}`}>
@@ -397,7 +408,11 @@ const Messages = () => {
 
                 </div>)
                 
-                  : 'No messages yet'
+                  : <div className="grid h-[50dvh] place-items-center">
+                    <p className="text-[#878C91] text-2xl font-glare">
+                      No messages yet
+                    </p>
+                  </div>
 
               }
                   

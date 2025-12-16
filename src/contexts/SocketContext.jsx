@@ -26,7 +26,7 @@ export const SocketProvider= ({ children }) => {
     connectionAttempted.current = true;
 
     try {
-      const newSocket = io('https://api.brandable-pr.com', {
+      const newSocket = io('http://localhost:5050', {
         transports: ['websocket', 'polling'], // Add fallback transport
         autoConnect: true,
         reconnection: true,

@@ -95,7 +95,7 @@ const Profile = () => {
                 {
                   (imagePreview || data?.image) &&
                   <img
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   src={`${imagePreview || data?.image}`}
                   alt=""
                   />

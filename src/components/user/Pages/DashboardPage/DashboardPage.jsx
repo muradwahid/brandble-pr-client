@@ -21,7 +21,7 @@ const DashboardPage = () => {
   };
   const { data, isLoading } = useOrdersQuery(queryParams);
 
-  const meta = data?.meta || { page: 1, limit: 10, total: 0 };
+  const meta = data?.orders?.meta || { page: 1, limit: 10, total: 0 };
   const ordersData = data?.orders?.data || [];
 
   // Calculate total pages
@@ -61,10 +61,14 @@ const DashboardPage = () => {
 
   if (isLoading) { 
     return <div className="h-[70vh] w-full flex justify-center items-center">Loading...</div>;
-  }
+  } 
 
   return (
     <div className="w-full overflow-x-auto">
+      {meta.total < 1 ? <h3 className="text-2xl text-[#222425] font-glare">
+        Dashboard
+      </h3>:null}
+      {meta.total  ? <>
       <div className="lg:flex justify-between items-center border-b border-[#DCDEDF] pb-4">
         <div className="md:flex gap-8 items-center w-full">
           <h3 className="text-2xl text-[#222425] font-glare">
@@ -119,10 +123,11 @@ const DashboardPage = () => {
           currentPage={currentPage}
           onPageChange={handlePageChange}
         />
-      </div> 
-      <div className="h-[50dvh] flex items-center justify-center">
-      <h1 className="text-3xl">Your running order is empty.</h1>
-      </div>
+        </div>
+      </> : <div className="h-[50dvh] flex items-center justify-center">
+        <h1 className="text-3xl">Your running order is empty.</h1>
+      </div>}
+
       <div>
         <p className="text-[#222425] py-5 font-medium border-t border-[#DCDEDF] font-glare">
           Conversation With Admin

@@ -13,16 +13,7 @@ const OrderStatus = ({ data }) => {
   const [updateOrderStatus] = useUpdateOrderStatusMutation();
 
   const handleUpdateStatus = async (status) => { 
-    console.log(status, ' : status');
-    const updateData = { id: data?.id, status }
-    console.log(updateData, ' : data');
-    try {
-      
-      const result = await updateOrderStatus({ id: data?.id, body: { status } })
-      console.log({result});
-    } catch (error) {
-      console.error(error);
-    }
+      await updateOrderStatus({ id: data?.id, body: { status } })
   }
   const color =
     data?.status === 'published' ? statusBgColor.published :
@@ -46,7 +37,7 @@ const OrderStatus = ({ data }) => {
               <p
                 className={`${color} text-sm font-medium px-3 py-1 text-white w-[164px] capitalize`}
               >
-                {data?.status}
+                {data?.status=== 'unabletopublish' ? 'unable to publish' : data?.status}
               </p>
               <ArrowDown
                 fill="#171819"

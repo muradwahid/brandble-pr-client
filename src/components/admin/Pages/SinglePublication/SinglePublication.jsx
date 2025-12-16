@@ -73,7 +73,7 @@ const SinglePublication = () => {
           </div>
           <div className="flex gap-5 items-end">
             <div className="bg-[#E6E6E6] h-[150px] w-[150px]">
-              <img className='w-full h-full object-cover'  src={data?.logo} alt="" />
+              <img className='w-full h-full object-contain'  src={data?.logo} alt="" />
             </div>
             <div className="">
               <h2 className="text-[#36383A] font-glare md:text-[32px] text-2xl mb-5 leading-[140%]">
@@ -95,12 +95,12 @@ const SinglePublication = () => {
                   <p className="text-sm">Niche</p>
                   <span className="flex items-center gap-1">
                     {
-                      data?.niches?.map((title, i) => {
-                        if (title === "adult") return <AdultIcon key={i} />;
-                        if (title === "health") return <CardiologyIcon key={i} />;
-                        if (title === "cannabis") return <SpaIcon key={i} />;
-                        if (title === "crypto") return <BitcoinIcon key={i} />;
-                        if (title === "casino") return <CasinoIcon key={i} />;
+                      data?.niches?.map((niche, i) => {
+                        if (niche?.title?.toLowerCase() === "adult") return <AdultIcon key={i} />;
+                        if (niche?.title?.toLowerCase() === "health") return <CardiologyIcon key={i} />;
+                        if (niche?.title?.toLowerCase() === "cannabis") return <SpaIcon key={i} />;
+                        if (niche?.title?.toLowerCase() === "crypto") return <BitcoinIcon key={i} />;
+                        if (niche?.title?.toLowerCase() === "casino") return <CasinoIcon key={i} />;
                         return null;
                       })
                     }

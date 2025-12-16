@@ -28,17 +28,19 @@ const Cart = ({ ref, setOpenCart }) => {
 
   // Handler for checkbox changes
   const handleCheckboxChange = (id) => {
-    setCartItems(prevItems =>
-      prevItems.map(item => ({
-        ...item,
-        isChecked: item.id === id
-      }))
-    );
-    setCartItems(prev => {
-      localStorage.setItem("brandableCardData", JSON.stringify(prev));
-      return prev;
+    setCartItems(prevItems => {
+      const nextItems = prevItems.map(item =>
+        item.id === id
+          ? { ...item, isChecked: !item.isChecked }
+          : item
+      );
+
+      // persist updated array
+      localStorage.setItem("brandableCardData", JSON.stringify(nextItems));
+      return nextItems;
     });
   };
+
 
   // Handler for deleting an item from the cart
   const removeFromCard = (id, title) => {
@@ -101,7 +103,7 @@ const Cart = ({ ref, setOpenCart }) => {
                 <img
                   src={item.logo}
                   alt={item.title}
-                  className="h-full w-full"
+                  className="h-full w-full object-contain"
                 />
                 <span className="bg-[#EF873A] text-white md:text-xs text-[8px] md:px-2.5 px-1.5 py-0.5 rounded-sm absolute top-1.5 left-2 whitespace-nowrap">
                   {item?.genre}

@@ -14,10 +14,13 @@ const SelectRegionData = ({
     setValue,
     isNotRequired = true,
     isResetValue = false,
+    onChange = () => { },
+    options = []
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const componentRef = useRef(null);
-    const [selectedOption, setSelectedOption] = useState(value);
+    const [selectedOption, setSelectedOption] = useState(value || {});
+    const [selectedOptions, setSelectedOptions] = useState(options ||[]);
 
     // Effect to handle clicks outside the component to close the dropdown
     useEffect(() => {
@@ -40,15 +43,23 @@ const SelectRegionData = ({
         setSelectedOption(option);
         setValue(name, option?.name)
         setIsOpen(false);
+        if (option?.isoCode) {
+            onChange(option?.isoCode);
+            
+        } else { 
+            onChange(option?.name);
+        }
     };
 
     useEffect(() => {
-        if (isResetValue) {
-            setSelectedOption({})
-            console.log({ isResetValue })
-        }
-        console.log({ reset: isResetValue })
+        setSelectedOption({})
+        // setSelectedOption({})
     }, [isResetValue])
+
+    useEffect(() => {
+        setSelectedOptions(options)
+        // setSelectedOption({})
+     },[options])
 
     // const availableOptions = countries.filter((option) => !value.includes(option));
     return (
@@ -91,7 +102,7 @@ const SelectRegionData = ({
             {isOpen && !readOnly && (
                 <div className="absolute z-10 w-full">
                     <div className="flex flex-col z-10 w-full mt-1 bg-white shadow-lg border border-[#B2B5B8] max-h-[330px] overflow-y-auto">
-                        {countries && countries?.map((option, index) => (
+                        {selectedOptions && selectedOptions?.map((option, index) => (
                             <label
                                 key={index}
                                 htmlFor={`${name}-${option?.name}`}

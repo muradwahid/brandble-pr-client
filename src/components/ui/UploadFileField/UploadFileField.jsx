@@ -98,7 +98,7 @@ const UploadFileField = ({ control, name, mimeType = "image/*", reset, isOptiona
                 ? file.type.startsWith('image/')
                 : file.type === mimeType;
 
-            const isValidSize = file.size < 1024 * 1024;
+            const isValidSize = file.size < 1024 * 1024 * 10;
 
             if (isValidType && isValidSize) {
                 setImage(file.name);
@@ -152,7 +152,7 @@ const UploadFileField = ({ control, name, mimeType = "image/*", reset, isOptiona
                                 Click to upload <span className="text-[#4A4C56] text-xs font-medium"> or drag and drop </span>
                             </p>
                             <p className="text-[#A5A5AB] text-xs font-normal mt-0.5">
-                                Upload a JPG, JPEG, or PNG image less than 1MB
+                                Upload a JPG, JPEG, or PNG image less than 10MB
                             </p>
                             {isDragging && (
                                 <p className="text-[#0EA5E9] text-xs font-medium mt-2">

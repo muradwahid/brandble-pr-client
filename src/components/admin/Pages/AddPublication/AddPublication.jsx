@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAddPublicationMutation } from "../../../../redux/api/publicationApi";
-import { AddImageIcon, ArrowDownIcon, LoadingIcon } from "../../../../utils/icons";
+import { AddImageIcon, LoadingIcon } from "../../../../utils/icons";
 import MultiSelectToken from "../../../ui/MultiSelectToken/MultiSelectToken";
 import SelectControl from "../../../ui/SelectControl/SelectControl";
 import { useAddNicheMutation } from "../../../../redux/api/nicheApi";
@@ -12,12 +12,14 @@ import { useAddSponsorMutation } from '../../../../redux/api/sponsoreApi';
 import { useAddDofollowMutation } from '../../../../redux/api/dofollowApi';
 import toast from 'react-hot-toast';
 import SelectRegionData from '../../../ui/SelectRegionData/SelectRegionData';
+import { City, Country, State } from "country-state-city";
 
 const AddPublication = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [isResetValue, setIsResetValue] = useState(false);
   const [niches, setNiches] = useState([])
   const [isImgRequired, setIsImgRequired] = useState(false);
+  const [location, setLocation] = useState({});
 
   const { nichesData, genresData, indexesData, sponsorsData, dofollowData } = useApiData()
 
@@ -38,7 +40,6 @@ const AddPublication = () => {
   const onSubmit = async (d) => {
     const obj = { ...d };
     const logo = obj["logo"];
-    // console.log(logo)
     const publicationData = { ...obj };
     delete publicationData["logo"];
     const publicationStr = JSON.stringify(publicationData);
@@ -57,6 +58,7 @@ const AddPublication = () => {
             setIsResetValue(true)
           }
           reset()
+          setLocation({})
           setNiches([])
         } catch (err) {
           console.error("Submission failed:", err);
@@ -69,25 +71,6 @@ const AddPublication = () => {
       setIsImgRequired(true)
     }
     setIsResetValue(false)
-
-
-    //   try {
-    // const response = await fetch('http://localhost:5000/api/v1/publication/create', {
-    //   method: 'POST',
-    //   body: formData,
-    // });
-
-    //     if (!response.ok) {
-    //       throw new Error(`HTTP error! status: ${response.status}`);
-    //     }
-
-    //     const result = await response.json();
-    //     console.log('Success:', result);
-    //     alert('Publication added successfully!');
-    //   } catch (err) {
-    //     console.error('Submission failed:', err);
-    //     alert('Failed to add publication');
-    //   }
   };
 
   const handleAddNiche = async (val) => {
@@ -98,8 +81,6 @@ const AddPublication = () => {
     }
   }
 
-  // console.log(sponsorsData,dofollowData,indexesData)
-
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setValue('logo', file)
@@ -107,7 +88,6 @@ const AddPublication = () => {
       setImagePreview(URL.createObjectURL(file));
     }
   };
-
 
   return (
     <div className="border border-[#F2F2F3] p-6 w-4/5 mx-auto singlePublicationAdmin">
@@ -121,7 +101,7 @@ const AddPublication = () => {
             <div className="h-[150px] w-[150px] bg-[#E6E6E6] relative cursor-pointer ">
               {imagePreview &&
                 <img
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-contain"
                   src={`${imagePreview}`}
                   alt=""
 
@@ -211,9 +191,7 @@ const AddPublication = () => {
               </p>
               <MultiSelectToken
                 value={niches}
-                {...register("niches", {
-                  required: "Niche are required",
-                })}
+                {...register("niches")}
                 options={nichesData?.niches || []}
                 placeholder='Ex: Health'
                 onChange={(value) => {
@@ -225,20 +203,9 @@ const AddPublication = () => {
               />
               <input
                 type="hidden"
-                {...register("niches", {
-                  required: "Niche are required",
-                  validate: (value) => {
-                    const parsedValue = value || ' []';
-                    return parsedValue.length > 0 || "Niche are required";
-                  },
-                })}
+                {...register("niches")}
                 value={niches}
               />
-              {errors.niches && (
-                <span className="text-red-400 text-xs">
-                  {errors.niches.message}
-                </span>
-              )}
             </label>
             <label htmlFor="">
               <p className="font-glare text-[#5F6368] font-normal tracking-[-0.1px] mb-1.5">
@@ -376,6 +343,26 @@ const AddPublication = () => {
             </label>
             <label htmlFor="">
               <p className="font-glare text-[#5F6368] font-normal tracking-[-0.1px] mb-1.5">
+                Scope
+              </p>
+              <div className="relative">
+                <SelectRegionData
+                  name="scope"
+                  label="Option"
+                  setValue={setValue}
+                  register={register}
+                  placeholder="Ex: Local"
+                  options={[{name:'local'}, {name:'national'}, {name:'regional'}, {name:'global'}]}
+                />
+                {errors.region && (
+                  <span className="text-red-400 text-xs">
+                    {errors.region.message}
+                  </span>
+                )}
+              </div>
+            </label>
+            <label htmlFor="">
+              <p className="font-glare text-[#5F6368] font-normal tracking-[-0.1px] mb-1.5">
                 Region
               </p>
               <div className="relative">
@@ -385,6 +372,52 @@ const AddPublication = () => {
                   setValue={setValue}
                   register={register}
                   placeholder="Ex: United States"
+                  options={Country?.getAllCountries()}
+                  onChange={(val) => setLocation({region:val})}
+                />
+                {errors.region && (
+                  <span className="text-red-400 text-xs">
+                    {errors.region.message}
+                  </span>
+                )}
+              </div>
+            </label>
+            <label htmlFor="">
+              <p className="font-glare text-[#5F6368] font-normal tracking-[-0.1px] mb-1.5">
+                State
+              </p>
+              <div className="relative">
+                <SelectRegionData
+                  name="state"
+                  label="Option"
+                  key={location?.region}
+                  setValue={setValue}
+                  register={register}
+                  placeholder="Ex: New York"
+                  options={State.getStatesOfCountry(location?.region)}
+                  onChange={(val) => setLocation({ ...location, state: val })}
+                />
+                {errors.region && (
+                  <span className="text-red-400 text-xs">
+                    {errors.region.message}
+                  </span>
+                )}
+              </div>
+            </label>
+            <label htmlFor="">
+              <p className="font-glare text-[#5F6368] font-normal tracking-[-0.1px] mb-1.5">
+                City
+              </p>
+              <div className="relative">
+                <SelectRegionData
+                  name="city"
+                  label="Option"
+                  key={location?.region}
+                  setValue={setValue}
+                  register={register}
+                  placeholder="Ex: Alabama"
+                  options={City.getCitiesOfState(location.region, location.state)}
+                  onChange={(val) => setLocation({ ...location, city: val })}
                 />
                 {errors.region && (
                   <span className="text-red-400 text-xs">
