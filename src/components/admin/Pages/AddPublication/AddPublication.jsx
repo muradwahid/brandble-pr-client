@@ -435,9 +435,7 @@ const AddPublication = () => {
                 className="border border-[#B2B5B8] focus:outline focus:outline-[#006AC2] px-3 py-2 font-poppins text-[#171819] w-full text-sm placeholder:text-[#B2B5B8]"
                 name="location"
                 placeholder='Ex: 1234 Mockingbird Lane, Austin, TX 78701, USA'
-                {...register("location", {
-                  required: "Location is required",
-                })}
+                {...register("location")}
               />
               {errors.location && (
                 <span className="text-red-400 text-xs">

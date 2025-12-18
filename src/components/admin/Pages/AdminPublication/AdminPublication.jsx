@@ -107,8 +107,11 @@ const AdminPublication = () => {
     return <div className="w-full h-[60dvh] flex justify-center items-center">Loading...</div>
   }
 
+  console.log(meta);
+
   return (
     <div>
+ { meta?.total>0 ?    <>
       <div className="flex justify-between items-center mb-4 flex-wrap-reverse gap-3">
         <div className="flex gap-3 flex-wrap">
           <div
@@ -376,6 +379,7 @@ const AdminPublication = () => {
           <option value="30">30 Result</option>
         </select>
       </div>
+      </> : <div class="h-[50dvh] flex items-center justify-center"><h1 class="text-3xl">No publications found.</h1></div>}
     </div>
   );
 };
