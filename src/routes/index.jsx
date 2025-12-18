@@ -141,6 +141,10 @@ const router = createBrowserRouter([
         element: <Navigate to="/dashboard" replace />,
       },
       {
+        path: "/admin/profile", // This will render at /user
+        element: <> <Profile /></>,
+      },
+      {
         path: "/admin/dashboard",
         element:<PrivateRoute><Home /></PrivateRoute> ,
       },

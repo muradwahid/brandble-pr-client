@@ -49,6 +49,8 @@ const Cart = ({ ref, setOpenCart }) => {
       setToLocalStorage("brandableCardData", JSON.stringify(updatedItems));
       return updatedItems;
     });
+    
+    window.dispatchEvent(new Event("cartUpdated"));
     toast.success(`"${title}" removed from cart!`);
   };
 

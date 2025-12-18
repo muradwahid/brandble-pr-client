@@ -51,9 +51,11 @@ const AdminHeader = () => {
         )}
         <div className="flex items-center gap-5">
           {/* <BellIcon /> */}
-          <div className="w-[40px] h-[40px] rounded-[8px] overflow-hidden">
-            <img className="w-full h-full" src={data?.image} alt="" />
-          </div>
+          <Link to="/admin/profile" className="flex">
+            <div className="w-[40px] h-[40px] rounded-[8px] overflow-hidden">
+              <img className="w-full h-full" src={data?.image} alt="" />
+            </div>
+          </Link>
         </div>
       </div>
     </div>

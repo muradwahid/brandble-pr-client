@@ -10,10 +10,12 @@ import { FaUser } from "react-icons/fa";
 import { getUserInfo } from "../../../helpers/user/user";
 import { useUserQuery } from "../../../redux/api/authApi";
 import NavBarNotification from "../Pages/NavBarNotification/NavBarNotification";
+import { getFromLocalStorage } from "../../../utils/local-storage";
 const TopNavBar = () => {
   const btnRef = useRef(null);
   const [openCart, setOpenCart] = useState(false);
   const [toggleNotification, seToggleNotification] = useState(false);
+  const [savedData, setSavedData] = useState(0);
   const cartRef = useRef();
   const notificationRef = useRef(null);
   const bellIconRef = useRef(null);
@@ -59,6 +61,19 @@ const TopNavBar = () => {
   }, [bellIconRef]);
 
 
+  useEffect(() => {
+    const updateCount = () => {
+      const data = JSON.parse(getFromLocalStorage("brandableCardData")) || [];
+      setSavedData(data.length);
+    };
+
+    updateCount();
+    window.addEventListener("cartUpdated", updateCount);
+
+    return () => window.removeEventListener("cartUpdated", updateCount);
+  }, []);
+
+
   return (
     <nav className="w-full border-b-[1px] border-b-[#171819]">
       <div className="py-5 xl:w-[1400px] lg:w-4/5 md:w-5/6 w-[90%] mx-auto flex items-center justify-between relative">
@@ -72,22 +87,25 @@ const TopNavBar = () => {
           </div>
         </div>
         <div className="flex items-center gap-8">
-          <div ref={bellIconRef} onClick={() => seToggleNotification(!toggleNotification)}>
+          <div ref={bellIconRef} onClick={() => seToggleNotification(!toggleNotification)} className="relative">
             <BellIcon className="cursor-pointer" />
           </div>
             {toggleNotification &&<NavBarNotification ref={notificationRef} seToggleNotification={seToggleNotification} />}
-          <div ref={btnRef} onClick={() => setOpenCart(!openCart)}>
+          <div ref={btnRef} onClick={() => setOpenCart(!openCart)} className="relative">
             <CartIcon className="cursor-pointer" />
+            {savedData > 0&& <div className="absolute -top-3 -right-3 h-4 w-4 bg-blue-600 rounded-full  flex items-center justify-center text-[8px] text-white">
+              {savedData}
+            </div>}
           </div>
-          <div>
+          <Link to="/user/profile">
             {
               data?.image ? <div className="w-[40px] h-[40px] border rounded-full overflow-hidden">
                 <img className="w-full h-full" src={data?.image} alt="" />
               </div> : <FaUser className="text-2xl text-gray-500 cursor-pointer"/>
             }
-          </div>
+          </Link>
         </div>
-        {openCart && <Cart ref={cartRef} setOpenCart={setOpenCart} />}
+        {openCart && <Cart ref={cartRef} setOpenCart={setOpenCart} setSavedData={setSavedData} />}
       </div>
     </nav>
   );

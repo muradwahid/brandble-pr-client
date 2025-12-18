@@ -27,7 +27,7 @@ export const SocketProvider= ({ children }) => {
 
     try {
       const newSocket = io('http://localhost:5050', {
-        transports: ['websocket', 'polling'], // Add fallback transport
+        transports: ['websocket', 'polling'],
         autoConnect: true,
         reconnection: true,
         reconnectionAttempts: 5,

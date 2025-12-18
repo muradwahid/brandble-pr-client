@@ -99,6 +99,8 @@ const addToCard = (cardData) => {
     // Add new item to cart
     const updatedData = [...existingData, cardData];
     setToLocalStorage("brandableCardData", JSON.stringify(updatedData));
+
+    window.dispatchEvent(new Event("cartUpdated"));
     
     // Show success toast
     toast.success("Item added to cart successfully!");

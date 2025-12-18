@@ -293,7 +293,7 @@ const Profile = () => {
                 })}
                 id="password"
                 className="w-full text-[#36383A] text-[15px] py-1.5 px-2 border-1 border-[#DCDEDF] focus:outline-2 focus:outline-[#004A87]"
-                defaultValue={data?.password}
+                defaultValue={"**********"}
               />
               {errors?.password && (
                 <span className="text-red-400 text-xs">

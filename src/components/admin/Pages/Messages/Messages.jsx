@@ -248,6 +248,7 @@ const Messages = () => {
     }
 
     loadInitialChat();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userChats, orderChats, activeTab])
   
   console.log('selectedChat', selectedChat?.order?.orderType);
@@ -396,7 +397,7 @@ const Messages = () => {
                     )}
                   </div>
           
-            <div className="chat-messages flex flex-col w-full max-h-[60dvh]">
+            <div className="chat-messages flex flex-col w-full h-[60dvh]">
               {
                 selectedChat ? messages.map((message,idx) => <div key={idx} className={`flex items-start mb-2 ${message.sender.id === user.id ? 'justify-end' : 'justify-start'}`}>
                   <div className={`${message.sender.id === user.id ? 'message-bubble message-sent shadow-md' : 'message-bubble message-received'}`}>
