@@ -39,7 +39,7 @@ const Details = () => {
                     Full Name
                   </p>
                   <p className="text-[#171819] font-medium  leading-[140%]">
-                  {data.user.name}
+                  {data?.user?.name}
                   </p>
                 </div>
                 <div className="space-y-1">
@@ -47,7 +47,7 @@ const Details = () => {
                     Designation
                   </p>
                   <p className="text-[#171819] font-medium  leading-[140%]">
-                    {data.user.designation}
+                    {data?.user?.designation}
                   </p>
                 </div>
               </div>
@@ -56,7 +56,7 @@ const Details = () => {
                   Company Name
                 </p>
                 <p className="text-[#171819] font-medium  leading-[140%]">
-                {data.user.company}
+                {data?.user?.company}
                 </p>
               </div>
             </div>

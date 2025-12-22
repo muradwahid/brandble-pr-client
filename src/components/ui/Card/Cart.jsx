@@ -32,7 +32,7 @@ const Cart = ({ ref, setOpenCart }) => {
       const nextItems = prevItems.map(item =>
         item.id === id
           ? { ...item, isChecked: !item.isChecked }
-          : item
+          : { ...item, isChecked: false }
       );
 
       // persist updated array

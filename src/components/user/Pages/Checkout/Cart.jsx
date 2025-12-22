@@ -31,8 +31,8 @@ const Cart = ({ selectedMethod, setSelectOrderId, setCheckoutPopup }) => {
     setCartItems(prevItems => {
       const nextItems = prevItems.map(item =>
         item.id === id
-          ? { ...item, isChecked: !item.isChecked } // toggle (undefined -> true -> false -> true...)
-          : item
+          ? { ...item, isChecked: !item.isChecked }
+          : { ...item, isChecked: false }
       );
 
       // persist updated array

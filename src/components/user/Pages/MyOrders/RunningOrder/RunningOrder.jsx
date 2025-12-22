@@ -56,7 +56,7 @@ const RunningOrder = () => {
 
   const detailsSubmitted = (val, id, hrefTo) => { 
     const detail = val==='not-yet'? 'Not Yet' : val
-    return <Link className={`${val === 'not-yet' ? 'text-[#FF5630]' : '#00875A'}`} to={hrefTo}>
+    return <Link className={`${val === 'not-yet' ? 'text-[#FF5630]' : 'text-[#00875A]'}`} to={hrefTo}>
       {detail}
     </Link>
   }
@@ -120,7 +120,7 @@ const RunningOrder = () => {
                     {item.publication.title}
                   </Link>
                 </td>
-                <td className="px-3 py-3 cursor-pointer">
+                <td className="px-3 py-3 cursor-pointer capitalize">
             
                   {detailsSubmitted(item.detailsSubmitted, item.id, hrefTo)}
                 </td>
