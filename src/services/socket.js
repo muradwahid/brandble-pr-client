@@ -120,6 +120,7 @@
 // src/services/socketService.js
 import { io } from 'socket.io-client';
 import { getFromLocalStorage } from '../utils/local-storage';
+import config from '../config';
 
 class SocketService {
   constructor() {
@@ -135,7 +136,7 @@ class SocketService {
 
     const token = getFromLocalStorage('accessToken');
 
-    this.socket = io('http://localhost:5050', {
+    this.socket = io(config.socketUrl, {
       auth: {
         token: token
       },

@@ -5,6 +5,7 @@ import { RxChevronDown, RxChevronRight, RxCross2, RxHamburgerMenu } from "react-
 import {  useSignoutMutation, useUserQuery } from "../../../redux/api/authApi";
 import { getUserInfo } from "../../../helpers/user/user";
 import { FaUser } from "react-icons/fa";
+import config from "../../../config";
 
 const UserSidebar = () => {
   const user = getUserInfo();
@@ -32,7 +33,7 @@ const UserSidebar = () => {
   const handleSignOut = async () => {
     try {
       await signout();
-      window.location.href=`${import.meta.env.VITE_ROOT_CLIENT_URL}/signin`;
+      window.location.href=config.rootClientUrl+'/signin';
     } catch (error) {
       console.error(error);
     }

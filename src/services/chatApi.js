@@ -1,4 +1,6 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5050/api/v1';
+import config from "../config";
+
+const API_BASE = config.serverUrl;
 
 export const chatApi = {
   // Get user chats for admin

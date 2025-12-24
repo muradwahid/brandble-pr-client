@@ -114,9 +114,15 @@ const addToCard = (cardData) => {
       return;
     }
     try {
-      await addFavorite({ userId: user.id, itemId }).unwrap();
+      const result = await addFavorite({ userId: user.id, itemId }).unwrap();
+      if (result?.id) {
+        toast.success("Added to favorites!");
+      }
 
-      toast.success("Added to favorites!");
+      if (result?.message) {
+       toast.error(result?.message); 
+      }
+
     // eslint-disable-next-line no-unused-vars
     } catch (error) {
       toast.error("Failed to add to favorites.");
@@ -184,7 +190,7 @@ const addToCard = (cardData) => {
                 >
                   <div className="md:flex gap-2.5 justify-between ">
                     <div className="bg-[#F6F6F6] relative md:max-w-[143px] w-full flex items-center justify-center">
-                      <div className='min-w-24'>
+                      <div className='w-24'>
                         <img src={item?.logo} alt={item?.title} />
                       </div>
                       <p className="bg-[#DCDEDF] text-[12px] text-[#878C91] font-medium absolute top-1 left-1 px-2 py-0.5">
@@ -200,7 +206,7 @@ const addToCard = (cardData) => {
                           <IoIosHeartEmpty />
                         )}
                       </div>
-                      <div className="absolute flex bottom-2 bg-white p-0.5 shadow-sm gap-1.5 cursor-pointer">
+                     {item?.niches?.length > 0 && <div className="absolute flex bottom-2 bg-white p-0.5 shadow-sm gap-1.5 cursor-pointer">
 
                         {
                           item?.niches?.map((niche, i) => {
@@ -212,7 +218,7 @@ const addToCard = (cardData) => {
                             return null;
                           })
                         }
-                      </div>
+                      </div>}
                     </div>
                     <div className="grid content-between">
                       <h4 className="text-[#002747] text-[16px] mb-1">
@@ -286,7 +292,7 @@ const addToCard = (cardData) => {
         }
 
 
-      </div> : <div class="h-[50dvh] flex items-center justify-center"><h1 class="text-3xl">No publications found.</h1></div>}
+      </div> : <div className="h-[50dvh] flex items-center justify-center"><h1 className="text-3xl">No publications found.</h1></div>}
     </div>
   );
 };

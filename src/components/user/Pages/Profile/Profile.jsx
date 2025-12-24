@@ -284,13 +284,14 @@ const Profile = () => {
                 type="password"
                 placeholder="Password"
                 minLength={8}
-                disabled={security}
-                {...register("password", {
-                  minLength: {
-                    value: 8,
-                    message: "Password must be at least 8 characters long.",
-                  },
-                })}
+                // disabled={security}
+                disabled={true}
+                // {...register("password", {
+                //   minLength: {
+                //     value: 8,
+                //     message: "Password must be at least 8 characters long.",
+                //   },
+                // })}
                 id="password"
                 className="w-full text-[#36383A] text-[15px] py-1.5 px-2 border-1 border-[#DCDEDF] focus:outline-2 focus:outline-[#004A87]"
                 defaultValue={"**********"}

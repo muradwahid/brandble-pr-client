@@ -98,7 +98,10 @@ const WriteArticle = ({ step, setStep, setPublishPopup }) => {
       if (response?.data?.id) {
         const data = {
           id: id, body: {
-            writeArticleId: response?.data?.id, orderType: 'writeArticle', wonArticleId:null } }
+            writeArticleId: response?.data?.id, orderType: 'writeArticle', wonArticleId: null,
+            detailsSubmitted:"submitted"
+          }
+        }
         const orderUpdate = await updateOrder(data)
         if (orderUpdate?.data?.id) {
           toast.success('Write article submitted successfully');

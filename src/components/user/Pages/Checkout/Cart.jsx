@@ -12,12 +12,13 @@ import { LoadingIcon } from "../../../../utils/icons";
 
 const Cart = ({ selectedMethod, setSelectOrderId, setCheckoutPopup }) => {
   // const { data:allMehotd } = useMethodsQuery();
+  const [paymentLoading, setPaymentLoading] = useState(false);
   const [cartItems, setCartItems] = useState(() => {
     const savedData = getFromLocalStorage("brandableCardData");
     return savedData ? JSON.parse(savedData) : [];
   });
   const [processPayment] = useProcessPaymentMutation()
-  const [addOrder, { isLoading}] = useAddOrderMutation()
+  const [addOrder] = useAddOrderMutation()
 
   const [subtotal, setSubtotal] = useState(0);
   useEffect(() => {
@@ -53,14 +54,20 @@ const Cart = ({ selectedMethod, setSelectOrderId, setCheckoutPopup }) => {
   };
 
   const handleCheckout = async () => { 
+    setPaymentLoading(true)
     const data = {
       paymentMethodId: selectedMethod,
       amount: subtotal
     }
     try {
+      const publicationIds = cartItems?.filter(item => item.isChecked).map(item => item.id);
+      if (publicationIds.length < 1) {
+        toast.error('Select a publication to proceed checkout!')
+        setPaymentLoading(false)
+        return;
+      }
       const result = await processPayment(data);
       if (result.data.status === 'succeeded') {
-        const publicationIds = cartItems?.map(item => item.isChecked && item.id)
         const orderData = {
           publicationId:publicationIds[0],
           methodId: result.data.paymentIntentId,
@@ -73,10 +80,14 @@ const Cart = ({ selectedMethod, setSelectOrderId, setCheckoutPopup }) => {
         if (orderResult?.data?.id) {
           setCheckoutPopup(true)
           setSelectOrderId(orderResult?.data?.id)
+        } else { 
+          toast.error('Failed to create order. Please try again.')
         }
+        setPaymentLoading(false)
       }
     } catch (err) {
       console.error(err)
+      setPaymentLoading(false)
     }
   }
 
@@ -188,10 +199,10 @@ const Cart = ({ selectedMethod, setSelectOrderId, setCheckoutPopup }) => {
           // onClick={() => setCheckoutPopup(true)}
           // to="/user/checkout"
           onClick={handleCheckout}
-          disabled={isLoading}
+          disabled={paymentLoading}
           className="bg-[#002747] text-[18px] text-white py-2 px-8 hover:bg-[#002747]/90 transition cursor-pointer w-full flex  justify-center items-center gap-3 mt-4 text-center"
         >
-          Confirm Purchase {isLoading && <LoadingIcon fill='#fff' style={{ height: "20px" }} />}
+          Confirm Purchase {paymentLoading && <LoadingIcon fill='#fff' style={{ height: "20px" }} />}
         </button>
       </div>
     </div>

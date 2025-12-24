@@ -1,7 +1,6 @@
 import { formattedDate } from "../../../../utils/function";
 
 const Table = ({ data }) => {
-  console.log("orders data in Table:", data);
   return (
     <div className="mt-6 overflow-x-auto">
       <h5 className="text-[#222425] font-medium text-[18px] mb-4 font-glare">

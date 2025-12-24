@@ -2,11 +2,12 @@ import { Navigate, Outlet } from "react-router";
 import AdminHeader from "../components/admin/AdminHeader/AdminHeader";
 import AdminSidebar from "../components/admin/AdminSidebar/AdminSidebar";
 import { isAdminLoggedId } from "../helpers/user/user";
+import config from "../config";
 
 const AdminLayout = () => {
   const isUserExist = isAdminLoggedId()
   if (!isUserExist) {
-    window.location.href=`${import.meta.env.VITE_ROOT_CLIENT_URL}/signin`
+    window.location.href = config.rootClientUrl + '/signin';
   }
 
   return (

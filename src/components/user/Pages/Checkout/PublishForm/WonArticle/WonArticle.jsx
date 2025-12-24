@@ -37,7 +37,7 @@ const WonArticle = ({ setPublishPopup }) => {
         try {
           const response = await addWonArticle(formData);
           if (response?.data?.id) {
-            const data = { id: id, body: { wonArticleId: response?.data?.id, orderType: 'wonArticle', writeArticleId:null } }
+            const data = { id: id, body: { wonArticleId: response?.data?.id, orderType: 'wonArticle', writeArticleId: null, detailsSubmitted: "submitted" } }
             const orderUpdate = await updateOrder(data)
             if (orderUpdate?.data?.id) {
               setPublishPopup(true)

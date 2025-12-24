@@ -58,7 +58,7 @@ const Cart = ({ ref, setOpenCart }) => {
     setIsLoading(true)
     if (subtotal < 1) {
       setIsLoading(false)
-      return toast.error('Select at least one item!')
+      return toast.error('Select a publication to proceed checkout!')
     }
     if (cartItems.length < 1) {
       setIsLoading(false)

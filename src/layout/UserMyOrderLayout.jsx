@@ -1,10 +1,11 @@
 import { Outlet } from 'react-router';
 import { isLoggedIn } from '../helpers/user/user';
+import config from '../config';
 
 const UserMyOrderLayout = () => {
   const isUserExist = isLoggedIn()
   if (!isUserExist) {
-    window.location.href=`${import.meta.env.VITE_ROOT_CLIENT_URL}/signin`
+    window.location.href = config.rootClientUrl + '/signin';
   }
   return (
     <>

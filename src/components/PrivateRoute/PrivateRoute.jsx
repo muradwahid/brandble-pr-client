@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from "react-router";
 import { getUserInfo, isLoggedIn } from "../../helpers/user/user";
+import config from "../../config";
 
 const PrivateRoute = ({ children }) => {
   const userInfo = getUserInfo();
@@ -11,7 +12,7 @@ const PrivateRoute = ({ children }) => {
   if (!userInfo || !loggedIn) {
     return (
       <Navigate
-        to={`${import.meta.env.VITE_ROOT_CLIENT_URL}/signin`}
+        to={config.rootClientUrl+'/signin'}
         state={{ from: location }}
         replace
       />
