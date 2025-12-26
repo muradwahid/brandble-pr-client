@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { forwardRef, useMemo } from 'react';
 import { BellIconSecond, CancelIcon, CirclePen } from '../../../../utils/icons';
 import { LuCheckCheck } from 'react-icons/lu';
 import { Link } from 'react-router';
 import { useGetNotificationsQuery, useMarkAllAsReadMutation } from '../../../../redux/api/notificationApi';
 import NotificationItem from './NotificationItem';
 
-const NavBarNotification = ({ ref, seToggleNotification }) => {
+const NavBarNotification = forwardRef(function NavBarNotification(
+  { seToggleNotification },
+  ref
+) {
+  const notifArg = useMemo(() => ({ limit: 20 }), []);
 
-  const { data: notificationsData } = useGetNotificationsQuery(
-    { limit: 20 },
-    { pollingInterval: 3000000000 }
+  const notifOptions = useMemo(
+    () => ({
+      pollingInterval: 3000000, 
+      skipPollingIfUnfocused: true,
+    }),
+    []
   );
+
+
+  const { data: notificationsData } = useGetNotificationsQuery(notifArg, notifOptions);
 
   const [markAllAsRead] = useMarkAllAsReadMutation();
 
@@ -20,16 +30,21 @@ const NavBarNotification = ({ ref, seToggleNotification }) => {
     try {
       await markAllAsRead().unwrap();
     } catch (error) {
-      console.error('Failed to mark all as read:', error);
+      console.error("Failed to mark all as read:", error);
     }
   };
 
-  const allNotifications = notifications ? [
-    ...(notifications.today || []),
-    ...(notifications.yesterday || []),
-    ...(notifications.thisWeek || []),
-    ...(notifications.older || [])
-  ] : [];
+  const allNotifications = notifications
+    ? [
+      ...(notifications.today || []),
+      ...(notifications.yesterday || []),
+      ...(notifications.thisWeek || []),
+      ...(notifications.older || []),
+    ]
+    : [];
+  
+
+  
   return (
     <div ref={ref} className='absolute w-[450px] steperform-publish-formshadow right-0 top-[101%] bg-white '>
       <div className='max-h-[600px] overflow-y-scroll'>
@@ -119,6 +134,6 @@ const NavBarNotification = ({ ref, seToggleNotification }) => {
       </div>
     </div>
   );
-};
+});
 
 export default NavBarNotification;

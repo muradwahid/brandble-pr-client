@@ -1,6 +1,6 @@
 import { RxMagnifyingGlass } from "react-icons/rx";
 import { Link, useMatch } from "react-router";
-import { BellIcon, CirclePlusIcon } from "../../../utils/icons";
+import { CirclePlusIcon } from "../../../utils/icons";
 import { getUserInfo } from "../../../helpers/user/user";
 import { useUserQuery } from "../../../redux/api/authApi";
 import PublicationPopup from "../../common/PublicationPopup";

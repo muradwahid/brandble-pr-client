@@ -63,22 +63,22 @@ const Order = () => {
                     </td>
                     <td className="px-3 py-3">
                       <a
-                        href={JSON.parse(data.wonArticle?.file)[0]}
+                        href={data?.wonArticle?.file? JSON.parse(data?.wonArticle?.file )[0]:""}
                           className="tooltip"
                         data-tip='Click to download'
-                        download
+                        {...(data?.wonArticle?.file?{download:true}:{})}
                         >
                           <BsFileEarmarkText className="text-[#36383A] text-[20px]" />
                         </a>
                     </td>
                     <td className="px-3 py-3">
-                        {data.id}
+                        {data?.id}
                     </td>
                     <td className="px-3 py-3">
                         {data?.publication?.title}
                     </td>
                     <td className="px-3 py-3">
-                        {formattedDate(data.createdAt)}
+                        {formattedDate(data?.createdAt)}
                     </td>
                   </tr>
                 </tbody>

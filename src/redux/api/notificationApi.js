@@ -15,7 +15,7 @@ export const notificationApi = baseApi.injectEndpoints({
           meta: response.meta,
         };
       },
-      providesTags: ["Notification"],
+      providesTags: ["notification"],
     }),
 
     // Mark single notification as read
@@ -24,7 +24,7 @@ export const notificationApi = baseApi.injectEndpoints({
         url: `${NOTIFICATION_URL}/${id}/read`,
         method: "PATCH",
       }),
-      invalidatesTags: ["Notification"],
+      invalidatesTags: ["notification"],
     }),
 
     // Mark all notifications as read
@@ -33,7 +33,7 @@ export const notificationApi = baseApi.injectEndpoints({
         url: `${NOTIFICATION_URL}/mark-all-read`,
         method: "PATCH",
       }),
-      invalidatesTags: ["Notification"],
+      invalidatesTags: ["notification"],
     }),
 
     // Get unread count
@@ -42,7 +42,7 @@ export const notificationApi = baseApi.injectEndpoints({
         url: `${NOTIFICATION_URL}/unread-count`,
         method: "GET",
       }),
-      providesTags: ["Notification"],
+      providesTags: ["notification", "mark-all-read", "read","status"],
     }),
 
     // Delete notification
@@ -51,7 +51,7 @@ export const notificationApi = baseApi.injectEndpoints({
         url: `${NOTIFICATION_URL}/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Notification"],
+      invalidatesTags: ["notification"],
     }),
   }),
 });

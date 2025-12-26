@@ -1,6 +1,6 @@
 
 import axios from "axios";
-import { getCookie } from "../user/user";
+
 import { getFromLocalStorage } from "../../utils/local-storage";
 
 const instance = axios.create();

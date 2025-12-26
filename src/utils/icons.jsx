@@ -1,11 +1,13 @@
-export const BellIcon = (props) => (
-  <svg
+export const BellIcon = (props) => { 
+  const { dotColor ="#FF5630",...restProps} = props
+
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"
     viewBox="0 0 24 24"
     fill="none"
-    {...props}
+    {...restProps}
   >
     <mask
       id="mask0_9190_1177"
@@ -25,11 +27,11 @@ export const BellIcon = (props) => (
       />
       <path
         d="M14.803 9.69825C15.3382 10.2327 15.9875 10.5 16.751 10.5C17.5147 10.5 18.1637 10.2323 18.6982 9.697C19.2327 9.16183 19.5 8.51242 19.5 7.74875C19.5 6.98525 19.2323 6.33625 18.697 5.80175C18.1618 5.26725 17.5124 5 16.7488 5C15.9853 5 15.3363 5.26758 14.8018 5.80275C14.2673 6.33808 14 6.9875 14 7.751C14 8.51467 14.2677 9.16375 14.803 9.69825Z"
-        fill="#FF5630"
+        fill={dotColor}
       />
     </g>
   </svg>
-);
+}
 
 export const BellIconSecond = (props) => (
   <svg

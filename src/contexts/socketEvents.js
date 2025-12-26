@@ -1,3 +1,5 @@
+import config from "../config";
+
 export const SOCKET_EVENTS = {
   USER_JOIN: "user_join",
   JOIN_CHAT_ROOM: "join_chat_room",
@@ -12,4 +14,4 @@ export const SOCKET_EVENTS = {
   USER_STOP_TYPING: "user_stop_typing",
 };
 
-export const SOCKET_URL = "http://localhost:5050";
+export const SOCKET_URL = config.socketUrl;

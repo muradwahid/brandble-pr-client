@@ -3,16 +3,13 @@ import { LeftArrowIcon, UploadFileIcon } from "../../../../../utils/icons";
 import Footer from "../../../../ui/Footer/Footer";
 import TopNavBar from "../../../TopNavBar/TopNavBar";
 import PublishPopup from "./PublishPopup";
-import StepOne from "./StepOne";
 import Stepper from "./Stepper";
-import StepThree from "./StepThree";
-import StepTwo from "./StepTwo";
 import WonArticle from './WonArticle/WonArticle';
 import WriteArticle from './WriteArticle/WriteArticle';
 
 
 const OrderSubmitForm = () => {
-  const [wonArticle, setWonArticle] = useState("writeArticle");
+  const [wonArticle, setWonArticle] = useState("wonArticle");
   const [step, setStep] = useState(1);
   const [publishPopup, setPublishPopup] = useState(false);
 

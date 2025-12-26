@@ -43,12 +43,13 @@ const WonArticle = ({ setPublishPopup }) => {
               setPublishPopup(true)
               setFileName([])
             }
-            
+            reset()
+          } else { 
+            toast.error("Failed to submit information. Please try again.");
           }
-          reset()
         } catch (err) {
           console.error("Submission failed:", err);
-          toast.error("Failed to submitted article");
+          toast.error("Failed to submit information. Please try again.");
         }
 
       }

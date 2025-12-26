@@ -1,5 +1,5 @@
 //icons from utils/icons.js
-import { BellIcon, CartIcon } from "../../../utils/icons";
+import { BellIcon, BellIconSecond, CartIcon } from "../../../utils/icons";
 
 //images from assets folder
 import { useEffect, useRef, useState } from "react";
@@ -11,6 +11,7 @@ import { getUserInfo } from "../../../helpers/user/user";
 import { useUserQuery } from "../../../redux/api/authApi";
 import NavBarNotification from "../Pages/NavBarNotification/NavBarNotification";
 import { getFromLocalStorage } from "../../../utils/local-storage";
+import { useGetUnreadCountQuery } from "../../../redux/api/notificationApi";
 const TopNavBar = () => {
   const btnRef = useRef(null);
   const [openCart, setOpenCart] = useState(false);
@@ -22,6 +23,8 @@ const TopNavBar = () => {
 
   const user = getUserInfo();
   const { data } = useUserQuery(user?.id);
+
+    const { data: unreadCountData=0,isLoading } = useGetUnreadCountQuery();
   
 
   useEffect(() => {
@@ -87,8 +90,8 @@ const TopNavBar = () => {
           </div>
         </div>
         <div className="flex items-center gap-8">
-          <div ref={bellIconRef} onClick={() => seToggleNotification(!toggleNotification)} className="relative">
-            <BellIcon className="cursor-pointer" />
+          <div key={JSON.stringify(unreadCountData + isLoading)} ref={bellIconRef} onClick={() => seToggleNotification(!toggleNotification)} className="relative">
+            <BellIcon className="cursor-pointer" dotColor={unreadCountData > 0 ?"#FF5630"  :"#171819" } />
           </div>
             {toggleNotification &&<NavBarNotification ref={notificationRef} seToggleNotification={seToggleNotification} />}
           <div ref={btnRef} onClick={() => setOpenCart(!openCart)} className="relative">

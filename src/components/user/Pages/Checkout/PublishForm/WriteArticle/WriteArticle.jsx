@@ -112,7 +112,7 @@ const WriteArticle = ({ step, setStep, setPublishPopup }) => {
     // eslint-disable-next-line no-unused-vars
     } catch (err) {
       console.error("Submission failed:", error);
-      toast.error("Failed to submit information");
+      toast.error("Failed to submit information. Please try again.");
     }
   }
 
