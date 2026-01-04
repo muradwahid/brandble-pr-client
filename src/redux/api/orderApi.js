@@ -27,7 +27,20 @@ export const orderApi = baseApi.injectEndpoints({
           orders: response,
         };
       },
-      providesTags: ["order","create"],
+      providesTags: ['admin-orders'],
+    }),
+    adminHomeOrders: build.query({
+      query: (arg) => ({
+        url: `${ORDER_URL}/admin/orders`,
+        method: "GET",
+        params: arg,
+      }),
+      transformResponse: (response) => {
+        return {
+          orders: response,
+        };
+      },
+      providesTags: ['admin-orders'],
     }),
     userOrders: build.query({
       query: (arg) => ({
@@ -78,7 +91,7 @@ export const orderApi = baseApi.injectEndpoints({
         method: "POST",
         data,
       }),
-      invalidatesTags: ["all-orders"],
+      invalidatesTags: ["all-orders", 'admin-orders'],
     }),
     runningOrder: build.query({
       query: () => {
@@ -123,7 +136,7 @@ export const orderApi = baseApi.injectEndpoints({
         method: "PATCH",
         data: data.body,
       }),
-      invalidatesTags: ["order"],
+      invalidatesTags: ["order", 'admin-orders'],
     }),
     updateOrderStatus: build.mutation({
       query: (data) => ({
@@ -131,7 +144,7 @@ export const orderApi = baseApi.injectEndpoints({
         method: "PATCH",
         data: data.body,
       }),
-      invalidatesTags: ["order"],
+      invalidatesTags: ["order", 'admin-orders','notification'],
     }),
     deleteOrder: build.mutation({
       query: (id) => {
@@ -140,7 +153,7 @@ export const orderApi = baseApi.injectEndpoints({
           method: "DELETE",
         };
       },
-      invalidatesTags: ["order"],
+      invalidatesTags: ["order", 'admin-orders'],
     }),
   }),
 });
@@ -148,6 +161,7 @@ export const orderApi = baseApi.injectEndpoints({
 export const {
   useOrdersQuery,
   useAdminOrdersQuery,
+  useAdminHomeOrdersQuery,
   useUserOrdersQuery,
   useAdminPaymentsStatisticQuery,
   useSpecificUserOrdersQuery,

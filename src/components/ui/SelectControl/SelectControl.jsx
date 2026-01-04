@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowDownIcon, CheckMarkIcon, LoadingIcon } from "../../../utils/icons";
 
 const SelectControl = ({
-  options,
+  options=[],
   value = '',
   name,
   inputType = "checkbox",
@@ -71,7 +71,7 @@ const SelectControl = ({
           {placeholder}
         </option>
         {options && options?.map((option,i) => (
-          <option key={i} value={option}>
+          <option key={i} value={option?.title}>
             {option?.title}
           </option>
         ))}

@@ -19,8 +19,7 @@ const RemoveModal = ({
     setIsLoading(true);
     const deleteId= toast.loading("Deleting...");
     try {
-      const result = await deletePublication(id);
-      console.log(result)
+       await deletePublication(id);
       setIsLoading(false);
       toast.success("Publication deleted successfully!",{id:deleteId});
       onChange(false);

@@ -107,8 +107,6 @@ const AdminPublication = () => {
     return <div className="w-full h-[60dvh] flex justify-center items-center">Loading...</div>
   }
 
-  console.log(meta);
-
   return (
     <div>
  { meta?.total>0 ?    <>

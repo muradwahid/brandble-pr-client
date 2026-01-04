@@ -1,7 +1,7 @@
 import { TrendingDownIcon, TrendingUpIcon } from "../../../../utils/icons";
 
 const PublicationStatistic = ({ publications, handleGrowthScale, publicationStatisticLoading, className, ref }) => {
-  console.log(publications);
+
   return (
     <div
       className={`w-[450px] h-[378px] bg-[#F6F7F7] p-3 rounded-xl absolute -left-60 top-5 z-10 ${className} pr-0`}

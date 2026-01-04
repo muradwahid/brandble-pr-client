@@ -10,14 +10,19 @@ import {
   ServicesIcon,
   SwapVertical,
 } from "../../../../utils/icons";
-import { tableData } from "../../../user/Pages/MyOrders/RunningOrder/data";
 import OrderSortFilter from "./OrderSortFilter";
+import { useAdminHomeOrdersQuery } from "../../../../redux/api/orderApi";
+import { formattedDate } from "../../../../utils/function";
+import { Link } from "react-router";
 
 const OrderLists = () => {
   const [toggle, setToggle] = useState(false);
   const sortRef = useRef(null);
   const sortBtnRef = useRef(null);
 
+
+  const { data, isLoading} = useAdminHomeOrdersQuery();
+  const ordersData = data?.orders?.data || [];
   useEffect(() => {
     function handleClick(event) {
       if (
@@ -35,6 +40,12 @@ const OrderLists = () => {
       document.removeEventListener("mousedown", handleClick);
     };
   }, [sortBtnRef]);
+
+  
+  if (isLoading) {
+    return <div className="text-center my-3.5 mx-3.5 text-[#5F6368] mt-10 pt-10 border-t border-[#DCDEDF]">Loading...</div>;
+  }
+
   return (
     <div className="mt-10 pt-10 border-t border-[#DCDEDF]">
       <div className="mb-2.5 flex justify-between items-center">
@@ -61,9 +72,9 @@ const OrderLists = () => {
             />
           </div>
         </div>
-        <p className="text-[#5F6368] text-sm underline cursor-pointer">
+        <Link to={"/admin/orders"} className="text-[#5F6368] text-sm underline cursor-pointer">
           view all
-        </p>
+        </Link>
       </div>
       <div className="adminHomeTableWrapper">
         <table className="min-w-full text-sm font-normal overflow-y-scroll table-fixed border border-[#DCDEDF] border-l-0 overflow-hidden">
@@ -110,15 +121,15 @@ const OrderLists = () => {
               </th>
             </tr>
           </thead>
-          {/* <tbody className=" text-[#36383A]">
-            {tableData.slice(0, 1).map((item, index) => (
+           <tbody className=" text-[#36383A]">
+            {ordersData?.map((item, index) => (
               <tr key={index} className="border-t border-[#DCDEDF]">
-                <td className="px-3 py-3">M9hvmC4hq07q1s</td>
-                <td className="px-3 py-3">{item.username}</td>
-                <td className="px-3 py-3 ">{item.service}</td>
-                <td className="px-3 py-3">{item.publication}</td>
-                <td className="px-3 py-3">${item.amount}</td>
-                <td className="px-3 py-3">{item.date}</td>
+                <td className="px-3 py-3 truncate">{item?.id}</td>
+                <td className="px-3 py-3">{item?.user?.name}</td>
+                <td className="px-3 py-3 ">{item?.orderType === "wonArticle" ? "Publish my own article" : "Write & Publish Article For Me"}</td>
+                <td className="px-3 py-3">{item?.publication.title}</td>
+                <td className="px-3 py-3">${item?.amount}</td>
+                <td className="px-3 py-3">{formattedDate(item?.createdAt)}</td>
                 <td className="pr-2.5">
                   <button
                     className={` text-white cursor-pointer px-1 py-1 rounded-sm capitalize font-normal w-28 ${
@@ -134,7 +145,7 @@ const OrderLists = () => {
                 </td>
               </tr>
             ))}
-          </tbody> */}
+          </tbody>
         </table>
       </div>
     </div>

@@ -28,18 +28,26 @@ const TotalOrders = () => {
   const [activeFilter, setActiveFilter] = useState({
     publication: false,
     genre: false,
-    price: false,
+    amount: false,
     sponsored: false,
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
+  const sortFields = ['title', 'genre', 'amount', 'sponsor'];
 
-  const {data, isLoading,} = useAdminOrdersQuery({
+  const activeSort = sortFields.find(field => queryParams?.[field]);
+
+  const queryOptions = {
     page: currentPage,
     limit: itemsPerPage,
-    ...queryParams,
-  });
+    ...(activeSort && {
+      sortBy: activeSort,
+      sortOrder: queryParams?.[activeSort] === 'asc' ? 'asc' : 'desc',
+    }),
+  }
+
+  const {data, isLoading,} = useAdminOrdersQuery(queryOptions);
   const ordersData = data?.orders?.data || [];
   const meta = data?.orders?.meta || { page: 1, limit: 10, total: 0 };
   const totalPages = Math.ceil((meta.total || 0) / itemsPerPage);
@@ -54,7 +62,6 @@ const TotalOrders = () => {
     }
   };
 
-
   useEffect(() => {
     function handleClick(event) {
       if (
@@ -64,9 +71,9 @@ const TotalOrders = () => {
         !buttonRef.current.contains(event.target)
       ) {
         setActiveFilter({
-          publication: false,
+          title: false,
           genre: false,
-          price: false,
+          amount: false,
           sponsored: false,
         });
       }
@@ -87,7 +94,6 @@ const TotalOrders = () => {
   if (isLoading) {
     return <div className="text-[#5F6368] flex items-center justify-center h-[60dvh] w-full">Loading...</div>
   }
-
   return (<>
     {
       meta?.total >0?
@@ -100,7 +106,7 @@ const TotalOrders = () => {
             onClick={() =>
               setActiveFilter({
                 ...activeFilter,
-                publication: !activeFilter.publication,
+                title: !activeFilter.title,
               })
             }
             // ref={sortBtnRef}
@@ -108,16 +114,16 @@ const TotalOrders = () => {
             <PublicationBadgeIcon />
             <p className="text-[#878C91] text-sm">
               Publication{" "}
-              <span className="capitalize">{queryParams?.publication}</span>
+              <span className="capitalize">{queryParams?.title}</span>
             </p>
             <ArrowDownIcon className="ml-2.5" />
-            {activeFilter?.publication && (
+            {activeFilter?.title && (
               <Dropdown
                 ref={targetRef}
                 onClick={(val) =>
-                  setQueryParams({ ...queryParams, publication: val })
+                  setQueryParams({ title: val })
                 }
-                active={queryParams?.publication}
+                active={queryParams?.title}
               />
             )}
           </div>
@@ -126,7 +132,7 @@ const TotalOrders = () => {
             onClick={() =>
               setActiveFilter({
                 ...activeFilter,
-                genre: !activeFilter.genre,
+                genre: !activeFilter?.genre,
               })
             }
             // ref={sortBtnRef}
@@ -140,7 +146,7 @@ const TotalOrders = () => {
               <Dropdown
                 ref={targetRef}
                 onClick={(val) =>
-                  setQueryParams({ ...queryParams, genre: val })
+                  setQueryParams({ genre: val })
                 }
                 active={queryParams?.genre}
               />
@@ -149,22 +155,22 @@ const TotalOrders = () => {
           <div
             className="flex gap-2 items-center border border-[#DCDEDF] py-1 px-2.5 rounded-sm cursor-pointer h-8 relative"
             onClick={() =>
-              setActiveFilter({ ...activeFilter, price: !activeFilter.price })
+              setActiveFilter({ ...activeFilter, amount: !activeFilter.amount })
             }
             // ref={sortBtnRef}
           >
             <CurrencyIcon />
             <p className="text-[#878C91] text-sm">
-              Price <span className="capitalize">{queryParams?.price}</span>
+              Price <span className="capitalize">{queryParams?.amount}</span>
             </p>
             <ArrowDownIcon className="ml-2.5" />
-            {activeFilter?.price && (
+            {activeFilter?.amount && (
               <Dropdown
                 ref={targetRef}
                 onClick={(val) =>
-                  setQueryParams({ ...queryParams, price: val })
+                  setQueryParams({ amount: val })
                 }
-                active={queryParams?.price}
+                active={queryParams?.amount}
               />
             )}
           </div>
@@ -188,7 +194,7 @@ const TotalOrders = () => {
               <Dropdown
                 ref={targetRef}
                 onClick={(val) =>
-                  setQueryParams({ ...queryParams, sponsor: val })
+                  setQueryParams({ sponsor: val })
                 }
                 active={queryParams?.sponsor}
               />
@@ -281,7 +287,7 @@ const TotalOrders = () => {
                     <Link to={getOrderType(order?.orderType,order?.id)} className="px-3 py-3 text-nowrap">{order?.publication?.title}</Link>
                   </td>
                   <td>
-                    <Link to={getOrderType(order?.orderType,order?.id)} className="px-3 py-3 text-nowrap overflow-hidden whitespace-nowrap text-ellipsis w-[92px]">
+                    <Link to={getOrderType(order?.orderType,order?.id)} className="px-3 py-3 text-nowrap overflow-hidden whitespace-nowrap text-ellipsis w-[92px] capitalize">
                       {order?.publication?.genre}
                     </Link>
                   </td>

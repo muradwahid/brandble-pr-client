@@ -13,7 +13,7 @@ const formatCurrency = (amount) => {
 /**
  * Main Invoice Component - Renders the invoice using provided data.
  */
-const Invoice = ({ data }) => {
+const Invoice = ({ data, ref }) => {
   // Calculate totals
   const subtotal = data.items.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
   const taxAmount = subtotal * (data.taxRate / 100);
@@ -28,7 +28,7 @@ const Invoice = ({ data }) => {
   }
 
   return (
-    <div id="invoice-content" className="bg-white p-4 sm:p-10 rounded-xl shadow-2xl max-w-4xl mx-auto">
+    <div ref={ref} id="invoice-content" className="bg-white p-4 sm:p-10 rounded-xl shadow-2xl max-w-4xl mx-auto">
 
       {/* Header Section */}
       <header className="flex justify-between items-start pb-6 border-b border-gray-200">

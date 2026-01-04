@@ -78,9 +78,7 @@ const PaymentFormContent = ({ clientSecret, onSuccess, onCancel }) => {
         }
         toast.error(userFriendlyMessage);
       } else if (setupIntent) {
-        console.log("get setup intent:",setupIntent);
         if (setupIntent.status === 'succeeded') {
-          console.log('Saving payment method:', setupIntent.payment_method);
           try {
             await saveMethod({paymentMethodId:setupIntent.payment_method});
             onSuccess();
@@ -121,7 +119,7 @@ const PaymentFormContent = ({ clientSecret, onSuccess, onCancel }) => {
           options={{
             layout: {
               type: 'tabs',
-              defaultCollapsed: true
+              defaultCollapsed: false
             },
             paymentMethodOrder: [
               'card',

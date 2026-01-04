@@ -42,7 +42,7 @@ export const notificationApi = baseApi.injectEndpoints({
         url: `${NOTIFICATION_URL}/unread-count`,
         method: "GET",
       }),
-      providesTags: ["notification", "mark-all-read", "read","status"],
+      providesTags: ["notification"],
     }),
 
     // Delete notification

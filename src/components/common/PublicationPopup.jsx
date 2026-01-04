@@ -8,7 +8,7 @@ const PublicationPopup = ({ publications = [], setSearch, isLoading, isFetching 
         (isLoading || isFetching) ? <div className='h-10 w-full flex items-center justify-center pb-3'>Loading...</div> :  publications?.length > 0 ? publications.map(publication => <div onClick={() => setSearch('')} key={publication?.id} className='mb-3'>
           <Link to={`/admin/publications/${publication?.id}`} className='flex gap-3'>
             <div className='h-12 w-12'>
-              <img className='w-full h-full rounded-sm' src={publication?.logo}></img>
+              <img className='w-full h-auto rounded-sm my-auto' src={publication?.logo}></img>
             </div>
             <div>
               <p className='text-[#5F6368]'>{publication?.title}</p>

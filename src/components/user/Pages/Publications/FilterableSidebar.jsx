@@ -5,9 +5,12 @@ import PriceRangeSlider from "../../../common/PriceRangeSlider";
 import "./style.css";
 import LocationFilter from "../../../common/LocationFilter";
 import { useState } from "react";
+import { useApiData } from "../../../common/useapiData";
 const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publication, setPublication, domainAuthority, setDomainAuthority, domainRating, setDomainRating, location, setLocation, genre, setGenre, doFollow, setDoFollow, indexed, setIndexed, niche, setNiche, range, setRange, setScope }) => {
 
-  const [isLocationShow,setIsLocationShow] = useState(false);
+  const [isLocationShow, setIsLocationShow] = useState(false);
+  
+    const {  genresData } = useApiData()
 
 
   const ninche = [
@@ -55,6 +58,7 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
 
   const commonCls = "w-full px-4 py-2 border border-[#DCDEDF] text-[14px]  text-[#878C91] placeholder-[#878C91] bg-[#F6F7F7] focus:outline outline-[#004A87]";
   const labelCls = "block text-[#002747] text-[14px] mb-1";
+
   return (
     <div className={className}>
       <div className="bg-white h-full w-full md:w-60 max-w-60 border-r border-[#DCDEDF] pr-6">
@@ -252,10 +256,12 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
           </label>
           <div className="relative">
             <select value={genre} onChange={e=>setGenre(e.target.value)} id="genre" className={`appearance-none ${commonCls}`}>
-              <option>Genre</option>
-              <option>News</option>
-              <option>Sports</option>
-              <option>Technology</option>
+              <option defaultChecked>Select Genre</option>
+              {
+                genresData?.genres?.map((item,index)=>(
+                  <option key={index} value={item.title}>{item.title}</option>
+                ))
+              }
             </select>
             <div className="custom-dropdown-arrow">
               <svg

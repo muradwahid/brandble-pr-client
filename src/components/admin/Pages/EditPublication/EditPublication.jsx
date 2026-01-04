@@ -77,11 +77,6 @@ const EditPublication = () => {
     }
 
     if (formData) {
-      console.log("FormData contents:");
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
-
       try {
         await updatePublication({ id, body: formData });
         toast.success("Publication updated successfully");

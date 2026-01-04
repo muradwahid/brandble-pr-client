@@ -26,9 +26,8 @@ const Login = () => {
     let time;
     try {
       const result = await userLogin(data);
-      console.log(result);
       // Handle successful login (redirect, store token, etc.)
-      console.log('Login successful:', result);
+
       if (result?.error) {
         const err = result.error;
         if (err.message == 'User not found') {

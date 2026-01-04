@@ -1,11 +1,11 @@
 import { baseApi } from "./baseApi";
 
-const NICHE_URL = "/publication";
+const PUBLICATION_URL = "/publication";
 export const publicationApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     publications: build.query({
       query: (arg) => ({
-        url: `${NICHE_URL}/all-publications`,
+        url: `${PUBLICATION_URL}/all-publications`,
         method: "GET",
         params: arg,
       }),
@@ -16,7 +16,7 @@ export const publicationApi = baseApi.injectEndpoints({
     }),
     adminSearchPublications: build.query({
       query: (arg) => ({
-        url: `${NICHE_URL}/admin/searchpublications`,
+        url: `${PUBLICATION_URL}/admin/searchpublications`,
         method: "GET",
         params: arg,
       }),
@@ -27,7 +27,7 @@ export const publicationApi = baseApi.injectEndpoints({
     }),
     addPublication: build.mutation({
       query: (data) => ({
-        url: `${NICHE_URL}/create`,
+        url: `${PUBLICATION_URL}/create`,
         method: "POST",
         data,
         contentType: "multipart/form-data" ,
@@ -37,7 +37,7 @@ export const publicationApi = baseApi.injectEndpoints({
     publication: build.query({
       query: (id) => {
         return {
-          url: `${NICHE_URL}/${id}`,
+          url: `${PUBLICATION_URL}/${id}`,
           method: "GET",
         };
       },
@@ -46,7 +46,7 @@ export const publicationApi = baseApi.injectEndpoints({
     publicationStatistic: build.query({
       query: () => {
         return {
-          url: `${NICHE_URL}/statistics`,
+          url: `${PUBLICATION_URL}/statistics`,
           method: "GET",
         };
       },
@@ -54,7 +54,7 @@ export const publicationApi = baseApi.injectEndpoints({
     }),
     updatePublication: build.mutation({
       query: (data) => ({
-        url: `${NICHE_URL}/${data.id}`,
+        url: `${PUBLICATION_URL}/${data.id}`,
         method: "PATCH",
         data: data.body,
         contentType: "multipart/form-data" ,
@@ -64,7 +64,7 @@ export const publicationApi = baseApi.injectEndpoints({
     deletePublication: build.mutation({
       query: (id) => {
         return {
-          url: `${NICHE_URL}/${id}`,
+          url: `${PUBLICATION_URL}/${id}`,
           method: "DELETE",
         };
       },
