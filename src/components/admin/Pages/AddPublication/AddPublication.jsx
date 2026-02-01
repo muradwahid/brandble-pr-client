@@ -13,32 +13,35 @@ import { useAddDofollowMutation } from '../../../../redux/api/dofollowApi';
 import toast from 'react-hot-toast';
 import SelectRegionData from '../../../ui/SelectRegionData/SelectRegionData';
 import { City, Country, State } from "country-state-city";
+import { useAddCountryMutation } from "../../../../redux/api/country";
+import { useAddStateMutation } from "../../../../redux/api/state";
+import { useAddCityMutation } from "../../../../redux/api/city";
+import MultiSelectTokenControl from "../../../ui/MultiSelectControl/MultiSelectTokenControl";
 
 const AddPublication = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [isResetValue, setIsResetValue] = useState(false);
   const [niches, setNiches] = useState([])
+  const [fieldsData, setFieldsData] = useState({country:[],state:[],city:[]});
   const [isImgRequired, setIsImgRequired] = useState(false);
-  const [location, setLocation] = useState({});
-
-  const { nichesData, genresData, indexesData, sponsorsData, dofollowData } = useApiData()
+  const { nichesData, genresData, indexesData, sponsorsData, dofollowData, countries,states,cities } = useApiData()
 
   const [addNiche, { isLoading: addNicheLoading }] = useAddNicheMutation()
   const [addGenre, { isLoading: addGenreLoading }] = useAddGenreMutation()
   const [addIndexed, { isLoading: addIndexLoading }] = useAddIndexedMutation()
   const [addSponsor, { isLoading: addSponsorLoading }] = useAddSponsorMutation()
   const [addDofollow, { isLoading: addDofollowLoading }] = useAddDofollowMutation()
+  const [addCountry, { isLoading: addCountryLoading }] = useAddCountryMutation()
+  const [addState, { isLoading: addStateLoading }] = useAddStateMutation()
+  const [addCity, { isLoading: addCityLoading }] = useAddCityMutation()
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }, setValue, reset
-  } = useForm();
+  const { register, handleSubmit, formState: { errors }, setValue, reset } = useForm();
 
   const [addPublication, { isLoading }] = useAddPublicationMutation();
 
   const onSubmit = async (d) => {
     const obj = { ...d };
+    console.log(d);
     const logo = obj["logo"];
     const publicationData = { ...obj };
     delete publicationData["logo"];
@@ -58,7 +61,8 @@ const AddPublication = () => {
             setIsResetValue(true)
           }
           reset()
-          setLocation({})
+          console.log("reset : ",reset());
+          setFieldsData({country:[],state:[],city:[]});
           setNiches([])
         } catch (err) {
           console.error("Submission failed:", err);
@@ -363,45 +367,44 @@ const AddPublication = () => {
             </label>
             <label htmlFor="">
               <p className="font-glare text-[#5F6368] font-normal tracking-[-0.1px] mb-1.5">
-                Region
+                Country
               </p>
-              <div className="relative">
-                <SelectRegionData
-                  name="region"
-                  label="Option"
-                  setValue={setValue}
-                  register={register}
-                  placeholder="Ex: United States"
-                  options={Country?.getAllCountries()}
-                  onChange={(val) => setLocation({region:val})}
-                />
-                {errors.region && (
-                  <span className="text-red-400 text-xs">
-                    {errors.region.message}
-                  </span>
-                )}
-              </div>
+              <MultiSelectTokenControl
+                value={fieldsData?.country || []}
+                key={JSON.stringify(fieldsData)}
+                {...register("countries")}
+                options={countries?.countries || []}
+                isShowSearch={true}
+                placeholder='Ex: United States'
+                label="Country"
+                onChange={(value) => {
+                  setFieldsData({...fieldsData, country: value});
+                  setValue("countries", value)
+                }}
+                isLoading={addCountryLoading}
+                onAdd={async (v) => await addCountry({ name: v })}
+              />
             </label>
             <label htmlFor="">
               <p className="font-glare text-[#5F6368] font-normal tracking-[-0.1px] mb-1.5">
                 State
               </p>
               <div className="relative">
-                <SelectRegionData
-                  name="state"
-                  label="Option"
-                  key={location?.region}
-                  setValue={setValue}
-                  register={register}
-                  placeholder="Ex: New York"
-                  options={State.getStatesOfCountry(location?.region)}
-                  onChange={(val) => setLocation({ ...location, state: val })}
+                <MultiSelectTokenControl
+                  value={fieldsData?.state || []}
+                  key={JSON.stringify(fieldsData)}
+                  {...register("states")}
+                  options={states?.states || []}
+                  isShowSearch={true}
+                  placeholder='Ex: New York'
+                  label="Country"
+                  onChange={(value) => {
+                    setFieldsData({ ...fieldsData, state: value });
+                    setValue("states", value)
+                  }}
+                  isLoading={addStateLoading}
+                  onAdd={async (v) => await addState({ name: v })}
                 />
-                {errors.region && (
-                  <span className="text-red-400 text-xs">
-                    {errors.region.message}
-                  </span>
-                )}
               </div>
             </label>
             <label htmlFor="">
@@ -409,21 +412,21 @@ const AddPublication = () => {
                 City
               </p>
               <div className="relative">
-                <SelectRegionData
-                  name="city"
-                  label="Option"
-                  key={location?.region}
-                  setValue={setValue}
-                  register={register}
-                  placeholder="Ex: Alabama"
-                  options={City.getCitiesOfState(location.region, location.state)}
-                  onChange={(val) => setLocation({ ...location, city: val })}
+                <MultiSelectTokenControl
+                  value={fieldsData?.city || []}
+                  key={JSON.stringify(fieldsData)}
+                  {...register("cities")}
+                  options={cities?.cities || []}
+                  isShowSearch={true}
+                  placeholder='Ex: Adams'
+                  label="Country"
+                  onChange={(value) => {
+                    setFieldsData({ ...fieldsData, city: value });
+                    setValue("cities", value)
+                  }}
+                  isLoading={addCityLoading}
+                  onAdd={async (v) => await addCity({ name: v })}
                 />
-                {errors.region && (
-                  <span className="text-red-400 text-xs">
-                    {errors.region.message}
-                  </span>
-                )}
               </div>
             </label>
             <label htmlFor="">

@@ -16,6 +16,17 @@ export const orderApi = baseApi.injectEndpoints({
       },
       providesTags: ["order","create"],
     }),
+    publishedOrders: build.query({
+      query: (arg) => ({
+        url: `${ORDER_URL}/user/published-orders`,
+        method: "GET",
+        params: arg,
+      }),
+      transformResponse: (response) => {
+        return response
+      },
+      providesTags: ["order", "create"],
+    }),
     adminOrders: build.query({
       query: (arg) => ({
         url: `${ORDER_URL}/admin/all-orders`,
@@ -160,6 +171,7 @@ export const orderApi = baseApi.injectEndpoints({
 
 export const {
   useOrdersQuery,
+  usePublishedOrdersQuery,
   useAdminOrdersQuery,
   useAdminHomeOrdersQuery,
   useUserOrdersQuery,

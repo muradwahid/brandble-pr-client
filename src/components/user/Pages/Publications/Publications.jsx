@@ -57,7 +57,11 @@ const Publications = () => {
 
     ...(domainAuthority && { da: domainAuthority }),
     ...(domainRating && { dr: domainRating }),
-    ...(scope && {...scope}),
+    // ...(scope && {...scope}),
+    ...((scope?.countries && scope?.countries.length>0) && { countries: scope?.countries?.map(country=>country).join(',') }),
+    ...((scope?.states && scope?.states.length>0) && { states: scope?.states?.map(state=>state).join(',') }),
+    ...((scope?.cities && scope?.cities.length > 0) && { cities: scope?.cities?.map(city=>city).join(',') }),
+    ...(location ==='global' && {global:'global'} ),
     ...(sortBy && {
       sortBy: sortBy === 'priceAsc' || sortBy === 'priceDesc' ? 'price' : 'createdAt',
       sortOrder: sortBy === 'priceAsc' || sortBy === 'dateAsc' ? 'asc' : 'desc',
@@ -239,7 +243,7 @@ const addToCard = (cardData) => {
                         </div>
                         <div className={cmCls}>
                           <p className="flex-1/3">Region</p>
-                          <p className="flex-1/2">: {item?.region}</p>
+                          <p className="flex-1/2 text-wrap">: {(  item?.countries || []).map((c) => c.name).join(", ")}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 mt-2 md:flex-nowrap flex-wrap">
@@ -283,7 +287,7 @@ const addToCard = (cardData) => {
                 <option value="30">30 Result</option>
               </select>
               <Pagination
-                totalPages={meta?.total}
+                totalPages={meta?.totalPage}
                 currentPage={meta?.page}
                 onPageChange={handlePageChange}
               />

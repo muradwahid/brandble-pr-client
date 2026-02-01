@@ -109,7 +109,7 @@ const Favorite = () => {
                   </div>
                   <div className={cmCls}>
                     <p className="flex-1/3">Region</p>
-                    <p className="flex-1/2">: {item?.region}</p>
+                    <p className="flex-1/2">: {(item?.countries || [])?.map((c) => c.name).join(", ")}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 mt-2 md:flex-nowrap flex-wrap">

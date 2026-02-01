@@ -334,7 +334,7 @@ const AdminPublication = () => {
                   <td className="px-3 py-3 text-nowrap text-center capitalize">
                     {item?.doFollow}
                   </td>
-                  <td className="px-3 py-3 text-nowrap">{item?.region}</td>
+                  <td className="px-3 py-3 text-wrap">{(item?.countries || []).map((c) => c.name).join(", ")}</td>
                   <td className="pr-2.5">
                     <span className="flex items-center gap-1">
                       {

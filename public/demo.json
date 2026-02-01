@@ -1,0 +1,106 @@
+[
+  {
+    "name": "Alberta",
+    "countryName":"Canada",
+    "isoCode": "AB",
+    "countryCode": "CA",
+    "latitude": "53.93327060",
+    "longitude": "-116.57650350"
+  },
+  {
+    "name": "British Columbia",
+    "countryName":"Canada",
+    "isoCode": "BC",
+    "countryCode": "CA",
+    "latitude": "53.72666830",
+    "longitude": "-127.64762050"
+  },
+  {
+    "name": "Manitoba",
+    "countryName":"Canada",
+    "isoCode": "MB",
+    "countryCode": "CA",
+    "latitude": "53.76086080",
+    "longitude": "-98.81387620"
+  },
+  {
+    "name": "New Brunswick",
+    "countryName":"Canada",
+    "isoCode": "NB",
+    "countryCode": "CA",
+    "latitude": "46.56531630",
+    "longitude": "-66.46191640"
+  },
+  {
+    "name": "Newfoundland and Labrador",
+    "countryName":"Canada",
+    "isoCode": "NL",
+    "countryCode": "CA",
+    "latitude": "53.13550910",
+    "longitude": "-57.66043640"
+  },
+  {
+    "name": "Northwest Territories",
+    "countryName":"Canada",
+    "isoCode": "NT",
+    "countryCode": "CA",
+    "latitude": "64.82554410",
+    "longitude": "-124.84573340"
+  },
+  {
+    "name": "Nova Scotia",
+    "countryName":"Canada",
+    "isoCode": "NS",
+    "countryCode": "CA",
+    "latitude": "44.68198660",
+    "longitude": "-63.74431100"
+  },
+  {
+    "name": "Nunavut",
+    "countryName":"Canada",
+    "isoCode": "NU",
+    "countryCode": "CA",
+    "latitude": "70.29977110",
+    "longitude": "-83.10757700"
+  },
+  {
+    "name": "Ontario",
+    "countryName":"Canada",
+    "isoCode": "ON",
+    "countryCode": "CA",
+    "latitude": "51.25377500",
+    "longitude": "-85.32321400"
+  },
+  {
+    "name": "Prince Edward Island",
+    "countryName":"Canada",
+    "isoCode": "PE",
+    "countryCode": "CA",
+    "latitude": "46.51071200",
+    "longitude": "-63.41681360"
+  },
+  {
+    "name": "Quebec",
+    "countryName":"Canada",
+    "isoCode": "QC",
+    "countryCode": "CA",
+    "latitude": "52.93991590",
+    "longitude": "-73.54913610"
+  },
+  {
+    "name": "Saskatchewan",
+    "countryName":"Canada",
+    "isoCode": "SK",
+    "countryCode": "CA",
+    "latitude": "52.93991590",
+    "longitude": "-106.45086390"
+  },
+  {
+    "name": "Yukon",
+    "countryName":"Canada",
+    "isoCode": "YT",
+    "countryCode": "CA",
+    "latitude": "35.50672150",
+    "longitude": "-97.76254410"
+  }
+]

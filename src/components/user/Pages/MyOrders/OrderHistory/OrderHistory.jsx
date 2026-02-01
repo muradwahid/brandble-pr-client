@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { CirclePen, CopyIcon } from "../../../../../utils/icons";
 import Pagination from "../../../../common/Pagination";
-import { useOrdersQuery } from "../../../../../redux/api/orderApi";
+import {  usePublishedOrdersQuery } from "../../../../../redux/api/orderApi";
 import { formattedDate } from "../../../../../utils/function";
 
 const OrderHistory = () => {
@@ -26,15 +26,15 @@ const OrderHistory = () => {
     };
   }, [inputSearch]);
 
-  const { data, isLoading } = useOrdersQuery({
+  const { data, isLoading } = usePublishedOrdersQuery({
     page: currentPage,
     limit: itemsPerPage,
     ...(debouncedSearch && { searchTerm: debouncedSearch })
   });
 
   // Extract data from response
-  const ordersData = data?.orders?.data || [];
-  const meta = data?.orders?.meta || {
+  const ordersData = data?.data || [];
+  const meta = data?.meta || {
     total: 0,
     page: 1,
     limit: itemsPerPage
@@ -165,7 +165,7 @@ const OrderHistory = () => {
                 </div>
                 <div className="flex gap-3 mt-1">
                   <p className="">Region</p>
-                  <p className="">: {order?.publication?.region}</p>
+                  <p className="">: {(order?.publication?.countries || []).map((c) => c.name).join(", ")}</p>
                 </div>
               </div>
             </div>

@@ -16,6 +16,10 @@ import { useParams } from 'react-router';
 import toast from 'react-hot-toast';
 import { City, Country, State } from "country-state-city";
 import SelectRegionData from "../../../ui/SelectRegionData/SelectRegionData";
+import MultiSelectTokenControl from "../../../ui/MultiSelectControl/MultiSelectTokenControl";
+import { useAddCountryMutation } from "../../../../redux/api/country";
+import { useAddStateMutation } from "../../../../redux/api/state";
+import { useAddCityMutation } from "../../../../redux/api/city";
 const EditPublication = () => {
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -23,22 +27,26 @@ const EditPublication = () => {
 
   const [imagePreview, setImagePreview] = useState(null);
   const [niches, setNiches] = useState([])
-    const [location, setLocation] = useState({});
+    const [fieldsData, setFieldsData] = useState({country:[],state:[],city:[]});
 
-  const { nichesData, genresData, indexesData, sponsorsData, dofollowData } = useApiData()
+  const { nichesData, genresData, indexesData, sponsorsData, dofollowData, countries, states, cities } = useApiData()
 
   const [addNiche, { isLoading: addNicheLoading }] = useAddNicheMutation()
   const [addGenre, { isLoading: addGenreLoading }] = useAddGenreMutation()
   const [addIndexed, { isLoading: addIndexLoading }] = useAddIndexedMutation()
   const [addSponsor, { isLoading: addSponsorLoading }] = useAddSponsorMutation()
   const [addDofollow, { isLoading: addDofollowLoading }] = useAddDofollowMutation()
+  const [addCountry, { isLoading: addCountryLoading }] = useAddCountryMutation()
+  const [addState, { isLoading: addStateLoading }] = useAddStateMutation()
+  const [addCity, { isLoading: addCityLoading }] = useAddCityMutation()
 
   const { data: singlePublication, isLoading: singlePublicationLoading } = usePublicationQuery(id);
 
 
   useEffect(() => {
     setNiches(nichesData?.niches?.map(niche => niche.id));
-  }, [singlePublicationLoading, nichesData?.niches]);
+    setFieldsData({country:singlePublication?.countries?.map(country => country.id),state:singlePublication?.states?.map(state => state.id),city:singlePublication?.cities?.map(city => city.id)})
+  }, [singlePublicationLoading]);
 
   const {
     register,
@@ -81,7 +89,6 @@ const EditPublication = () => {
         await updatePublication({ id, body: formData });
         toast.success("Publication updated successfully");
       } catch (err) {
-        // console.error(err.message);
         toast.error(err.message);
       }
 
@@ -391,23 +398,24 @@ const EditPublication = () => {
             </label>
             <label htmlFor="">
               <p className="font-glare text-[#5F6368] font-normal tracking-[-0.1px] mb-1.5">
-                Region
+                Country
               </p>
               <div className="relative">
-                <SelectRegionData
-                  name="region"
-                  label="Option"
-                  setValue={setValue}
-                  register={register}
-                  placeholder="Ex: United States"
-                  options={Country?.getAllCountries()}
-                  onChange={(val) => setLocation({ region: val })}
+                <MultiSelectTokenControl
+                  value={fieldsData?.country || singlePublication?.countries?.map(country => country.id)|| []}
+                  key={JSON.stringify(fieldsData)}
+                  {...register("countries")}
+                  options={countries?.countries || []}
+                  isShowSearch={true}
+                  placeholder='Ex: United States'
+                  label="Country"
+                  onChange={(value) => {
+                    setFieldsData({ ...fieldsData, country: value });
+                    setValue("countries", value)
+                  }}
+                  isLoading={addCountryLoading}
+                  onAdd={async (v) => await addCountry({ name: v })}
                 />
-                {errors.region && (
-                  <span className="text-red-400 text-xs">
-                    {errors.region.message}
-                  </span>
-                )}
               </div>
             </label>
             <label htmlFor="">
@@ -415,21 +423,21 @@ const EditPublication = () => {
                 State
               </p>
               <div className="relative">
-                <SelectRegionData
-                  name="state"
-                  label="Option"
-                  key={location?.region}
-                  setValue={setValue}
-                  register={register}
-                  placeholder="Ex: New York"
-                  options={State.getStatesOfCountry(location?.region)}
-                  onChange={(val) => setLocation({ ...location, state: val })}
+                <MultiSelectTokenControl
+                  value={fieldsData?.state || []}
+                  key={JSON.stringify(fieldsData)}
+                  {...register("states")}
+                  options={states?.states || []}
+                  isShowSearch={true}
+                  placeholder='Ex: New York'
+                  label="Country"
+                  onChange={(value) => {
+                    setFieldsData({ ...fieldsData, state: value });
+                    setValue("states", value)
+                  }}
+                  isLoading={addStateLoading}
+                  onAdd={async (v) => await addState({ name: v })}
                 />
-                {errors.region && (
-                  <span className="text-red-400 text-xs">
-                    {errors.region.message}
-                  </span>
-                )}
               </div>
             </label>
             <label htmlFor="">
@@ -437,21 +445,21 @@ const EditPublication = () => {
                 City
               </p>
               <div className="relative">
-                <SelectRegionData
-                  name="city"
-                  label="Option"
-                  key={location?.region}
-                  setValue={setValue}
-                  register={register}
-                  placeholder="Ex: Alabama"
-                  options={City.getCitiesOfState(location.region, location.state)}
-                  onChange={(val) => setLocation({ ...location, city: val })}
+                <MultiSelectTokenControl
+                  value={fieldsData?.city || []}
+                  key={JSON.stringify(fieldsData)}
+                  {...register("cities")}
+                  options={cities?.cities || []}
+                  isShowSearch={true}
+                  placeholder='Ex: Adams'
+                  label="Country"
+                  onChange={(value) => {
+                    setFieldsData({ ...fieldsData, city: value });
+                    setValue("cities", value)
+                  }}
+                  isLoading={addCityLoading}
+                  onAdd={async (v) => await addCity({ name: v })}
                 />
-                {errors.region && (
-                  <span className="text-red-400 text-xs">
-                    {errors.region.message}
-                  </span>
-                )}
               </div>
             </label>
             <label htmlFor="">

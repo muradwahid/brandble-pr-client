@@ -88,7 +88,7 @@ const SinglePublication = () => {
                     DR: {data?.dr}
                   </p>
                   <p className="p-1 bg-[#F2F2F3] text-[#5F6368] font-popping font-medium text-[11px] flex items-center ">
-                    TTP: 1-3 Days
+                    TTP: {data?.ttp}
                   </p>
                 </div>
                 {data?.niches?.length > 0 && <div className="p-1 bg-[#F2F2F3] text-[#5F6368] font-popping font-medium flex items-center gap-3 rounded-sm">
@@ -96,11 +96,11 @@ const SinglePublication = () => {
                   <span className="flex items-center gap-1">
                     {
                       data?.niches?.map((niche, i) => {
-                        if (niche?.title?.toLowerCase() === "adult") return <AdultIcon key={i} />;
-                        if (niche?.title?.toLowerCase() === "health") return <CardiologyIcon key={i} />;
-                        if (niche?.title?.toLowerCase() === "cannabis") return <SpaIcon key={i} />;
-                        if (niche?.title?.toLowerCase() === "crypto") return <BitcoinIcon key={i} />;
-                        if (niche?.title?.toLowerCase() === "casino") return <CasinoIcon key={i} />;
+                        if (niche?.title?.toLowerCase() == "adult") return <AdultIcon key={i} />;
+                        if (niche?.title?.toLowerCase() == "health") return <CardiologyIcon key={i} />;
+                        if (niche?.title?.toLowerCase() == "cannabis") return <SpaIcon key={i} />;
+                        if (niche?.title?.toLowerCase() == "crypto") return <BitcoinIcon key={i} />;
+                        if (niche?.title?.toLowerCase() == "casino") return <CasinoIcon key={i} />;
                         return null;
                       })
                     }
@@ -156,11 +156,11 @@ const SinglePublication = () => {
           </div>
           <div className="flex items-center gap-4">
             <div className="text-[#5F6368] font-glare font-normal flex items-center w-24 justify-between">
-              <p>Region</p>
+              <p>Country</p>
               <p>:</p>
             </div>
             <p className="text-[#5F6368] font-glare font-normal">
-              {data?.region}
+              {(data?.countries || []).map((c) => c.name).join(", ")}
             </p>
           </div>
         </div>

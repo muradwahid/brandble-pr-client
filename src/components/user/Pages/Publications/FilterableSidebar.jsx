@@ -5,41 +5,14 @@ import PriceRangeSlider from "../../../common/PriceRangeSlider";
 import "./style.css";
 import LocationFilter from "../../../common/LocationFilter";
 import { useState } from "react";
-import { useApiData } from "../../../common/useapiData";
+import { useCommonQuery } from "../../../../redux/api/commonApi";
 const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publication, setPublication, domainAuthority, setDomainAuthority, domainRating, setDomainRating, location, setLocation, genre, setGenre, doFollow, setDoFollow, indexed, setIndexed, niche, setNiche, range, setRange, setScope }) => {
 
   const [isLocationShow, setIsLocationShow] = useState(false);
+  const [locationSearch, setLocationSearch] = useState('');
   
-    const {  genresData } = useApiData()
+  const { data, isLoading } = useCommonQuery()
 
-
-  const ninche = [
-    {
-      title: "Adult",
-      icon: <AdultIcon />,
-      value:"adult"
-    },
-    {
-      title: "CBD",
-      icon: <SpaIcon />,
-      value:"cbd"
-    },
-    {
-      title: "Crypto",
-      icon: <BitcoinIcon />,
-      value:"crypto"
-    },
-    {
-      title: "Gambling",
-      icon: <CasinoIcon />,
-      value:"gambling"
-    },
-    {
-      title: "Health",
-      icon: <CardiologyIcon />,
-      value:"health"
-    },
-  ]
 
   const handleReset = () => { 
     setSearch('');
@@ -222,11 +195,14 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
             Location
           </label>
           <div className="relative">
-            <select onClick={()=>setIsLocationShow(true)} value={location} onChange={e => setLocation(e.target.value)} id="location" className={`appearance-none ${commonCls}`}>
-              <option defaultChecked>Select Location</option>
+            <select onClick={() => setIsLocationShow(true)} value={location} onChange={e => {
+              setLocation(e.target.value)
+              setLocationSearch('');
+            }} id="location" className={`appearance-none ${commonCls}`}>
+              <option defaultChecked value=''>Select Location</option>
               <option value='local'>Local</option>
+              <option value='state'>State</option>
               <option value='national'>National</option>
-              <option value='regional'>Regional</option>
               <option value='global'>Global</option>
             
             </select>
@@ -246,7 +222,7 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
                 ></path>
               </svg>
             </div>
-            {(location && isLocationShow) && <LocationFilter onChange={val => setScope(val)} setIsLocationShow={setIsLocationShow} scope={location} />}
+            {(location && location!=='global' && isLocationShow) && <LocationFilter data={data} isLoading={isLoading} onChange={val => setScope(val)} setIsLocationShow={setIsLocationShow} scope={location} {...{ setLocationSearch, locationSearch }} />}
           </div>
         </div>
 
@@ -258,7 +234,7 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
             <select value={genre} onChange={e=>setGenre(e.target.value)} id="genre" className={`appearance-none ${commonCls}`}>
               <option defaultChecked>Select Genre</option>
               {
-                genresData?.genres?.map((item,index)=>(
+                data?.genre?.map((item,index)=>(
                   <option key={index} value={item.title}>{item.title}</option>
                 ))
               }
@@ -341,7 +317,33 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
         <div className="mb-8">
           <label className={labelCls}>Niche</label>
           <div className="flex flex-wrap gap-2">
-            {ninche.map((item, index) => (
+            {data?.niche?.map((nicheData, i) => {
+              const title = nicheData?.title;
+              const iconMap = {
+                adult: <AdultIcon />,
+                health: <CardiologyIcon />,
+                cannabis: <SpaIcon />,
+                crypto: <BitcoinIcon />,
+                casino: <CasinoIcon />,
+              };
+
+              const Icon = iconMap[title?.toLowerCase()];
+
+              return (
+                <div
+                  key={i}
+                  onClick={() => setNiche(title)}
+                  className={`border border-[#B2B5B8] py-1.5 px-2 flex items-center gap-2 cursor-pointer ${title === niche ? "bg-[#eeeeee]" : ""
+                    }`}
+                >
+                  {Icon}
+                  <span className="text-[#878C91] text-[12px] m-0 p-0 capitalize">
+                    {title}
+                  </span>
+                </div>
+              );
+            })}
+            {/* {ninche.map((item, index) => (
               <div
                 key={index}
                 onClick={()=>setNiche(item.title)}
@@ -352,7 +354,7 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
                   {item.title}
                 </span>
               </div>
-            ))}
+            ))} */}
           </div>
         </div>
 

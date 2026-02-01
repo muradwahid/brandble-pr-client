@@ -37,10 +37,10 @@ export const userNav = [
       },
     ],
   },
-  {
-    title: "My Articles",
-    path: "/user/articles",
-  },
+  // {
+  //   title: "My Articles",
+  //   path: "/user/articles",
+  // },
   {
     title: "Payment",
     path: "/user/payments",

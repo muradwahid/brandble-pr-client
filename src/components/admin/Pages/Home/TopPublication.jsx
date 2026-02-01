@@ -110,26 +110,19 @@ const TopPublication = () => {
                 <td className="px-3 py-3 text-nowrap">{item.sponsor}</td>
                 <td className="px-3 py-3 text-nowrap">{item.index}</td>
                 <td className="px-3 py-3 text-nowrap text-center">{item.doFollow}</td>
-                <td className="px-3 py-3 text-nowrap">{item.region}</td>
+                <td className="px-3 py-3 text-nowrap">{(item?.countries || []).map((c) => c.name).join(", ")}</td>
                 <td className="pr-2.5">
                   
                     {
                       item?.niches?.map((niche, i) => {
-                        if (niche?.title?.toLowerCase() === "adult") return <AdultIcon key={i} />;
-                        if (niche?.title?.toLowerCase() === "health") return <CardiologyIcon key={i} />;
-                        if (niche?.title?.toLowerCase() === "cannabis") return <SpaIcon key={i} />;
-                        if (niche?.title?.toLowerCase() === "crypto") return <BitcoinIcon key={i} />;
-                        if (niche?.title?.toLowerCase() === "casino") return <CasinoIcon key={i} />;
+                        if (niche?.title?.toLowerCase() == "adult") return <AdultIcon key={i} />;
+                        if (niche?.title?.toLowerCase() == "health") return <CardiologyIcon key={i} />;
+                        if (niche?.title?.toLowerCase() == "cannabis") return <SpaIcon key={i} />;
+                        if (niche?.title?.toLowerCase() == "crypto") return <BitcoinIcon key={i} />;
+                        if (niche?.title?.toLowerCase() == "casino") return <CasinoIcon key={i} />;
                         return null;
                       })
                   }
-                  <span className="flex items-center gap-1">
-                    <AdultIcon />
-                    <CardiologyIcon />
-                    <SpaIcon />
-                    <BitcoinIcon />
-                    <CasinoIcon />
-                  </span>
                 </td>
               </tr>
             ))}
