@@ -17,7 +17,6 @@ export const notificationApi = baseApi.injectEndpoints({
       },
       providesTags: ["notification"],
     }),
-
     // Mark single notification as read
     markAsRead: build.mutation({
       query: (id) => ({

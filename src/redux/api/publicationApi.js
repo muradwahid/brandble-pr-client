@@ -25,6 +25,19 @@ export const publicationApi = baseApi.injectEndpoints({
       },
       providesTags: ["publication",'create'],
     }),
+    downloadPublications: build.query({
+      query: () => ({
+        url: `${PUBLICATION_URL}/admin/export-publications`,
+        method: "GET",
+        responseHandler: async (response) => {
+          if (response.ok) {
+            return await response.blob();
+          }
+          return response.json(); 
+        },
+      }),
+      providesTags: ["publication"],
+    }),
     addPublication: build.mutation({
       query: (data) => ({
         url: `${PUBLICATION_URL}/create`,
@@ -75,6 +88,8 @@ export const publicationApi = baseApi.injectEndpoints({
 
 export const { usePublicationsQuery,
   useAdminSearchPublicationsQuery,
+  useDownloadPublicationsQuery,
+  useLazyDownloadPublicationsQuery,
   useAddPublicationMutation,
   usePublicationQuery,
   usePublicationStatisticQuery,

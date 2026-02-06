@@ -39,7 +39,7 @@ export const countryApi = baseApi.injectEndpoints({
                 method: "PATCH",
                 data: data.body,
             }),
-            invalidatesTags: ["country"],
+            invalidatesTags: ["country","common"],
         }),
         deleteCountry: build.mutation({
             query: (id) => {
@@ -48,7 +48,7 @@ export const countryApi = baseApi.injectEndpoints({
                     method: "DELETE",
                 };
             },
-            invalidatesTags: ["country"],
+            invalidatesTags: ["country","common"],
         }),
     }),
 });

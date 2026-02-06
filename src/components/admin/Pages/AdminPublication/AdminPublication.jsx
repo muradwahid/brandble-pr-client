@@ -16,6 +16,7 @@ import {
   GenreIcon,
   HolidayVillageIcon,
   ListIcon,
+  LoadingIcon,
   PublicationBadgeIcon,
   SpaIcon,
   StarHalf,
@@ -24,6 +25,8 @@ import {
 import AdminPagination from "../../../common/AdminPagination";
 import Dropdown from "./Dropdown";
 import { usePublicationsQuery } from '../../../../redux/api/publicationApi';
+import { accessToken } from "../../../../helpers/user/user";
+import toast from "react-hot-toast";
 
 const AdminPublication = () => {
   const sortBtnRef = useRef(null);
@@ -39,6 +42,8 @@ const AdminPublication = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
+  const [isDownloading, setIsDownloading] = useState(false);
+
 
   const targetRef = useRef(null);
   const buttonRef = useRef(null);
@@ -50,6 +55,8 @@ const AdminPublication = () => {
   // query["sortOrder"] = sortOrder;
 
   const { data, isLoading } = usePublicationsQuery(query);
+
+
   const { meta = {} } = data || {};
 
   const totalPages = Math.ceil(meta.total / itemsPerPage);
@@ -103,13 +110,43 @@ const AdminPublication = () => {
     });
   };
 
+  const handleDownload = async () => {
+    setIsDownloading(true);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/publication/admin/export-publications`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+
+      if (!response.ok) throw new Error("Download failed");
+
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = "publications_list.xlsx";
+      document.body.appendChild(link);
+      link.click();
+
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      setIsDownloading(false);
+    // eslint-disable-next-line no-unused-vars
+    } catch (err) {
+      toast.error("Failed to download file.");
+      setIsDownloading(false);
+    }
+  };
+
   if (isLoading) {
     return <div className="w-full h-[60dvh] flex justify-center items-center">Loading...</div>
   }
 
   return (
     <div>
- { meta?.total>0 ?    <>
       <div className="flex justify-between items-center mb-4 flex-wrap-reverse gap-3">
         <div className="flex gap-3 flex-wrap">
           <div
@@ -233,151 +270,160 @@ const AdminPublication = () => {
           <div
             className="flex gap-2.5 items-center py-2 px-4 rounded-[8px] cursor-pointer bg-[#36B37E]  h-9"
           // onClick={() => setToggle(!toggle)}
-          // ref={sortBtnRef}
+            // ref={sortBtnRef}
+            onClick={handleDownload}
           >
-            <DownloadDownIcon />
-            <p className="text-white font-normal text-sm">Excel</p>
+            {
+              isDownloading ? <LoadingIcon style={{ height: "20px" }} fill="#fff" /> : <>
+                <DownloadDownIcon />
+                <p className="text-white font-normal text-sm">Excel</p>
+              </>
+            }
+
           </div>
         </div>
-      </div>
-      <div className=" w-full overflow-x-auto pb-3">
-        <div className="rounded-md  border border-[#DCDEDF] w-fit">
-          <table className="min-w-max text-sm font-normal overflow-x-scroll table-fixed overflow-hidden">
-            <thead className="bg-[#F6F7F7]">
-              <tr className="text-left py-2">
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    SL
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <PublicationBadgeIcon />
-                    Publication
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <GenreIcon /> Genre
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <StartCircleIcon /> DA
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <StarHalf /> DR
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <AVTimer /> TAT
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <CurrencyIcon /> Price
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <CampaignIcon /> Sponsored
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <ListIcon /> Indexed
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <FollowHumanIcon /> Do Follow
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <AmericaIcon /> Region
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    <HolidayVillageIcon /> Niche
-                  </span>
-                </th>
-                <th className="px-3 py-2 text-[#5F6368] font-normal">
-                  <span className=" flex items-center gap-1.5 text-nowrap">
-                    Edit
-                  </span>
-                </th>
-              </tr>
-            </thead>
-            <tbody className=" text-[#36383A]" ref={sortBtnRef}>
-              {data?.data && data?.data?.map((item, index) => (
-                <tr key={index} className="border-t border-[#DCDEDF]">
-                  <td className="px-3 py-3 text-nowrap">{index + 1}</td>
-                  <td className="px-3 py-3 text-nowrap">{item?.title}</td>
-                  <td className="px-3 py-3 text-nowrap">{item?.genre}</td>
-                  <td className="px-3 py-3 text-nowrap">{item?.da}</td>
-                  <td className="px-3 py-3 text-nowrap">{item?.dr}</td>
-                  <td className="px-3 py-3 text-nowrap">
-                    {item?.ttp}
-                  </td>
-                  <td className="px-3 py-3 text-nowrap">
-                    ${item.price}
-                  </td>
-                  <td className="px-3 py-3 text-nowrap">{item?.sponsor}</td>
-                  <td className="px-3 py-3 text-nowrap text-center capitalize">
-                    {item?.index}
-                  </td>
-                  <td className="px-3 py-3 text-nowrap text-center capitalize">
-                    {item?.doFollow}
-                  </td>
-                  <td className="px-3 py-3 text-wrap">{(item?.countries || []).map((c) => c.name).join(", ")}</td>
-                  <td className="pr-2.5">
-                    <span className="flex items-center gap-1">
-                      {
-                        item?.niches?.map((niche, i) => {
-                          if (niche?.title?.toLowerCase() === "adult") return <AdultIcon key={i} />;
-                          if (niche?.title?.toLowerCase() === "health") return <CardiologyIcon key={i} />;
-                          if (niche?.title?.toLowerCase() === "cannabis") return <SpaIcon key={i} />;
-                          if (niche?.title?.toLowerCase() === "crypto") return <BitcoinIcon key={i} />;
-                          if (niche?.title?.toLowerCase() === "casino") return <CasinoIcon key={i} />;
-                          return null;
-                        })
-                      }
-
-                    </span>
-                  </td>
-                  <td className="px-3 py-3 text-nowrap cursor-pointer text-center [writing-mode:vertical-rl] ">
-                    <Link to={`/admin/publications/${item.id}`}>...</Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
-      </div>
-      <div className="sm:flex items-center justify-end gap-2 mt-6">
-        <AdminPagination
-          totalPages={totalPages}
-          currentPage={currentPage}
-          onPageChange={handlePageChange}
-        />
-        <select
-          onChange={(e) => setItemsPerPage(parseInt(e.target.value))}
-          defaultValue="10"
-          className="text-[#878C91] text-sm border border-[#DCDEDF] px-0.5 py-[3.5px] focus:outline-2 focus:outline-[#004A87] rounded-md "
-        >
-          <option value="5">5 Result</option>
-          <option value="10">10 Result</option>
-          <option value="15">15 Result</option>
-          <option value="20">20 Result</option>
-          <option value="30">30 Result</option>
-        </select>
-      </div>
-      </> : <div class="h-[50dvh] flex items-center justify-center"><h1 class="text-3xl">No publications found.</h1></div>}
+        {
+          meta?.total > 0 ?<>
+            <div className=" w-full overflow-x-auto pb-3">
+              <div className="rounded-md  border border-[#DCDEDF] w-fit">
+                <table className="min-w-max text-sm font-normal overflow-x-scroll table-fixed overflow-hidden">
+                  <thead className="bg-[#F6F7F7]">
+                    <tr className="text-left py-2">
+                      <th className="px-3 py-2 text-[#5F6368] font-normal">
+                        <span className=" flex items-center gap-1.5 text-nowrap">
+                          SL
+                        </span>
+                      </th>
+                      <th className="px-3 py-2 text-[#5F6368] font-normal">
+                        <span className=" flex items-center gap-1.5 text-nowrap">
+                          <PublicationBadgeIcon />
+                          Publication
+                        </span>
+                      </th>
+                      <th className="px-3 py-2 text-[#5F6368] font-normal">
+                        <span className=" flex items-center gap-1.5 text-nowrap">
+                          <GenreIcon /> Genre
+                        </span>
+                      </th>
+                      <th className="px-3 py-2 text-[#5F6368] font-normal">
+                        <span className=" flex items-center gap-1.5 text-nowrap">
+                          <StartCircleIcon /> DA
+                        </span>
+                      </th>
+                      <th className="px-3 py-2 text-[#5F6368] font-normal">
+                        <span className=" flex items-center gap-1.5 text-nowrap">
+                          <StarHalf /> DR
+                        </span>
+                      </th>
+                      <th className="px-3 py-2 text-[#5F6368] font-normal">
+                        <span className=" flex items-center gap-1.5 text-nowrap">
+                          <AVTimer /> TAT
+                        </span>
+                      </th>
+                      <th className="px-3 py-2 text-[#5F6368] font-normal">
+                        <span className=" flex items-center gap-1.5 text-nowrap">
+                          <CurrencyIcon /> Price
+                        </span>
+                      </th>
+                      <th className="px-3 py-2 text-[#5F6368] font-normal">
+                        <span className=" flex items-center gap-1.5 text-nowrap">
+                          <CampaignIcon /> Sponsored
+                        </span>
+                      </th>
+                      <th className="px-3 py-2 text-[#5F6368] font-normal">
+                        <span className=" flex items-center gap-1.5 text-nowrap">
+                          <ListIcon /> Indexed
+                        </span>
+                      </th>
+                      <th className="px-3 py-2 text-[#5F6368] font-normal">
+                        <span className=" flex items-center gap-1.5 text-nowrap">
+                          <FollowHumanIcon /> Do Follow
+                        </span>
+                      </th>
+                      <th className="px-3 py-2 text-[#5F6368] font-normal">
+                        <span className=" flex items-center gap-1.5 text-nowrap">
+                          <AmericaIcon /> Region
+                        </span>
+                      </th>
+                      <th className="px-3 py-2 text-[#5F6368] font-normal">
+                        <span className=" flex items-center gap-1.5 text-nowrap">
+                          <HolidayVillageIcon /> Niche
+                        </span>
+                      </th>
+                      <th className="px-3 py-2 text-[#5F6368] font-normal">
+                        <span className=" flex items-center gap-1.5 text-nowrap">
+                          Edit
+                        </span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className=" text-[#36383A]" ref={sortBtnRef}>
+                    {data?.data && data?.data?.map((item, index) => (
+                      <tr key={index} className="border-t border-[#DCDEDF]">
+                        <td className="px-3 py-3 text-nowrap">{index + 1}</td>
+                        <td className="px-3 py-3 text-nowrap">{item?.title}</td>
+                        <td className="px-3 py-3 text-nowrap">{item?.genre}</td>
+                        <td className="px-3 py-3 text-nowrap">{item?.da}</td>
+                        <td className="px-3 py-3 text-nowrap">{item?.dr}</td>
+                        <td className="px-3 py-3 text-nowrap">
+                          {item?.ttp}
+                        </td>
+                        <td className="px-3 py-3 text-nowrap">
+                          ${item.price}
+                        </td>
+                        <td className="px-3 py-3 text-nowrap">{item?.sponsor}</td>
+                        <td className="px-3 py-3 text-nowrap text-center capitalize">
+                          {item?.index}
+                        </td>
+                        <td className="px-3 py-3 text-nowrap text-center capitalize">
+                          {item?.doFollow}
+                        </td>
+                        <td className="px-3 py-3 text-wrap">{(item?.countries || []).map((c) => c.name).join(", ")}</td>
+                        <td className="pr-2.5">
+                          <span className="flex items-center gap-1">
+                            {
+                              item?.niches?.map((niche, i) => {
+                                if (niche?.title?.toLowerCase() === "adult") return <AdultIcon key={i} />;
+                                if (niche?.title?.toLowerCase() === "health") return <CardiologyIcon key={i} />;
+                                if (niche?.title?.toLowerCase() === "cannabis") return <SpaIcon key={i} />;
+                                if (niche?.title?.toLowerCase() === "crypto") return <BitcoinIcon key={i} />;
+                                if (niche?.title?.toLowerCase() === "casino") return <CasinoIcon key={i} />;
+                                return null;
+                              })
+                            }
+
+                          </span>
+                        </td>
+                        <td className="px-3 py-3 text-nowrap cursor-pointer text-center [writing-mode:vertical-rl] ">
+                          <Link to={`/admin/publications/${item.id}`}>...</Link>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="sm:flex items-center justify-end gap-2 mt-6">
+              <AdminPagination
+                totalPages={totalPages}
+                currentPage={currentPage}
+                onPageChange={handlePageChange}
+              />
+              <select
+                onChange={(e) => setItemsPerPage(parseInt(e.target.value))}
+                defaultValue="10"
+                className="text-[#878C91] text-sm border border-[#DCDEDF] px-0.5 py-[3.5px] focus:outline-2 focus:outline-[#004A87] rounded-md "
+              >
+                <option value="5">5 Result</option>
+                <option value="10">10 Result</option>
+                <option value="15">15 Result</option>
+                <option value="20">20 Result</option>
+                <option value="30">30 Result</option>
+              </select>
+            </div>
+          </>: <div class="h-[50dvh] flex items-center justify-center"><h1 class="text-3xl">No publications found.</h1></div>
+        }
     </div>
   );
 };

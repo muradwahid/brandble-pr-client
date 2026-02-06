@@ -8,7 +8,9 @@ export function getCookie(name) {
   return matches ? decodeURIComponent(matches[1]) : null;
 }
 
-const accessToken = getCookie('accessToken');
+export const accessToken = getFromLocalStorage('accessToken');
+
+// export const accessToken = getCookie('accessToken');
 export const storeUserInfo = ({ accessToken }) => {
   setToLocalStorage('accessToken', accessToken);
 };
