@@ -15,7 +15,6 @@ const SelectControl = ({
   setValue,
   isLoading,
   isNotRequired=true,
-  isResetValue=false,
   onAddOption = () => { },
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,11 +47,7 @@ const SelectControl = ({
     setIsOpen(false);
   };
 
-  useEffect(() => {
-    if (isResetValue) {
-      setSelectedOption({})
-    }
-  }, [isResetValue])
+
 
   // const availableOptions = options.filter((option) => !value.includes(option));
   return (

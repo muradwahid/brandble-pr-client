@@ -20,7 +20,7 @@ const UserParentLayout = () => {
 
       {/* main */}
       <main className="flex-1 flex my-10">
-        <div className="flex xl:w-[1400px] lg:w-4/5 md:w-5/6 w-[90%] mx-auto gap-6">
+        <div className="flex lg:w-4/5 md:w-5/6 w-[90%] mx-auto gap-6">
           {/* sidebar */}
           {!publication && <UserSidebar />}
           {/* flex-1 */}

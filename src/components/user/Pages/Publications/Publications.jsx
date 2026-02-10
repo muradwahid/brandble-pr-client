@@ -137,6 +137,7 @@ const addToCard = (cardData) => {
   if (favoritesLoading) {
     return
   }
+  
 
   return (
     <div className="w-full">
@@ -192,9 +193,9 @@ const addToCard = (cardData) => {
                   key={index}
                   className="md:flex justify-between shadow-md p-3"
                 >
-                  <div className="md:flex gap-2.5 justify-between ">
+                  <div className="md:flex gap-2.5  w-full">
                     <div className="bg-[#F6F6F6] relative md:max-w-[143px] w-full flex items-center justify-center">
-                      <div className='w-24'>
+                      <div className='w-[143px] h-[150px] flex items-center'>
                         <img src={item?.logo} alt={item?.title} />
                       </div>
                       <p className="bg-[#DCDEDF] text-[12px] text-[#878C91] font-medium absolute top-1 left-1 px-2 py-0.5">
@@ -224,14 +225,20 @@ const addToCard = (cardData) => {
                         }
                       </div>}
                     </div>
-                    <div className="grid content-between">
+                    <div className="grid content-between w-full">
+                      <div className="flex justify-between gap-1.5">
                       <h4 className="text-[#002747] text-[16px] mb-1">
                         {item?.title}
                       </h4>
+                        <p className="md:block hidden md:text-[20px] text-[18px] text-[#36383A] font-glare">
+                          <span>&#36;</span>
+                          {item?.price}
+                        </p>
+                      </div>
                       <div>
                         <div className={cmCls}>
                           <p className="flex-1/3">Sponsored</p>
-                          <p className="uppercase flex-1/2">: {item?.sponsore}</p>
+                          <p className="uppercase flex-1/2">: {item?.sponsor}</p>
                         </div>
                         <div className={cmCls}>
                           <p className="flex-1/3">Do Follow</p>
@@ -259,7 +266,7 @@ const addToCard = (cardData) => {
                       </div>
                     </div>
                   </div>
-                  <div className=" flex md:grid md:content-between justify-between md:mt-0 mt-2">
+                  <div className="md:hidden flex md:content-between justify-between md:mt-0 mt-2">
                     <p className="md:text-[20px] text-[18px] text-[#36383A] font-glare">
                       <span>&#36;</span>
                       {item?.price}

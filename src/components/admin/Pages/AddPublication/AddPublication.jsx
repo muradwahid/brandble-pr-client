@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import {  useForm } from "react-hook-form";
 import { useAddPublicationMutation } from "../../../../redux/api/publicationApi";
 import { AddImageIcon, LoadingIcon } from "../../../../utils/icons";
 import MultiSelectToken from "../../../ui/MultiSelectToken/MultiSelectToken";
@@ -12,7 +12,6 @@ import { useAddSponsorMutation } from '../../../../redux/api/sponsoreApi';
 import { useAddDofollowMutation } from '../../../../redux/api/dofollowApi';
 import toast from 'react-hot-toast';
 import SelectRegionData from '../../../ui/SelectRegionData/SelectRegionData';
-import { City, Country, State } from "country-state-city";
 import { useAddCountryMutation } from "../../../../redux/api/country";
 import { useAddStateMutation } from "../../../../redux/api/state";
 import { useAddCityMutation } from "../../../../redux/api/city";
@@ -41,7 +40,6 @@ const AddPublication = () => {
 
   const onSubmit = async (d) => {
     const obj = { ...d };
-    console.log(d);
     const logo = obj["logo"];
     const publicationData = { ...obj };
     delete publicationData["logo"];
@@ -49,7 +47,7 @@ const AddPublication = () => {
     const formData = new FormData();
     formData.append("file", logo);
     formData.append("data", publicationStr);
-
+    setIsResetValue(true)
     if (logo?.name) {
       setIsImgRequired(false)
       if (formData) {
@@ -58,10 +56,9 @@ const AddPublication = () => {
           if (response?.data?.id) {
             toast.success('Publication added successfully!');
             setImagePreview(null)
-            setIsResetValue(true)
           }
           reset()
-          console.log("reset : ",reset());
+          setIsResetValue(false)
           setFieldsData({country:[],state:[],city:[]});
           setNiches([])
         } catch (err) {
@@ -283,14 +280,33 @@ const AddPublication = () => {
                 label="Option"
                 register={register}
                 inputType="radio"
-                placeholder="Ex: Yes"
                 isResetValue={isResetValue}
+                placeholder="Ex: Yes"
                 setValue={setValue}
                 name="sponsor"
                 errorLabel="Sponsored"
                 onAddOption={(v) => addSponsor({ title: v })}
                 isLoading={addSponsorLoading}
               />
+              {/* <Controller
+                name="sponsor"
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <SelectControl
+                    options={sponsorsData?.sponsors || []}
+                    value={value} 
+                    setValue={(name, val) => onChange(val)}
+                    register={register}
+                    label="Option"
+                    inputType="radio"
+                    placeholder="Ex: Yes"
+                    name="sponsor"
+                    errorLabel="Sponsored"
+                    onAddOption={(v) => addSponsor({ title: v })}
+                    isLoading={addSponsorLoading}
+                  />
+                )}
+              /> */}
               {errors.sponsor && (
                 <span className="text-red-400 text-xs">
                   {errors.sponsor.message}
@@ -352,6 +368,7 @@ const AddPublication = () => {
               <div className="relative">
                 <SelectRegionData
                   name="scope"
+                  key={isResetValue}
                   label="Option"
                   setValue={setValue}
                   register={register}
@@ -419,7 +436,7 @@ const AddPublication = () => {
                   options={cities?.cities || []}
                   isShowSearch={true}
                   placeholder='Ex: Adams'
-                  label="Country"
+                  label="City"
                   onChange={(value) => {
                     setFieldsData({ ...fieldsData, city: value });
                     setValue("cities", value)
