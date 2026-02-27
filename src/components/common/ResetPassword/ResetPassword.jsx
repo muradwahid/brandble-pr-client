@@ -23,7 +23,6 @@ const ResetPassword = ({ userInfo, setShowResetModal }) => {
 
   const handleSendOtp = async () => { 
     const res = await sendEmailOtp({ email: userInfo?.email });
-    console.log(res);
     if (res?.data?.success) {
       setOtpStep(2)
     } else { 

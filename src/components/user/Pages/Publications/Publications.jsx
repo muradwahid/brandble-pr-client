@@ -239,11 +239,11 @@ const addToCard = (cardData) => {
                       </div>}
                     </div>
                     <div className="grid content-between w-full">
-                      <div className="flex justify-between gap-1.5">
+                      <div className="flex justify-between items-start gap-3 ">
                       <h4 className="text-[#002747] text-[16px] mb-1">
                         {item?.title}
                       </h4>
-                        <p className="md:block hidden md:text-[20px] text-[18px] text-[#36383A] font-glare">
+                        <p className="md:block hidden md:text-[20px] text-[18px] text-[#36383A] font-glare shrink-0">
                           <span>&#36;</span>
                           {item?.price}
                         </p>
@@ -267,7 +267,7 @@ const addToCard = (cardData) => {
                         </div>
                       </div>
                       <div className="flex items-center justify-between gap-2.5">
-                        <div className="flex items-center gap-2 mt-2 md:flex-nowrap flex-wrap">
+                        <div className="flex items-center gap-2 mt-2 flex-wrap">
                           <p className="bg-[#F2F2F3] text-[11px] text-[#5F6368] font-medium py-0.5 px-1 whitespace-nowrap">
                             DA: {item?.da}
                           </p>
