@@ -6,10 +6,14 @@ import "./style.css";
 import LocationFilter from "../../../common/LocationFilter";
 import { useState } from "react";
 import { useCommonQuery } from "../../../../redux/api/commonApi";
+import { useOutsideClick } from "../../../../hooks/useOutsideClick";
 const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publication, setPublication, domainAuthority, setDomainAuthority, domainRating, setDomainRating, location, setLocation, genre, setGenre, doFollow, setDoFollow, indexed, setIndexed, niche, setNiche, range, setRange, setScope }) => {
 
   const [isLocationShow, setIsLocationShow] = useState(false);
   const [locationSearch, setLocationSearch] = useState('');
+  const locationRef = useOutsideClick(() => {
+    setIsLocationShow(false);
+  })
   
   const { data, isLoading } = useCommonQuery()
 
@@ -203,7 +207,7 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
               <option value='local'>Local</option>
               <option value='state'>State</option>
               <option value='national'>National</option>
-              <option value='global'>Global</option>
+              <option value='scope'>Scope</option>
             
             </select>
             <div className="custom-dropdown-arrow">
@@ -222,7 +226,7 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
                 ></path>
               </svg>
             </div>
-            {(location && location!=='global' && isLocationShow) && <LocationFilter data={data} isLoading={isLoading} onChange={val => setScope(val)} setIsLocationShow={setIsLocationShow} scope={location} {...{ setLocationSearch, locationSearch }} />}
+            {(location && isLocationShow) && <LocationFilter locationRef={locationRef} data={data} isLoading={isLoading} onChange={val => setScope(val)} setIsLocationShow={setIsLocationShow} scope={location} {...{ setLocationSearch, locationSearch }} />}
           </div>
         </div>
 

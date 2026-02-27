@@ -20,7 +20,7 @@ const Cart = ({ ref, setOpenCart }) => {
   const [subtotal, setSubtotal] = useState(0);
 
   useEffect(() => {
-    const total = cartItems?.reduce((sum, item) => {
+    const total = (cartItems || [])?.reduce((sum, item) => {
       return sum + (item.isChecked ? Number(item.price) : 0);
     }, 0);
     setSubtotal(total);
@@ -29,13 +29,8 @@ const Cart = ({ ref, setOpenCart }) => {
   // Handler for checkbox changes
   const handleCheckboxChange = (id) => {
     setCartItems(prevItems => {
-      const nextItems = prevItems.map(item =>
-        item.id === id
-          ? { ...item, isChecked: !item.isChecked }
-          : { ...item, isChecked: false }
-      );
+      const nextItems = prevItems.map(item =>item.id === id ? { ...item, isChecked: !item.isChecked } : item);
 
-      // persist updated array
       localStorage.setItem("brandableCardData", JSON.stringify(nextItems));
       return nextItems;
     });

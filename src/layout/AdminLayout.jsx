@@ -2,12 +2,13 @@ import { Navigate, Outlet } from "react-router";
 import AdminHeader from "../components/admin/AdminHeader/AdminHeader";
 import AdminSidebar from "../components/admin/AdminSidebar/AdminSidebar";
 import { isAdminLoggedId } from "../helpers/user/user";
-import config from "../config";
+import { useRedirectSignin } from "../hooks/useRedirectSignin";
 
 const AdminLayout = () => {
   const isUserExist = isAdminLoggedId()
+  const redirectToSignin = useRedirectSignin();
   if (!isUserExist) {
-    window.location.href = config.rootClientUrl + '/signin';
+    redirectToSignin();
   }
 
   return (

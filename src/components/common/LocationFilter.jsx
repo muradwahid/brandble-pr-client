@@ -1,26 +1,30 @@
 
 import { useState } from 'react';
 
-export default function LocationFilter({ onChange = () => { }, setIsLocationShow = () => { },scope, data,isLoading, setLocationSearch,locationSearch }) {
+export default function LocationFilter({ locationRef, onChange = () => { }, setIsLocationShow = () => { },scope, data,isLoading, setLocationSearch,locationSearch }) {
 
   const [selectedCities, setSelectedCities] = useState([]);
   const [countryName, setCountryName] = useState([]);
   const [stateName, setStateName] = useState([]);
+  const [global, setGlobal] = useState([]);
 
 
 
   const handleApply = () => {
     onChange({
-      scope,
       countries: countryName,
       states: stateName,
       cities: selectedCities,
+      scope: global
     });
     setIsLocationShow(false);
   };
 
+  const scopeData = ['local', 'national', 'regional', 'global'];
+
+
   return (
-    <div className="absolute min-w-40  z-30 left-[100%] top-0 steperform-publish-formshadow">
+    <div ref={locationRef} className="absolute min-w-40  z-30 left-[100%] top-0 steperform-publish-formshadow">
       {/* Main Panel */}
       <div className="flex-1 p-3 bg-white">
         <div className="max-w-xl mx-auto">
@@ -147,6 +151,38 @@ export default function LocationFilter({ onChange = () => { }, setIsLocationShow
               }
               </div>
             </div>}
+
+            {scope === 'scope' && <div className="w-full">
+              <div className="pb-2 border-b border-[#B2B5B8] text-[#5F6368] text-sm text-left">Select Scope</div>
+              <div className="max-h-[300px] overflow-y-auto mt-3">
+                {!isLoading ? data?.cities?.filter((city) => city.name.toLowerCase().includes(locationSearch?.toLowerCase()))?.length > 0 ? (
+                  scopeData.map((scopeName, idx) => (
+                    <div
+                      key={`${scopeName}-${idx}`}
+                      onClick={() => {
+                        setGlobal((prev) =>
+                          prev.includes(scopeName)
+                            ? prev.filter((c) => c !== scopeName)
+                            : [...prev, scopeName]
+                        );
+                      }}
+                      className={`px-2 mb-0.5 py-1 text-left capitalize text-[#5F6368] text-sm cursor-pointer hover:bg-[#DCDEDF] ${global?.includes(scopeName) ? "bg-[#DCDEDF]" : ""
+                        }`}
+                    >
+                      {scopeName}
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-[#5F6368] text-sm text-center py-4">
+                    No cities found matching "{locationSearch}"
+                  </div>
+                ) : <div className='text-[#5F6368] text-sm text-center py-4'>Loading...</div>
+                }
+              </div>
+            </div>
+            
+            }
+          
           </div>
 
           {/* Apply Button */}

@@ -1,11 +1,12 @@
 import { Outlet } from 'react-router';
 import { isLoggedIn } from '../helpers/user/user';
-import config from '../config';
+import { useRedirectSignin } from '../hooks/useRedirectSignin';
 
 const UserMyOrderLayout = () => {
   const isUserExist = isLoggedIn()
+  const redirectToSignin = useRedirectSignin();
   if (!isUserExist) {
-    window.location.href = config.rootClientUrl + '/signin';
+    redirectToSignin();
   }
   return (
     <>

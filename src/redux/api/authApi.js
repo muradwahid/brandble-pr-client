@@ -78,6 +78,30 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["auth"],
     }),
+    sendEmailOtp : build.mutation({
+      query: (data) => ({
+        url: `${AUTH_URL}/send-email-otp`,
+        method: "PATCH",
+        data: data,
+      }),
+      invalidatesTags: ["auth"],
+    }),
+    verifyOtp : build.mutation({
+      query: (data) => ({
+        url: `${AUTH_URL}/check-otp`,
+        method: "PATCH",
+        data: data,
+      }),
+      invalidatesTags: ["auth"],
+    }),
+    updatePassword: build.mutation({
+      query: (data) => ({
+        url: `${AUTH_URL}/update-password`,
+        method: "PATCH",
+        data: data,
+      }),
+      invalidatesTags: ["auth"],
+    }),
     deleteUser: build.mutation({
       query: (id) => {
         return {
@@ -106,6 +130,10 @@ export const { useUsersQuery,
   useUserAllInfoQuery,
   useUserQuery,
   useGetAdminQuery,
+  useSendEmailOtpMutation,
+  useVerifyOtpMutation,
+  useUpdatePasswordMutation,
+  useDeleteUserMutation,
   useGetUserByCookieQuery,
   useUpdateUserMutation,
   useSignoutMutation

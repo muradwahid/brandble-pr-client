@@ -54,11 +54,12 @@ const RunningOrder = () => {
   }
 
 
-  const detailsSubmitted = (val, id, hrefTo) => { 
-    const detail = val==='not-yet'? 'Not Yet' : val
-    return <Link className={`${val === 'not-yet' ? 'text-[#FF5630]' : 'text-[#00875A]'}`} to={hrefTo}>
-      {detail}
-    </Link>
+  const detailsSubmitted = (val, id, hrefTo) => {
+    const isDetailSubmitted = val === 'not-yet'
+    
+    return isDetailSubmitted ? <Link className={`bg-[#FF5630] text-white text-sm font-medium font-poppins shadow py-1 px-3 rounded-[8px] tracking-[0px]`} to={`/user/checkout/order-submit/${id}`} >
+      Submit Information
+    </Link> : <Link className="text-[#00875A]" to={hrefTo}>Submitted</Link>
   }
   return (
     <div>
@@ -92,12 +93,12 @@ const RunningOrder = () => {
               <th className="px-3 py-3 text-[#222425] font-medium">
                 Publication
               </th>
-              <th className="px-3 py-3 text-[#222425] font-medium">Details Submitted</th>
               <th className="px-3 py-3 text-[#222425] font-medium">
                 Order Date
               </th>
               <th className="px-3 py-3 text-[#222425] font-medium">Completion Date</th>
               <th className="px-3 py-3 text-[#222425] font-medium">Status</th>
+              <th className="px-3 py-3 text-[#222425] font-medium">Details Submitted</th>
             </tr>
           </thead>
           <tbody className=" text-[#36383A]">
@@ -120,10 +121,6 @@ const RunningOrder = () => {
                     {item.publication.title}
                   </Link>
                 </td>
-                <td className="px-3 py-3 cursor-pointer capitalize">
-            
-                  {detailsSubmitted(item.detailsSubmitted, item.id, hrefTo)}
-                </td>
                 <td className="px-3 py-3 cursor-pointer">
                   <Link to={hrefTo}>
                     {formattedDate(item.createdAt)}
@@ -136,7 +133,7 @@ const RunningOrder = () => {
                 </td>
                 <td className="pr-2.5">
                   <button
-                    className={` text-white cursor-pointer py-1 px-4 capitalize font-medium w-full ${
+                    className={` text-white cursor-pointer py-1 px-4 capitalize font-medium w-full text-sm font-poppins ${
                       item.status === "pending"
                         ? "bg-[#FFAB00]"
                         : item.status == "processing"
@@ -146,6 +143,9 @@ const RunningOrder = () => {
                   >
                     {item.status}
                   </button>
+                </td>
+                <td className="px-3 py-3 cursor-pointer capitalize">
+                  {detailsSubmitted(item.detailsSubmitted, item.id, hrefTo)}
                 </td>
               </tr>
             })}

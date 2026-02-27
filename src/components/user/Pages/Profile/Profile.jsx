@@ -6,11 +6,13 @@ import { useUpdateUserMutation, useUserQuery } from '../../../../redux/api/authA
 import toast from 'react-hot-toast';
 import { useForm } from 'react-hook-form';
 import { getUserInfo } from "../../../../helpers/user/user";
+import ResetPassword from "../../../common/ResetPassword/ResetPassword";
 
 const Profile = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [general, setGeneral] = useState(true);
   const [security, setSecurity] = useState(true);
+  const [showResetModal, setShowResetModal] = useState(false)
 
 
   const {
@@ -22,7 +24,7 @@ const Profile = () => {
 
   const user = getUserInfo();
 
-  const { data = {} } = useUserQuery(user?.id || '');
+  const { data = {},isLoading: isUserLoading} = useUserQuery(user?.id || '');
 
   const [updateUser, { isLoading }] = useUpdateUserMutation();
 
@@ -58,6 +60,8 @@ const Profile = () => {
       try {
         await updateUser({ id:user?.id, body: formData });
         toast.success("User profile updated successfully");
+        setGeneral(true);
+        setSecurity(true);
       } catch (err) {
         // console.error(err.message);
         toast.error(err.message);
@@ -75,9 +79,18 @@ const Profile = () => {
 
 
   return (
-    <div className="xl:w-[650px] lg:w-full 2xl:ml-52 xl:ml-48 lg:ml-32 md:ml-6 ">
-      <div className="border-b-[1px] border-[#b2b5b8] pb-5">
+    <div className="xl:w-[650px] lg:w-full 2xl:ml-52 xl:ml-48 lg:ml-32 md:ml-6">
+      {showResetModal && <ResetPassword userInfo={data} key={isUserLoading} setShowResetModal ={setShowResetModal} /> }
+      <div className="border-b-[1px] border-[#b2b5b8] pb-5 flex items-center justify-between flex-wrap gap-3">
         <h3 className="text-[#222425] text-2xl">Profile</h3>
+        <button
+          type="submit"
+          form="brandable-profile-form"
+          disabled={isLoading}
+          className="bg-[#171819] hover:shadow-xl transition-all ease-in-out duration-300 text-[15px] text-white py-1.5 px-5 cursor-pointer flex items-center gap-3"
+        >Save Changes
+          {isLoading && <LoadingIcon fill='#fff' style={{ height: "20px" }} />}
+        </button>
       </div>
       {/* profile image */}
       <div className="lg:flex mt-4" >
@@ -122,6 +135,7 @@ const Profile = () => {
       </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
+        id="brandable-profile-form"
       >
         {/* general Information */}
         <div className="lg:flex  items-start mt-16">
@@ -236,7 +250,7 @@ const Profile = () => {
             </div>
           </h4>
           <div className="flex-[1.5]">
-            <div className="hidden lg:block">
+            {/* <div className="hidden lg:block">
               <div className="flex justify-end">
                 <p
                   onClick={() => setSecurity(!security)}
@@ -246,7 +260,7 @@ const Profile = () => {
                   {!security ? <RxCross2 /> : null}
                 </p>
               </div>
-            </div>
+            </div> */}
             <div className="flex flex-col gap-1.5 mt-5">
               <label
                 className="text-[#878C91] text-[14px]"
@@ -276,9 +290,9 @@ const Profile = () => {
                 <label className="text-[#878C91] text-[14px]" htmlFor="company">
                   Password
                 </label>
-                <Link className="text-[#878C91] text-[14px] underline">
+                <p onClick={() => setShowResetModal(true)} className="text-[#878C91] text-[14px] underline cursor-pointer">
                   Change Password
-                </Link>
+                </p>
               </div>
               <input
                 type="password"
@@ -302,7 +316,7 @@ const Profile = () => {
                 </span>
               )}
             </div>
-            <div className="flex justify-end mt-5">
+            {/* <div className="flex justify-end mt-5">
               <button
                 type="submit"
                 disabled={isLoading}
@@ -310,7 +324,7 @@ const Profile = () => {
               >Save Changes
                 {isLoading && <LoadingIcon fill='#fff' style={{ height: "20px" }} />}
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </form>

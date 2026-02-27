@@ -6,6 +6,7 @@ import { FaRegTrashAlt} from "react-icons/fa";
 import { useMethodsQuery, useSetupIntentMutation } from "../../../../redux/api/stripepaymentApi";
 import { Elements } from "@stripe/react-stripe-js";
 import PaymentFormContent from "../../../common/PaymentFormContent";
+import config from "../../../../config";
 
 const PaymentMethod = ({
   activePayment,
@@ -69,7 +70,7 @@ const PaymentMethod = ({
   };
 
   const publishableKey = 'pk_test_51SBK3hPFRWrLO59dZexPgeb8vS4wShG8puLDduyFCecL3oU7cPmhVvvCOj7rDaNrfaOHkjZ3Dku0fhj79c4m8rGj00JPtghTVR';
-  const stripePromise = loadStripe(publishableKey);
+  const stripePromise = loadStripe(config.stripeKey);
   return (
     <div className="w-full">
       <div className="bg-[#F6F7F7] md:flex gap-3.5 p-3.5 mt-10">

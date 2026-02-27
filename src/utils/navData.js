@@ -1,8 +1,8 @@
 export const userNav = [
-  {
-    title: "My Profile",
-    path: "/user/profile",
-  },
+  // {
+  //   title: "My Profile",
+  //   path: "/user/profile",
+  // },
   {
     title: "Dashboard",
     path: "/user/dashboard",

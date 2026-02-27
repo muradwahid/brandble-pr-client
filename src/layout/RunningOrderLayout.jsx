@@ -3,12 +3,13 @@ import { Navigate, Outlet } from "react-router";
 import TopNavBar from "../components/user/TopNavBar/TopNavBar";
 import Footer from "../components/ui/Footer/Footer";
 import { isLoggedIn } from "../helpers/user/user";
-import config from "../config";
+import { useRedirectSignin } from "../hooks/useRedirectSignin";
 
 const RunningOrderLayout = () => {
   const isUserExist = isLoggedIn()
+  const redirectToSignin = useRedirectSignin();
   if (!isUserExist) {
-    window.location.href=config.rootClientUrl+'/signin'
+    redirectToSignin();
   }
   return (
     <div className="flex flex-col h-screen">

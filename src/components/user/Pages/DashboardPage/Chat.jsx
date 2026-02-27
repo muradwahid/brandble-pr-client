@@ -315,7 +315,6 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    // new message এ bottom এ থাকলে নিচে নামাবে
     scrollToBottomIfNeeded("smooth");
   }, [messages.length, scrollToBottomIfNeeded]);
 
@@ -334,7 +333,6 @@ const Chat = () => {
     try {
       const chatMessages = await chatApi.getMessages(chatRoomId);
       setMessages(Array.isArray(chatMessages) ? chatMessages : []);
-      // open করলে bottom এ রাখি
       requestAnimationFrame(() => {
         isAtBottomRef.current = true;
         scrollToBottomIfNeeded("auto");
@@ -515,7 +513,6 @@ const Chat = () => {
       console.error("Failed to send message:", e);
     } finally {
       setLoading(false);
-      // ছোট delay রাখলে keydown+click race কমে
       setTimeout(() => (sendingRef.current = false), 150);
     }
   }, [
@@ -549,14 +546,14 @@ const Chat = () => {
           </div>
         </div>
 
-        {/* ✅ scroll container fixed */}
+        {/*scroll container fixed */}
         <div
           ref={listRef}
           onScroll={onScroll}
           className="chat-messages flex flex-col overflow-y-auto h-[60dvh]"
         >
           {messages.length === 0 ? (
-            <p>No messages yet</p>
+            <div className="w-full h-full flex items-center justify-center"><p className="text-[#5F6368] font-poppins">No messages yet</p></div>
           ) : (
             messages.map((message) => {
               const mine = message?.sender?.id === user.id;

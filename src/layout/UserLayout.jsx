@@ -3,12 +3,13 @@ import UserSidebar from "../components/user/Sidebar/UserSidebar";
 import TopNavBar from "../components/user/TopNavBar/TopNavBar";
 import Footer from "../components/ui/Footer/Footer";
 import { isLoggedIn } from "../helpers/user/user";
-import config from "../config";
+import { useRedirectSignin } from "../hooks/useRedirectSignin";
 
 const UserParentLayout = () => {
   const isUserExist = isLoggedIn()
+  const redirectToSignin = useRedirectSignin();
   if (!isUserExist) {
-    window.location.href = config.rootClientUrl + '/signin';
+    redirectToSignin();
   }
   const location = useLocation().pathname;
   const publication = location == "/user/publications" || location == "/user/checkout";

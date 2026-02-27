@@ -33,7 +33,6 @@ const WonArticle = ({ setPublishPopup }) => {
 
     if (file?.length) {
       if (formData) {
-
         try {
           const response = await addWonArticle(formData);
           if (response?.data?.id) {
@@ -137,7 +136,7 @@ const WonArticle = ({ setPublishPopup }) => {
             <textarea
               type="text"
               id="message"
-              name="message"
+              {...register("message")}
               rows={5}
               className={`px-3 py-2 bg-[#F6F7F7] border border-[#DCDEDF] outline-none text-[#5F6368] placeholder-[#B2B5B8] placeholder:font-normal w-full resize-none`}
               placeholder="Type your message here..."
@@ -148,10 +147,9 @@ const WonArticle = ({ setPublishPopup }) => {
               type='submit'
               disabled={isLoading}
               className={`bg-[#002747] text-white px-16 py-2 gap-3 cursor-pointer hover:bg-[#295d88] flex items-center justify-center transition-all duration-200 ${isLoading ? 'bg-[#295d88]' : 'bg-[#002747]'}`} >
-              Submit
-              {
-              isLoading && 
-              <LoadingIcon fill='#fff' style={{ height: "20px" }} />}
+              { 
+                isLoading ? <><LoadingIcon fill='#fff' style={{ height: "20px" }} /> Submitting...</> :'Submit'
+              }
             </button>
           </div>
         </div>

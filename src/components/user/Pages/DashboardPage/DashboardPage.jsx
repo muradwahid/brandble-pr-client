@@ -63,6 +63,7 @@ const DashboardPage = () => {
     return <div className="h-[70vh] w-full flex justify-center items-center">Loading...</div>;
   } 
 
+
   return (
     <div className="w-full overflow-x-auto">
       {meta.total < 1 ? <h3 className="text-2xl text-[#222425] font-glare">

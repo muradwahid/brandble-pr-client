@@ -18,6 +18,7 @@ import { getFromLocalStorage, setToLocalStorage } from '../../../../utils/local-
 import toast from 'react-hot-toast';
 import { getUserInfo } from "../../../../helpers/user/user";
 import { useAddFavoriteMutation, useFavoriteIdsQuery } from "../../../../redux/api/favoriteApi";
+import { useDebounced } from "../../../../redux/hooks";
 
 const Publications = () => {
 
@@ -35,6 +36,7 @@ const Publications = () => {
   const [indexed, setIndexed] = useState();
   const [niche, setNiche] = useState();
   const [scope, setScope] = useState({});
+  
 
   const [itemsPerPage,setItemsPerPage] = useState(10);
 
@@ -43,10 +45,21 @@ const Publications = () => {
 
   const [toggle, setToggle] = useState(false);
 
+
+  const debouncedSearch =  useDebounced({
+    searchQuery: search,
+    delay: 500
+  });
+  const debouncedRange =  useDebounced({
+    searchQuery: range,
+    delay: 500
+  });
+
+
   const filters = {
-    ...(search && { searchTerm: search.trim() }),
-    ...(range.min && { minPrice: range.min.toString() }),
-    ...(range.max && { maxPrice: range.max.toString() }),
+    ...(debouncedSearch && { searchTerm: debouncedSearch.trim() }),
+    ...(debouncedRange.min && { minPrice: debouncedRange.min }),
+    ...(debouncedRange.max && { maxPrice: debouncedRange.max }),
     ...(niche && { niche }),
     ...(genre && { genre }),
     ...(doFollow && { doFollow: doFollow }),
@@ -61,7 +74,7 @@ const Publications = () => {
     ...((scope?.countries && scope?.countries.length>0) && { countries: scope?.countries?.map(country=>country).join(',') }),
     ...((scope?.states && scope?.states.length>0) && { states: scope?.states?.map(state=>state).join(',') }),
     ...((scope?.cities && scope?.cities.length > 0) && { cities: scope?.cities?.map(city=>city).join(',') }),
-    ...(location ==='global' && {global:'global'} ),
+    ...(scope?.scope && scope?.scope.length >0 && {scope:scope?.scope.map(city=>city).join(',')} ),
     ...(sortBy && {
       sortBy: sortBy === 'priceAsc' || sortBy === 'priceDesc' ? 'price' : 'createdAt',
       sortOrder: sortBy === 'priceAsc' || sortBy === 'dateAsc' ? 'asc' : 'desc',
@@ -73,7 +86,7 @@ const Publications = () => {
   };
 
 
-  const { data, isLoading } = usePublicationsQuery(filters);
+  const { data, isLoading, isFetching } = usePublicationsQuery(filters);
 
 
 
@@ -154,7 +167,7 @@ const addToCard = (cardData) => {
           Explore All of Our Publications
         </h2>
       </div>
-      {meta?.total>0 ?<div className={`md:flex md:gap-6 ${toggle ? "flex gap-2.5" : ""}`}>
+      {meta?.total>0 && !isLoading  ?<div className={`md:flex md:gap-6 ${toggle ? "flex gap-2.5" : ""}`}>
         {/* filterable sidebar */}
         <FilterableSidebar
           className={`md:ml-[0px] md:block ${toggle ? "block" : "hidden"}`}
@@ -164,7 +177,7 @@ const addToCard = (cardData) => {
         {/* publication items*/}
 
         {
-          isLoading ? <SkeletonCard /> : <div>
+          isLoading || isFetching ? <SkeletonCard /> : <div>
             <div className="mb-5 flex items-center justify-between">
               <div>
                 <p className="text-[#002747] text-[14px] mb-2">
@@ -253,16 +266,21 @@ const addToCard = (cardData) => {
                           <p className="flex-1/2 text-wrap">: {(  item?.countries || []).map((c) => c.name).join(", ")}</p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 mt-2 md:flex-nowrap flex-wrap">
-                        <p className="bg-[#F2F2F3] text-[11px] text-[#5F6368] font-medium py-0.5 px-1 whitespace-nowrap">
-                          DA: {item?.da}
-                        </p>
-                        <p className="bg-[#F2F2F3] text-[11px] text-[#5F6368] font-medium py-0.5 px-1 whitespace-nowrap">
-                          DR: {item?.dr}
-                        </p>
-                        <p className="bg-[#F2F2F3] text-[11px] text-[#5F6368] font-medium py-0.5 px-1 whitespace-nowrap">
-                          TTP: {item?.ttp}
-                        </p>
+                      <div className="flex items-center justify-between gap-2.5">
+                        <div className="flex items-center gap-2 mt-2 md:flex-nowrap flex-wrap">
+                          <p className="bg-[#F2F2F3] text-[11px] text-[#5F6368] font-medium py-0.5 px-1 whitespace-nowrap">
+                            DA: {item?.da}
+                          </p>
+                          <p className="bg-[#F2F2F3] text-[11px] text-[#5F6368] font-medium py-0.5 px-1 whitespace-nowrap">
+                            DR: {item?.dr}
+                          </p>
+                          <p className="bg-[#F2F2F3] text-[11px] text-[#5F6368] font-medium py-0.5 px-1 whitespace-nowrap">
+                            TTP: {item?.ttp}
+                          </p>
+                        </div>
+                      <div className="md:block hidden cursor-pointer" onClick={() => addToCard(item)}>
+                        <CartIcon className="md:h-[30px] md:w-[30px] h-[24px] w-[24px] fill-[#36383A]" />
+                      </div>
                       </div>
                     </div>
                   </div>

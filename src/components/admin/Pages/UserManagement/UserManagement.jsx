@@ -98,7 +98,7 @@ const UserManagement = () => {
                 <tr key={user?.id} className="border-t border-[#DCDEDF]">
                   <td className="px-3 py-3 text-nowrap"><Link to={`/admin/users/${user?.id}`}>{index + 1}</Link></td>
                   <td className="px-3 py-3 text-nowrap"><Link to={`/admin/users/${user?.id}`}>{user?.name}</Link></td>
-                  <td className="px-3 py-3 text-nowrap text-center overflow-hidden whitespace-nowrap text-ellipsis">
+                  <td className="px-3 py-3 text-nowrap overflow-hidden whitespace-nowrap text-ellipsis">
                     <Link to={`/admin/users/${user?.id}`}>{user?.email}</Link>
                   </td>
                   <td className="px-3 py-3 text-nowrap text-center">{user?.totalOrders}</td>

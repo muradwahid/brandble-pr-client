@@ -1,6 +1,14 @@
+import { Link } from "react-router";
 import { formattedDate } from "../../../../utils/function";
 
 const Table = ({ data }) => {
+  const detailsSubmitted = (val, id) => {
+    const isDetailSubmitted = val === 'not-yet'
+
+    return isDetailSubmitted ? <Link className={`bg-[#FF5630] text-white text-sm font-medium font-poppins shadow py-1 px-3 rounded-[8px] tracking-[0px]`} to={`/user/checkout/order-submit/${id}`} >
+      Submit Information
+    </Link> : <span className="text-[#00875A]">Submitted</span>
+  }
   return (
     <div className="mt-6 overflow-x-auto">
       <h5 className="text-[#222425] font-medium text-[18px] mb-4 font-glare">
@@ -15,11 +23,12 @@ const Table = ({ data }) => {
               Publication
             </th>
             <th className="px-3 py-3 text-[#222425] font-medium">Service</th>
+
+            <th className="px-3 py-3 text-[#222425] font-medium">Order Date</th>
+            <th className="px-3 py-3 text-[#222425] font-medium">Status</th>
             <th className="px-3 py-3 text-[#222425] font-medium">
               Details Submitted
             </th>
-            <th className="px-3 py-3 text-[#222425] font-medium">Order Date</th>
-            <th className="px-3 py-3 text-[#222425] font-medium">Status</th>
           </tr>
         </thead>
         <tbody className=" text-[#36383A]">
@@ -32,17 +41,17 @@ const Table = ({ data }) => {
               <td className="px-3 py-3"><p className="max-w-[200px] truncate">{order.id}</p></td>
               <td className="px-3 py-3">{order.publication.title}</td>
               <td className="px-3 py-3">{order.orderType === 'wonArticle' ?'Publish My Own Article':'Write Article'}</td>
-               <td
+               {/* <td
                 className={`px-3 py-3 capitalize ${
                   order.detailsSubmitted ==='not-yet' ?"text-[#FF5630]":  "text-[#00875A]" 
                 }`}
               >
                 {order.detailsSubmitted === 'not-yet' ? "Not Yet" : order.detailsSubmitted }
-              </td>
+              </td> */}
               <td className="px-3 py-3">{formattedDate(order.createdAt)}</td>
               <td className="pr-2.5">
                 <button
-                  className={` text-white cursor-pointer py-1 px-4 capitalize font-medium w-full ${
+                  className={` text-white cursor-pointer py-1 px-4 capitalize text-sm font-medium w-full ${
                     order.status === "pending"
                       ? "bg-[#FFAB00]"
                       : order.status == "processing"
@@ -52,7 +61,10 @@ const Table = ({ data }) => {
                 >
                   {order.status}
                 </button>
-              </td>  
+              </td>
+              <td className="px-3 py-3 cursor-pointer capitalize">
+                {detailsSubmitted(order.detailsSubmitted, order.id, '')}
+              </td>
             </tr>
           ))}
         </tbody>

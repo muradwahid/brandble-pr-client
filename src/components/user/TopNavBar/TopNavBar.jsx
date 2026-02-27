@@ -3,7 +3,7 @@ import { BellIcon, BellIconSecond, CartIcon } from "../../../utils/icons";
 
 //images from assets folder
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import siteLogo from "../../../assets/logo.png";
 import Cart from "../../ui/Card/Cart";
 import { FaUser } from "react-icons/fa";
@@ -24,7 +24,10 @@ const TopNavBar = () => {
   const user = getUserInfo();
   const { data } = useUserQuery(user?.id);
 
-    const { data: unreadCountData=0,isLoading } = useGetUnreadCountQuery();
+  const { data: unreadCountData = 0, isLoading } = useGetUnreadCountQuery();
+  
+  const location = useLocation().pathname;
+  const publication = location == "/user/publications"
   
 
   useEffect(() => {
@@ -80,12 +83,13 @@ const TopNavBar = () => {
   return (
     <nav className="w-full border-b-[1px] border-b-[#171819]">
       <div className="py-5 xl:w-[1400px] lg:w-4/5 md:w-5/6 w-[90%] mx-auto flex items-center justify-between relative">
-        <Link to="/user/profile">
+        <Link to="/user/dashboard">
           <img className="w-[116px] h-[52px]" src={siteLogo} alt="" />
         </Link>
         <div className="hidden md:block">
           <div className="flex gap-12">
-            <Link to={'/user/publications'}><p className="text-[15px]">Publications</p></Link>
+            {publication ? <Link to={'/user/dashboard'}><p className="text-[15px]">Dashboard</p></Link>:
+          <Link to={'/user/publications'}><p className="text-[15px]">Publications</p></Link>}
             <p className="text-[15px]">Conferences</p>
           </div>
         </div>
@@ -102,7 +106,7 @@ const TopNavBar = () => {
           </div>
           <Link to="/user/profile">
             {
-              data?.image ? <div className="w-[40px] h-[40px] border rounded-full overflow-hidden">
+              data?.image ? <div className="w-[40px] h-[40px] border overflow-hidden">
                 <img className="w-full h-full" src={data?.image} alt="" />
               </div> : <FaUser className="text-2xl text-gray-500 cursor-pointer"/>
             }

@@ -46,7 +46,7 @@ const NavBarNotification = forwardRef(function NavBarNotification(
 
   
   return (
-    <div ref={ref} className='absolute w-[450px] steperform-publish-formshadow right-0 top-[101%] bg-white '>
+    <div ref={ref} className='absolute w-[450px] z-50 steperform-publish-formshadow right-0 top-[101%] bg-white '>
       <div className='max-h-[600px] overflow-y-scroll'>
       {
           allNotifications.length > 0 ?

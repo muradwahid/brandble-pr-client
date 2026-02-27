@@ -4,20 +4,18 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import "./style.css";
 import { getFromLocalStorage, setToLocalStorage } from '../../../../utils/local-storage';
 import toast from 'react-hot-toast';
-// eslint-disable-next-line no-unused-vars
-import { useProcessPaymentMutation } from "../../../../redux/api/stripepaymentApi";
 import { useAddOrderMutation } from "../../../../redux/api/orderApi";
 import { getUserInfo } from "../../../../helpers/user/user";
 import { LoadingIcon } from "../../../../utils/icons";
 
-const Cart = ({ selectedMethod, setSelectOrderId, setCheckoutPopup }) => {
-  // const { data:allMehotd } = useMethodsQuery();
+const Cart = ({ selectedMethod, setCheckoutPopup }) => {
+
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [cartItems, setCartItems] = useState(() => {
-    const savedData = getFromLocalStorage("brandableCardData");
-    return savedData ? JSON.parse(savedData) : [];
+    const savedData = JSON.parse(getFromLocalStorage("brandableCardData") || '[]');
+    const data = savedData.filter(item => item.isChecked);;
+    return data;
   });
-  const [processPayment] = useProcessPaymentMutation()
   const [addOrder] = useAddOrderMutation()
 
   const [subtotal, setSubtotal] = useState(0);
@@ -27,21 +25,6 @@ const Cart = ({ selectedMethod, setSelectOrderId, setCheckoutPopup }) => {
     }, 0);
     setSubtotal(total);
   }, [cartItems]);
-
-  const handleCheckboxChange = (id) => {
-    setCartItems(prevItems => {
-      const nextItems = prevItems.map(item =>
-        item.id === id
-          ? { ...item, isChecked: !item.isChecked }
-          : { ...item, isChecked: false }
-      );
-
-      // persist updated array
-      localStorage.setItem("brandableCardData", JSON.stringify(nextItems));
-      return nextItems;
-    });
-  };
-
 
   // Handler for deleting an item from the cart
   const removeFromCard = (id, title) => {
@@ -53,43 +36,53 @@ const Cart = ({ selectedMethod, setSelectOrderId, setCheckoutPopup }) => {
     toast.success(`"${title}" removed from cart!`);
   };
 
-  const handleCheckout = async () => { 
-    setPaymentLoading(true)
-    const data = {
-      paymentMethodId: selectedMethod,
-      amount: subtotal
-    }
+  const handleCheckout = async () => {
+    setPaymentLoading(true);
     try {
-      const publicationIds = cartItems?.filter(item => item.isChecked).map(item => item.id);
-      if (publicationIds.length < 1) {
-        toast.error('Select a publication to proceed checkout!')
-        setPaymentLoading(false)
+      if (cartItems.length === 0) {
+        toast.error('Please select at least one publication to proceed!');
+        setPaymentLoading(false);
         return;
       }
-      const result = await processPayment(data);
-      if (result.data.status === 'succeeded') {
-        const orderData = {
-          publicationId:publicationIds[0],
-          methodId: result.data.paymentIntentId,
-          amount: result.data.amount,
-          userId: getUserInfo()?.id,
-          paymentMethodId:result.data.paymentMethod.id
-        }
-        const orderResult = await addOrder(orderData)
-
-        if (orderResult?.data?.id) {
-          setCheckoutPopup(true)
-          setSelectOrderId(orderResult?.data?.id)
-        } else { 
-          toast.error('Failed to create order. Please try again.')
-        }
-        setPaymentLoading(false)
+      if (!selectedMethod) {
+        toast.error('Please select a payment method!');
+        setPaymentLoading(false);
+        return;
       }
+
+      const publicationIds = cartItems.map(item => item.id).join(',');
+
+      const orderData = {
+        publicationIds,
+        userId: getUserInfo()?.id,
+        paymentMethodId: selectedMethod
+      };
+      const response = await addOrder(orderData).unwrap();
+      const summary = response?.summary || [];
+
+      const failedItems = summary?.filter(s => s.status === 'failed');
+      const successItems = summary?.filter(s => s.status === 'success');
+      if (failedItems.length > 0) {
+        failedItems.forEach((item) => {
+          const pubTitle = item.publication?.title || "Unknown Publication";
+          toast.error(`Payment Failed: ${pubTitle}`, {
+            duration: 3000
+          });
+        });
+      }
+
+      if (successItems.length > 0) {
+        toast.success('Order placed successfully for ');
+        setCheckoutPopup(true);
+      }
+
     } catch (err) {
-      console.error(err)
-      setPaymentLoading(false)
+      console.error("Checkout Error:", err);
+      toast.error(err?.data?.message || 'Server connection error. Please try again.');
+    } finally {
+      setPaymentLoading(false);
     }
-  }
+  };
 
   return (
     <div
@@ -110,21 +103,21 @@ const Cart = ({ selectedMethod, setSelectOrderId, setCheckoutPopup }) => {
               key={item.id}
               className="flex mb-6 last:mb-0 border-b pb-4 border-gray-100 cart-item"
             >
-              <input
+              {/* <input
                 type="checkbox"
                 key={item.checked}
                 checked={item?.isChecked}
                 onChange={() => handleCheckboxChange(item.id)}
                 className="custom-checkbox h-5 w-5 mr-2"
-              />
+              /> */}
               <div className="md:mr-4 mr-2.5 md:w-32 w-24 relative md:block hidden">
                 <img
                   src={item.logo}
                   alt={item.name}
-                  className="h-full w-full"
+                  className="h-full w-full object-contain"
                 />
                 <span className="bg-[#EF873A] text-white md:text-xs text-[8px] md:px-2.5 px-1.5 py-0.5 rounded-sm absolute top-1.5 left-2 whitespace-nowrap">
-                  {item.tag}
+                  {item.genre}
                 </span>
               </div>
               <div className="flex-grow">
@@ -187,22 +180,17 @@ const Cart = ({ selectedMethod, setSelectOrderId, setCheckoutPopup }) => {
             ${subtotal.toFixed(2)}
           </p>
         </div>
-        {/* <Link
-          onClick={() => setCheckoutPopup(true)}
-          to="/user/checkout"
-          className="bg-[#002747] text-[18px] text-white py-2 px-8 hover:bg-[#002747]/90 transition cursor-pointer w-full inline-block mt-4 text-center"
-        >
-          Confirm Purchase
-        </Link> */}
         <button
         type="button"
           // onClick={() => setCheckoutPopup(true)}
           // to="/user/checkout"
           onClick={handleCheckout}
           disabled={paymentLoading}
-          className="bg-[#002747] text-[18px] text-white py-2 px-8 hover:bg-[#002747]/90 transition cursor-pointer w-full flex  justify-center items-center gap-3 mt-4 text-center"
+          className={`${paymentLoading ? 'bg-[#002747]/70 cursor-no-drop' :'bg-[#002747] cursor-pointer'} text-[18px] text-white py-2 px-8 hover:bg-[#002747]/90 transition  w-full flex  justify-center items-center gap-3 mt-4 text-center`}
         >
-          Confirm Purchase {paymentLoading && <LoadingIcon fill='#fff' style={{ height: "20px" }} />}
+          { 
+            paymentLoading ? <><LoadingIcon fill='#fff' style={{ height: "20px" }} /> Just a moment...</>:<>Confirm Purchase</>
+          }
         </button>
       </div>
     </div>

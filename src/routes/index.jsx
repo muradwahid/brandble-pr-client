@@ -43,6 +43,10 @@ const router = createBrowserRouter([
     path: "auth/signup",
     element: <RegisterForm/>,
   },
+  // {
+  //   path: "/auth/forgot-password",
+  //   element: <ResetPassFields />,
+  // },
   {
     path: "/",
     errorElement: <div></div>,
@@ -50,7 +54,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/user/profile" replace />,
+        element: <Navigate to="/user/publications" replace />,
       },
       // {
       //   //index: true, // This will render at /dashboard
