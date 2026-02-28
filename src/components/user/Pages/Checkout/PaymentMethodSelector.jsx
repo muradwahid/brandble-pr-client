@@ -1,8 +1,7 @@
-// components/PaymentMethodSelector.jsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 
-const PaymentMethodSelector = ({ onPaymentSuccess, savedPaymentMethods }) => {
+const PaymentMethodSelector = ({ savedPaymentMethods }) => {
     const stripe = useStripe();
     const elements = useElements();
     const [selectedMethod, setSelectedMethod] = useState('new');

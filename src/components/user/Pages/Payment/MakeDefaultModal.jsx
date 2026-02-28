@@ -100,7 +100,7 @@ const MakeDefaultModal = ({
                   />
                 </div> */}
                 <div className="flex items-center gap-4 w-full">
-                  {method?.isDefault ? <GoCheckCircle className="text-[#008CFF] text-2xl mt-2" /> : <RxCrossCircled className="text-gray-400 text-2xl mt-2" />}
+                  {method?.isDefault ? <GoCheckCircle className="text-[#008CFF] text-2xl" /> : <RxCrossCircled className="text-gray-400 text-2xl" />}
                   <div className="">
                 <div>
                   <p className="text-[#222425] text-md">

@@ -31,6 +31,7 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
     setNiche('')
     setIsLocationShow(false);
     setScope({});
+    setRange({ min:0, max:5000 })
   }
 
   const commonCls = "w-full px-4 py-2 border border-[#DCDEDF] text-[14px]  text-[#878C91] placeholder-[#878C91] bg-[#F6F7F7] focus:outline outline-[#004A87]";
@@ -226,7 +227,7 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
                 ></path>
               </svg>
             </div>
-            {(location && isLocationShow) && <LocationFilter locationRef={locationRef} data={data} isLoading={isLoading} onChange={val => setScope(val)} setIsLocationShow={setIsLocationShow} scope={location} {...{ setLocationSearch, locationSearch }} />}
+            {(location && isLocationShow) && <LocationFilter locationRef={locationRef} data={data} isLoading={isLoading} onChange={val => setScope(val)} setIsLocationShow={setIsLocationShow} scope={location} setLocationSearch={setLocationSearch} locationSearch={locationSearch} />}
           </div>
         </div>
 

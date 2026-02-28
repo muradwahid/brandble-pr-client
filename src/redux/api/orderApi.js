@@ -102,7 +102,7 @@ export const orderApi = baseApi.injectEndpoints({
         method: "POST",
         data,
       }),
-      invalidatesTags: ["all-orders", 'admin-orders'],
+      invalidatesTags: ["all-orders", 'admin-orders','order'],
     }),
     runningOrder: build.query({
       query: () => {

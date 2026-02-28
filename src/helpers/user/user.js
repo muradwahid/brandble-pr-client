@@ -11,6 +11,7 @@ export function getCookie(name) {
 export const accessToken = getFromLocalStorage('accessToken');
 
 // export const accessToken = getCookie('accessToken');
+
 export const storeUserInfo = ({ accessToken }) => {
   setToLocalStorage('accessToken', accessToken);
 };
@@ -25,9 +26,8 @@ export const storeUserInfo = ({ accessToken }) => {
 //   }
 // };
 export const getUserInfo = () => {
-  const authToken = getFromLocalStorage('accessToken');
-  if (authToken) {
-    const decodedData = jwtDecode(authToken);
+  if (accessToken) {
+    const decodedData = jwtDecode(accessToken);
     return decodedData;
   } else {
     return null;
@@ -35,8 +35,7 @@ export const getUserInfo = () => {
 };
 
 export const isLoggedIn = () => {
-  const authToken = getFromLocalStorage('accessToken');
-  return !!authToken;
+  return !!accessToken;
 };
 // export const isLoggedIn = () => {
 //   const authToken = getFromLocalStorage('accessToken');

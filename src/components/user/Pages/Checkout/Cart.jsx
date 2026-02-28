@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import toast from 'react-hot-toast';
 
 import "./style.css";
 import { getFromLocalStorage, setToLocalStorage } from '../../../../utils/local-storage';
-import toast from 'react-hot-toast';
 import { useAddOrderMutation } from "../../../../redux/api/orderApi";
 import { getUserInfo } from "../../../../helpers/user/user";
 import { LoadingIcon } from "../../../../utils/icons";
@@ -83,6 +83,21 @@ const Cart = ({ selectedMethod, setCheckoutPopup }) => {
       setPaymentLoading(false);
     }
   };
+
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === "brandableCardData") {
+        const saved = e.newValue;
+        const data = saved ? JSON.parse(saved) : [];
+        setCartItems(data.filter(item => item.isChecked));
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
 
   return (
     <div

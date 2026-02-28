@@ -69,7 +69,6 @@ const PaymentMethod = ({
     },
   };
 
-  const publishableKey = 'pk_test_51SBK3hPFRWrLO59dZexPgeb8vS4wShG8puLDduyFCecL3oU7cPmhVvvCOj7rDaNrfaOHkjZ3Dku0fhj79c4m8rGj00JPtghTVR';
   const stripePromise = loadStripe(config.stripeKey);
   return (
     <div className="w-full">

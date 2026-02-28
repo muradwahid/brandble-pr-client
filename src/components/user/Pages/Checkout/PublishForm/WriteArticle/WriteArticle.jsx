@@ -17,7 +17,7 @@ const WriteArticle = ({ step, setStep, setPublishPopup }) => {
 
     const [updateOrder] = useUpdateOrderMutation()
 
-  const [addWriteArticle, { error }] = useAddWriteArticleMutation();
+  const [addWriteArticle,{isLoading:addWriteArticleLoading}] = useAddWriteArticleMutation();
 
   const {
     register,
@@ -111,7 +111,6 @@ const WriteArticle = ({ step, setStep, setPublishPopup }) => {
       }
     // eslint-disable-next-line no-unused-vars
     } catch (err) {
-      console.error("Submission failed:", error);
       toast.error("Failed to submit information. Please try again.");
     }
   }
@@ -119,6 +118,8 @@ const WriteArticle = ({ step, setStep, setPublishPopup }) => {
   const errorMessage = (name) => errors?.[name] && <span className="text-red-400 text-xs mt-0.5">
     {errors?.[name].message}
   </span>
+
+
 
   return (
     <div className="w-full">
@@ -164,7 +165,7 @@ const WriteArticle = ({ step, setStep, setPublishPopup }) => {
                   // onClick={() => setPublishPopup(true)}
                   className="bg-[#002747] text-white px-16 py-2 cursor-pointer hover:bg-[#075ca1] flex items-center justify-center transition-all duration-200 gap-3"
                 >
-                  isLoading ? <><LoadingIcon fill='#fff' style={{ height: "20px" }} /> Submitting...</> : 'Submit'
+                  {addWriteArticleLoading ? <><LoadingIcon fill='#fff' style={{ height: "20px" }} /> Submitting...</> : 'Submit'}
                 </button>
               )}
             </div>

@@ -3,10 +3,9 @@ export const back = window.navigation.back;
 export const formattedDate = (date) => { 
   const newDate = new Date(date);
 
-  const mm = String(newDate.getMonth() + 1).padStart(2, '0');
-  const dd = String(newDate.getDate()).padStart(2, '0');
-  const yyyy = newDate.getFullYear();
-
+  const mm = String(isNaN(newDate.getMonth())?0:newDate.getMonth() + 1).padStart(2, '0');
+  const dd = String(isNaN(newDate.getDate())?0:newDate.getDate()).padStart(2, '0');
+  const yyyy = isNaN(newDate.getFullYear()) ? 0 : newDate.getFullYear();
   return `${mm}/${dd}/${yyyy}`;
 
 }
@@ -15,8 +14,8 @@ export const formattedDate = (date) => {
 export const formattedTime = (date) => { 
   const newDate = new Date(date);
 
-  const hh = String(newDate.getHours()).padStart(2, '0');
-  const mm = String(newDate.getMinutes()).padStart(2, '0');
+  const hh = String(isNaN(newDate.getHours()) ? 0 : newDate.getHours()).padStart(2, '0');
+  const mm = String(isNaN(newDate.getMinutes()) ? 0 : newDate.getMinutes()).padStart(2, '0');
 
   return `${hh}:${mm}`;
 

@@ -176,8 +176,9 @@ const addToCard = (cardData) => {
 
         {/* publication items*/}
 
-        {
-          isLoading || isFetching ? <SkeletonCard /> : <div>
+        <div>
+             {
+          isLoading || isFetching ? <SkeletonCard /> :<>
             <div className="mb-5 flex items-center justify-between">
               <div>
                 <p className="text-[#002747] text-[14px] mb-2">
@@ -240,7 +241,7 @@ const addToCard = (cardData) => {
                     </div>
                     <div className="grid content-between w-full">
                       <div className="flex justify-between items-start gap-3 ">
-                      <h4 className="text-[#002747] text-[16px] mb-1">
+                      <h4 className="text-[#002747] text-[16px] mb-1 break-all">
                         {item?.title}
                       </h4>
                         <p className="md:block hidden md:text-[20px] text-[18px] text-[#36383A] font-glare shrink-0">
@@ -297,6 +298,7 @@ const addToCard = (cardData) => {
                 </div>
               ))}
             </div>
+            </>  }
             <div className="sm:flex items-center justify-end md:gap-28 sm:gap-10 my-8">
               <select
                 defaultValue="10"
@@ -318,7 +320,7 @@ const addToCard = (cardData) => {
               />
             </div>
           </div>
-        }
+      
 
 
       </div> : <div className="h-[50dvh] flex items-center justify-center"><h1 className="text-3xl">No publications found.</h1></div>}

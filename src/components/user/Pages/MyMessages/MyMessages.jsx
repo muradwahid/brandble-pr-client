@@ -711,7 +711,7 @@ const MyMessages = () => {
 
                   <div className="w-[140px] hidden lg:block">
                     <p className="text-[#36383A] text-[16px] font-medium truncate">
-                      {chat.orderId}
+                      {chat?.orderId}
                     </p>
                     <div className="whitespace-nowrap overflow-hidden overflow-ellipsis text-[#878C91] text-[14px]">
                       {chat?.messages?.at(-1)?.content || "No messages yet"}
