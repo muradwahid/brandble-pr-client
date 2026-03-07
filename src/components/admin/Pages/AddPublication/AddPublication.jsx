@@ -41,7 +41,7 @@ const AddPublication = () => {
   const onSubmit = async (d) => {
     const obj = { ...d };
     const logo = obj["logo"];
-    const publicationData = { ...obj };
+    const publicationData = { ...obj, price: obj.price ? parseFloat(obj.price) : 0 };
     delete publicationData["logo"];
     const publicationStr = JSON.stringify(publicationData);
     const formData = new FormData();

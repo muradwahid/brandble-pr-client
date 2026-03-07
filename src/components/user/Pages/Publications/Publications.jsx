@@ -26,7 +26,7 @@ const Publications = () => {
 
   const [search, setSearch] = useState('')
   const [range, setRange] = useState({ min: '', max:''});
-  const [sortBy, setSortBy] = useState();
+  const [sortBy, setSortBy] = useState({ sortBy:'', sortOrder:'' });
   const [publication, setPublication] = useState();
   const [domainAuthority, setDomainAuthority] = useState();
   const [domainRating, setDomainRating] = useState();
@@ -38,7 +38,7 @@ const Publications = () => {
   const [scope, setScope] = useState({});
   
 
-  const [itemsPerPage,setItemsPerPage] = useState(10);
+  const [itemsPerPage,setItemsPerPage] = useState(12);
 
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -75,16 +75,15 @@ const Publications = () => {
     ...((scope?.states && scope?.states.length>0) && { states: scope?.states?.map(state=>state).join(',') }),
     ...((scope?.cities && scope?.cities.length > 0) && { cities: scope?.cities?.map(city=>city).join(',') }),
     ...(scope?.scope && scope?.scope.length >0 && {scope:scope?.scope.map(city=>city).join(',')} ),
-    ...(sortBy && {
-      sortBy: sortBy === 'priceAsc' || sortBy === 'priceDesc' ? 'price' : 'createdAt',
-      sortOrder: sortBy === 'priceAsc' || sortBy === 'dateAsc' ? 'asc' : 'desc',
+    ...(sortBy.sortBy && {
+      sortBy:sortBy.sortBy,
+      sortOrder:sortBy.sortOrder,
     }),
 
     // Pagination
     page: currentPage,
     limit: itemsPerPage,
   };
-
 
   const { data, isLoading, isFetching } = usePublicationsQuery(filters);
 
@@ -177,8 +176,6 @@ const addToCard = (cardData) => {
         {/* publication items*/}
 
         <div>
-             {
-          isLoading || isFetching ? <SkeletonCard /> :<>
             <div className="mb-5 flex items-center justify-between">
               <div>
                 <p className="text-[#002747] text-[14px] mb-2">
@@ -201,6 +198,8 @@ const addToCard = (cardData) => {
                 </div>
               </div>
             </div>
+             {
+          isLoading || isFetching ? <SkeletonCard /> :<>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-2 gap-4">
               {data?.data?.map((item, index) => (
                 <div
@@ -264,7 +263,7 @@ const addToCard = (cardData) => {
                         </div>
                         <div className={cmCls}>
                           <p className="flex-1/3">Region</p>
-                          <p className="flex-1/2 text-wrap">: {(  item?.countries || []).map((c) => c.name).join(", ")}</p>
+                          <p className="flex-1/2 text-wrap">: {item?.countries.length>0?(  item?.countries || []).map((c) => c.name).join(", "):'N/A'}</p>
                         </div>
                       </div>
                       <div className="flex items-center justify-between gap-2.5">
@@ -301,16 +300,16 @@ const addToCard = (cardData) => {
             </>  }
             <div className="sm:flex items-center justify-end md:gap-28 sm:gap-10 my-8">
               <select
-                defaultValue="10"
+                defaultValue="12"
                 className="text-[#878C91] text-[14px] border border-[#B2B5B8] px-2 py-[5.5px] focus:outline-2 focus:outline-[#004A87] md:mt-0 mt-1.5 sm:mb-0 mb-5 "
                 onChange={e => setItemsPerPage(e.target.value)}
               >
-                <option value="5" defaultValue="5">
-                  5 Result
+                <option value="6" defaultValue="6">
+                  6 Result
                 </option>
-                <option value="10">10 Result</option>
+                <option value="12">12 Result</option>
                 <option value="15">15 Result</option>
-                <option value="20">20 Result</option>
+                <option value="21">21 Result</option>
                 <option value="30">30 Result</option>
               </select>
               <Pagination

@@ -381,7 +381,7 @@ const PaymentMethod = ({
       {
       clientSecret && showForm &&
       <div className="fixed inset-0 bg-[#22242580] flex justify-center items-center p-4 backdrop-blur-[2px]">
-        <div className="w-full max-w-[500px] md:mx-auto h-auto bg-white p-8">
+        <div className="w-full max-w-[500px] md:mx-auto h-auto max-h-[80dvh] overflow-auto bg-white p-8">
       <Elements stripe={stripePromise} options={options}>
           <PaymentFormContent
             clientSecret={clientSecret}

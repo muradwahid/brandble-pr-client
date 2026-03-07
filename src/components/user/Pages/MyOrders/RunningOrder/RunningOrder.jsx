@@ -113,8 +113,8 @@ const RunningOrder = () => {
                     {index + 1}
                   </Link>
                 </td>
-                <td className="px-3 py-3 text-[#006AC2] cursor-pointer mx-w-[200px] truncate">
-                  <Link to={hrefTo}>{item.id}</Link>
+                <td className="px-3 py-3 cursor-pointer">
+                  <Link to={hrefTo}><p className="text-[#006AC2] max-w-[250px] truncate">{item.id}</p></Link>
                 </td>
                 <td className="px-3 py-3 cursor-pointer">
                   <Link to={hrefTo}>

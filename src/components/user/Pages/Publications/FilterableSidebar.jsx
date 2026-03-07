@@ -20,7 +20,7 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
 
   const handleReset = () => { 
     setSearch('');
-    setSortBy('');
+    setSortBy({ sortBy:'', sortOrder:'' });
     setPublication('')
     setDomainAuthority('')
     setDomainRating('')
@@ -40,6 +40,11 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
   return (
     <div className={className}>
       <div className="bg-white h-full w-full md:w-60 max-w-60 border-r border-[#DCDEDF] pr-6">
+        <div className="text-right mb-6">
+          <button onClick={() => handleReset()} className=" text-[#878C91] cursor-pointer border-1 border-[#0000] px-2 py-1 hover:border-[#5F6368] rounded-sm transition">
+            Reset Filter
+          </button>
+        </div>
         <div className="mb-3">
           <PriceRangeSlider
             min={0}
@@ -71,11 +76,17 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
             Sort by
           </label>
           <div className="relative">
-            <select value={sortBy} onChange={e=>setSortBy(e.target.value)} id="sort-by" className={`appearance-none ${commonCls}`}>
-              <option value="">Price (Asc)</option>
-              <option value="priceDesc">Price (Desc)</option>
-              <option value="dateAsc">Date (Asc)</option>
-              <option value="dateDesc">Date (Desc)</option>
+            <select value={`${sortBy.sortBy}-${sortBy.sortOrder}`} onChange={e => { 
+              const selectedValue = e.target.value;
+              const [sortBy, sortOrder] = selectedValue.split('-');
+              setSortBy({ sortBy, sortOrder });
+            }}
+              id="sort-by" className={`appearance-none ${commonCls}`}>
+              <option value="" defaultChecked>Default</option>
+              <option value="price-asc">Price (Asc)</option>
+              <option value="price-desc">Price (Desc)</option>
+              <option value="createdAt-asc">Date (Asc)</option>
+              <option value="createdAt-desc">Date (Desc)</option>
             </select>
             <div className="custom-dropdown-arrow">
               <svg
@@ -107,7 +118,8 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
               id="publication-dropdown"
               className={`appearance-none ${commonCls}`}
             >
-              <option value=''>Publication (Asc)</option>
+              {/* <option value='' defaultChecked>Default</option> */}
+              <option value='asc'>Publication (Asc)</option>
               <option value='desc' >Publication (Desc)</option>
             </select>
             <div className="custom-dropdown-arrow">
@@ -140,7 +152,8 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
               value={domainAuthority}
               onChange={e=>setDomainAuthority(e.target.value)}
             >
-              <option value={''}>Domain Authority (Asc)</option>
+              <option value='' defaultChecked>Default</option> 
+              <option value={'asc'}>Domain Authority (Asc)</option>
               <option value={'desc'}>Domain Authority (Desc)</option>
             </select>
             <div className="custom-dropdown-arrow">
@@ -173,7 +186,8 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
               className={`appearance-none ${commonCls}`}
               onChange={e=>setDomainRating(e.target.value)}
             >
-              <option value={''}>Domain Rating (Asc)</option>
+              <option value='' defaultChecked>Default</option> 
+              <option value={'asc'}>Domain Rating (Asc)</option>
               <option value={'desc'}>Domain Rating (Desc)</option>
             </select>
             <div className="custom-dropdown-arrow">
@@ -268,7 +282,8 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
             Do Follow
           </label>
           <div className="relative">
-            <select value={doFollow} onChange={e=>setDoFollow(e.target.value)} id="do-follow" className={`appearance-none ${commonCls}`}>
+            <select value={doFollow} onChange={e => setDoFollow(e.target.value)} id="do-follow" className={`appearance-none ${commonCls}`}>
+              <option value='' defaultChecked>Default</option> 
               <option value={'yes'}>Yes</option>
               <option value={'no'}>No</option>
             </select>
@@ -296,7 +311,8 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
             Indexed
           </label>
           <div className="relative">
-            <select value={indexed} onChange={e=>setIndexed(e.target.value)} id="indexed" className={`appearance-none ${commonCls}`}>
+            <select value={indexed} onChange={e => setIndexed(e.target.value)} id="indexed" className={`appearance-none ${commonCls}`}>
+              <option value='' defaultChecked>Default</option> 
               <option value={'yes'}>Yes</option>
               <option value={'no'}>No</option>
             </select>
@@ -363,11 +379,11 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
           </div>
         </div>
 
-        <div className="text-right">
+        {/* <div className="text-right">
           <button onClick={()=>handleReset()} className="bg-[#171819] hover:bg-gray-700 py-1.5 px-6 text-[#F2F2F3] transition duration-300 ease-in-out cursor-pointer rounded-sm">
             Reset Filter
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

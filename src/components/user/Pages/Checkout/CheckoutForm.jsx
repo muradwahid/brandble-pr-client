@@ -99,7 +99,7 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                 type="text"
                 id="fullName"
                 className={`${inputCls}`}
-                value={userData?.name}
+                value={userData?.name || ''}
                 readOnly
               />
             </div>
@@ -113,7 +113,7 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                 type="email"
                 id="email"
                 className={`${inputCls}`}
-                value={userData?.email}
+                value={userData?.email || ''}
                 readOnly
               />
             </div>
@@ -127,14 +127,14 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                 type="text"
                 id="companyName"
                 className={`${inputCls}`}
-                value={userData?.company}
+                value={userData?.company || ''}
                 readOnly
               />
             </div>
           </div>
 
           {/* billing address */}
-          {/* <div className="border border-[#F2F2F3] p-3.5">
+           {/* <div className="border border-[#F2F2F3] p-3.5">
             <div className="border-b border-[#DCDEDF] pb-3">
               <h3 className="text-[20px] text-[#222425] font-glare">
                 Billing Address
@@ -195,7 +195,7 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                 readOnly
               />
             </div>
-          </div> */}
+          </div>  */}
 
           {/* payment method */}
           {
@@ -259,8 +259,8 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
             {/* other payment methods */}
             <div className="w-full space-y-7 mt-4">
               {
-                    data?.map((method) => !method?.isDefault && <label htmlFor={method?.stripePaymentMethodId} key={method?.stripePaymentMethodId} >
-                  <div className="w-1/2">
+                    data?.map((method) => !method?.isDefault && <label htmlFor={method?.stripePaymentMethodId} key={method?.stripePaymentMethodId} className="" >
+                  <div className="w-1/2 mt-2.5">
                   <div className="flex justify-between">
                     <div className="flex items-center cursor-pointer gap-3 justify-start">
                       <input

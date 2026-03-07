@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useStripe,useElements,PaymentElement } from '@stripe/react-stripe-js';
+import { useStripe,useElements,PaymentElement,AddressElement } from '@stripe/react-stripe-js';
 import { useSaveMethodMutation } from '../../redux/api/stripepaymentApi';
 import toast from 'react-hot-toast';
 
@@ -17,8 +17,9 @@ const PaymentFormContent = ({ clientSecret, onSuccess, onCancel }) => {
     }
 
   const checkElementReady = async () => {
-      const element = elements?.getElement('payment');
-      if (element) {
+    const element = elements?.getElement('payment');
+    const address = elements.getElement('address');
+      if (element && address) {
         setCanSubmit(true);
       }
     };
@@ -38,20 +39,20 @@ const PaymentFormContent = ({ clientSecret, onSuccess, onCancel }) => {
         confirmParams: {
           return_url: `${window.location.origin}/payment-success`,
         },
-        payment_method_data: {
-          billing_details: {
-            email: '',
-            name: '',
-            phone: '',
-            address: {
-              line1: '',
-              city: '',
-              state: '',
-              postal_code: '',
-              country: 'US',
-            }
-          }
-        },
+        // payment_method_data: {
+        //   billing_details: {
+        //     email: '',
+        //     name: '',
+        //     phone: '',
+        //     address: {
+        //       line1: '',
+        //       city: '',
+        //       state: '',
+        //       postal_code: '',
+        //       country: 'US',
+        //     }
+        //   }
+        // },
         client_secret: clientSecret,
         redirect: 'if_required',
       });
@@ -128,8 +129,25 @@ const PaymentFormContent = ({ clientSecret, onSuccess, onCancel }) => {
             // fields: {
             //   billingDetails:"auto"
             // }
+            wallets: {
+              applePay: 'auto',
+              googlePay: 'auto',
+              link: 'never'        
+            },
+            disableLink: true,
+            terms: {
+              card:'never'
+            }
           }}
         />
+
+        <div className='mt-2.5'>
+          <AddressElement
+            options={{
+              mode: 'billing'
+            }}
+          />
+          </div>
 
         <div className="form-buttons flex justify-between mt-8">
           <button
@@ -137,7 +155,7 @@ const PaymentFormContent = ({ clientSecret, onSuccess, onCancel }) => {
             disabled={!stripe || !canSubmit || isLoading}
             className="bg-[#004A87] px-8 py-2 cursor-pointer hover:bg-[#023d6d] transition text-white"
           >
-            {isLoading ? 'Saving..' : 'Save Card'}
+            {isLoading ? 'Saving...' : 'Save Card'}
           </button>
           <button
             type="button"
