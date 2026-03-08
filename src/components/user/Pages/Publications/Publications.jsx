@@ -35,7 +35,12 @@ const Publications = () => {
   const [doFollow, setDoFollow] = useState();
   const [indexed, setIndexed] = useState();
   const [niche, setNiche] = useState();
-  const [scope, setScope] = useState({});
+  const [scope, setScope] = useState({
+    country: '',
+    state: '',
+    city: '',
+    scope: ''
+});
   
 
   const [itemsPerPage,setItemsPerPage] = useState(12);
@@ -71,10 +76,10 @@ const Publications = () => {
     ...(domainAuthority && { da: domainAuthority }),
     ...(domainRating && { dr: domainRating }),
     // ...(scope && {...scope}),
-    ...((scope?.countries && scope?.countries.length>0) && { countries: scope?.countries?.map(country=>country).join(',') }),
-    ...((scope?.states && scope?.states.length>0) && { states: scope?.states?.map(state=>state).join(',') }),
-    ...((scope?.cities && scope?.cities.length > 0) && { cities: scope?.cities?.map(city=>city).join(',') }),
-    ...(scope?.scope && scope?.scope.length >0 && {scope:scope?.scope.map(city=>city).join(',')} ),
+    ...(scope?.country && { countries: scope?.country }),
+    ...(scope?.state && { states: scope?.state}),
+    ...(scope?.city && { cities: scope?.city }),
+    ...(scope?.scope && {scope:scope?.scope} ),
     ...(sortBy.sortBy && {
       sortBy:sortBy.sortBy,
       sortOrder:sortBy.sortOrder,
@@ -86,7 +91,7 @@ const Publications = () => {
   };
 
   const { data, isLoading, isFetching } = usePublicationsQuery(filters);
-
+  console.log(scope);
 
 
   const { meta = {} } = data || {}

@@ -7,7 +7,7 @@ import LocationFilter from "../../../common/LocationFilter";
 import { useState } from "react";
 import { useCommonQuery } from "../../../../redux/api/commonApi";
 import { useOutsideClick } from "../../../../hooks/useOutsideClick";
-const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publication, setPublication, domainAuthority, setDomainAuthority, domainRating, setDomainRating, location, setLocation, genre, setGenre, doFollow, setDoFollow, indexed, setIndexed, niche, setNiche, range, setRange, setScope }) => {
+const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publication, setPublication, domainAuthority, setDomainAuthority, domainRating, setDomainRating, location, setLocation, genre, setGenre, doFollow, setDoFollow, indexed, setIndexed, niche, setNiche, range, setRange, setScope, scope }) => {
 
   const [isLocationShow, setIsLocationShow] = useState(false);
   const [locationSearch, setLocationSearch] = useState('');
@@ -30,7 +30,7 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
     setIndexed('')
     setNiche('')
     setIsLocationShow(false);
-    setScope({});
+    setScope({country: '',state: '',city: '',scope: ''});
     setRange({ min:0, max:5000 })
   }
 
@@ -241,7 +241,7 @@ const FilterableSidebar = ({ className, setSearch, sortBy, setSortBy, publicatio
                 ></path>
               </svg>
             </div>
-            {(location && isLocationShow) && <LocationFilter locationRef={locationRef} data={data} isLoading={isLoading} onChange={val => setScope(val)} setIsLocationShow={setIsLocationShow} scope={location} setLocationSearch={setLocationSearch} locationSearch={locationSearch} />}
+            {(location && isLocationShow) && <LocationFilter locationRef={locationRef} data={data} isLoading={isLoading} onChange={val => setScope(val)} setIsLocationShow={setIsLocationShow} scope={location} setLocationSearch={setLocationSearch} locationSearch={locationSearch} filterData={scope} />}
           </div>
         </div>
 

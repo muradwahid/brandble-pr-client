@@ -2,6 +2,8 @@
 import axios from "axios";
 
 import { accessToken } from "../user/user";
+import toast from "react-hot-toast";
+import config from "../../config";
 
 const instance = axios.create();
 instance.defaults.headers.post["Content-Type"] = "application/json";
@@ -37,6 +39,12 @@ instance.interceptors.response.use(
     return responseObject;
   },
   function (error) {
+    const errorMessage = error?.response?.data?.message || "";
+    if (errorMessage.toLowerCase().includes("jwt expired")) {
+      toast.error("Your session has expired! Please log in again.");
+       const baseUrl = config.rootClientUrl
+        window.location.replace(`${baseUrl}/signin`);
+    }
     const responseObject = {
       success: false,
       statusCode: error?.response?.data?.statusCode || 500,

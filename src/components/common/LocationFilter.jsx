@@ -1,24 +1,14 @@
+export default function LocationFilter({ locationRef, onChange = () => { }, scope, data, isLoading, setLocationSearch, locationSearch, filterData }) {
 
-import { useState } from 'react';
-
-export default function LocationFilter({ locationRef, onChange = () => { }, setIsLocationShow = () => { },scope, data,isLoading, setLocationSearch,locationSearch }) {
-
-  const [selectedCities, setSelectedCities] = useState([]);
-  const [countryName, setCountryName] = useState([]);
-  const [stateName, setStateName] = useState([]);
-  const [global, setGlobal] = useState([]);
-
-
-
-  const handleApply = () => {
-    onChange({
-      countries: countryName,
-      states: stateName,
-      cities: selectedCities,
-      scope: global
-    });
-    setIsLocationShow(false);
-  };
+  // const handleApply = () => {
+  //   onChange({
+  //     // country: countryName,
+  //     // states: stateName,
+  //     // cities: selectedCities,
+  //     // scope: global
+  //   });
+  //   setIsLocationShow(false);
+  // };
 
   const scopeData = ['local', 'national', 'regional', 'global'];
 
@@ -39,7 +29,6 @@ export default function LocationFilter({ locationRef, onChange = () => { }, setI
                 value={locationSearch}
                 onChange={(e) => setLocationSearch(e.target.value)}
               />
-              {countryName?.length > 0 && <div className='mt-0.5 border-b border-[#B2B5B8]'><span className="text-[#5F6368] text-sm">{countryName.map(city => city).join(', ')}</span></div>}
               <div className="max-h-[300px] overflow-y-auto mt-3">
                 {!isLoading ? data?.countries?.filter((country) =>
                   country?.name?.toLowerCase()?.includes(locationSearch?.toLowerCase())
@@ -50,14 +39,8 @@ export default function LocationFilter({ locationRef, onChange = () => { }, setI
                     .map((country,idx) => (
                       <div
                         key={`${country?.name}-${idx}`}
-                        onClick={() => {
-                          setCountryName((prev) =>
-                            prev.includes(country?.name)
-                              ? prev.filter((c) => c !== country?.name)
-                              : [...prev, country?.name]
-                          );
-                        }}
-                        className={`px-2 mb-0.5 py-1 text-left text-[#5F6368] text-sm cursor-pointer hover:bg-[#DCDEDF] ${countryName?.includes(country?.name) ? "bg-[#DCDEDF]" : ""
+                        onClick={() => onChange({ ...filterData, country: country?.name })}
+                        className={`px-2 mb-0.5 py-1 text-left text-[#5F6368] text-sm cursor-pointer hover:bg-[#DCDEDF] ${filterData?.country===country?.name ? "bg-[#DCDEDF]" : ""
                           }`}
                       >
                         {country?.name}
@@ -82,7 +65,6 @@ export default function LocationFilter({ locationRef, onChange = () => { }, setI
                 value={locationSearch}
                 onChange={(e) => setLocationSearch(e.target.value)}
               />
-              {stateName?.length > 0 && <div className='mt-0.5 border-b border-[#B2B5B8]'><span className="text-[#5F6368] text-sm">{stateName?.map(state => state).join(', ')}</span></div>}
               <div className="max-h-[300px] overflow-y-auto mt-3">
                 {!isLoading ? data?.states?.filter((state) =>
                   state?.name?.toLowerCase()?.includes(locationSearch?.toLowerCase())
@@ -92,14 +74,8 @@ export default function LocationFilter({ locationRef, onChange = () => { }, setI
                     )?.map((state,idx) => (
                       <div
                         key={`${state?.name}-${idx}`}
-                        onClick={() => {
-                          setStateName((prev) =>
-                            prev.includes(state?.name)
-                              ? prev?.filter((c) => c !== state?.name)
-                              : [...prev, state?.name]
-                          );
-                        }}
-                        className={`px-2 mb-0.5 py-1 text-left text-[#5F6368] text-sm cursor-pointer hover:bg-[#DCDEDF] ${stateName?.includes(state?.name) ? "bg-[#DCDEDF]" : ""
+                        onClick={() => onChange({ ...filterData, state: state?.name })}
+                        className={`px-2 mb-0.5 py-1 text-left text-[#5F6368] text-sm cursor-pointer hover:bg-[#DCDEDF] ${filterData?.state===state?.name ? "bg-[#DCDEDF]" : ""
                           }`}
                       >
                         {state?.name}
@@ -124,20 +100,13 @@ export default function LocationFilter({ locationRef, onChange = () => { }, setI
                 value={locationSearch}
                 onChange={(e) => setLocationSearch(e.target.value)}
               />
-              {selectedCities?.length >0 && <div className='mt-0.5 border-b border-[#B2B5B8]'><span className="text-[#5F6368] text-sm">{selectedCities?.map(city => city)?.join(', ')}</span></div>}
               <div className="max-h-[300px] overflow-y-auto mt-3">
                 {!isLoading ? data?.cities?.filter((city) => city.name.toLowerCase().includes(locationSearch?.toLowerCase()) )?.length > 0 ? (
                   data?.cities.filter((city) => city?.name?.toLowerCase()?.includes(locationSearch?.toLowerCase()))?.map((city,idx) => (
                       <div
                         key={`${city?.name}-${idx}`}
-                        onClick={() => {
-                          setSelectedCities((prev) =>
-                            prev.includes(city?.name)
-                              ? prev.filter((c) => c !== city?.name)
-                              : [...prev, city?.name]
-                          );
-                        }}
-                        className={`px-2 mb-0.5 py-1 text-left text-[#5F6368] text-sm cursor-pointer hover:bg-[#DCDEDF] ${selectedCities?.includes(city?.name) ? "bg-[#DCDEDF]" : ""
+                        onClick={() =>onChange({ ...filterData, city: city?.name })}
+                      className={`px-2 mb-0.5 py-1 text-left text-[#5F6368] text-sm cursor-pointer hover:bg-[#DCDEDF] ${filterData?.city ===city?.name ? "bg-[#DCDEDF]" : ""
                           }`}
                       >
                         {city?.name}
@@ -159,14 +128,8 @@ export default function LocationFilter({ locationRef, onChange = () => { }, setI
                   scopeData.map((scopeName, idx) => (
                     <div
                       key={`${scopeName}-${idx}`}
-                      onClick={() => {
-                        setGlobal((prev) =>
-                          prev.includes(scopeName)
-                            ? prev.filter((c) => c !== scopeName)
-                            : [...prev, scopeName]
-                        );
-                      }}
-                      className={`px-2 mb-0.5 py-1 text-left capitalize text-[#5F6368] text-sm cursor-pointer hover:bg-[#DCDEDF] ${global?.includes(scopeName) ? "bg-[#DCDEDF]" : ""
+                      onClick={() => onChange({ ...filterData, scope: scopeName })}
+                      className={`px-2 mb-0.5 py-1 text-left capitalize text-[#5F6368] text-sm cursor-pointer hover:bg-[#DCDEDF] ${filterData?.scope === scopeName ? "bg-[#DCDEDF]" : ""
                         }`}
                     >
                       {scopeName}
@@ -186,14 +149,14 @@ export default function LocationFilter({ locationRef, onChange = () => { }, setI
           </div>
 
           {/* Apply Button */}
-          <div className="mt-8 text-right">
+          {/* <div className="mt-8 text-right">
             <button
               onClick={handleApply}
               className="px-4 py-2 bg-[#171819] text-white text-xs rounded-sm font-medium hover:bg-gray-800 transition outline-none cursor-pointer"
             >
               Apply
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

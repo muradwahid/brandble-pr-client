@@ -72,7 +72,6 @@ const TopNavBar = () => {
       const data = JSON.parse(getFromLocalStorage("brandableCardData")) || [];
       setSavedData(data.length);
     };
-
     updateCount();
     window.addEventListener("cartUpdated", updateCount);
 

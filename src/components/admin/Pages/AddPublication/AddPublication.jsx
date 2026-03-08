@@ -414,7 +414,7 @@ const AddPublication = () => {
                   options={states?.states || []}
                   isShowSearch={true}
                   placeholder='Ex: New York'
-                  label="Country"
+                  label="State"
                   onChange={(value) => {
                     setFieldsData({ ...fieldsData, state: value });
                     setValue("states", value)
