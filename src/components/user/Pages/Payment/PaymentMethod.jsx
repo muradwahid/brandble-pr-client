@@ -6,7 +6,7 @@ import { FaRegTrashAlt} from "react-icons/fa";
 import { useMethodsQuery, useSetupIntentMutation } from "../../../../redux/api/stripepaymentApi";
 import { Elements } from "@stripe/react-stripe-js";
 import PaymentFormContent from "../../../common/PaymentFormContent";
-import config from "../../../../config";
+import { stripe } from "../../../../utils/stripe";
 
 const PaymentMethod = ({
   activePayment,
@@ -21,8 +21,8 @@ const PaymentMethod = ({
   const [showForm, setShowForm] = useState(false);
 
     const handleAddButtonClick = async () => {
-    try {
       setIsLoading(true);
+    try {
       setClientSecret(''); // Reset previous client secret
     
       const intent = await setupIntent();
@@ -35,8 +35,10 @@ const PaymentMethod = ({
       } else {
         toast.error('Client secret not received from server');
       }
+      setIsLoading(false);
     } catch (error) {
       toast.error('There was a problem with setup. Please try again.');
+      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }
@@ -69,7 +71,7 @@ const PaymentMethod = ({
     },
   };
 
-  const stripePromise = loadStripe(config.stripeKey);
+  const stripePromise = stripe;
   return (
     <div className="w-full">
       <div className="bg-[#F6F7F7] md:flex gap-3.5 p-3.5 mt-10">

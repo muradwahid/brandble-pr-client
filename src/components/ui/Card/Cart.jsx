@@ -21,20 +21,20 @@ const Cart = ({ ref, setOpenCart }) => {
 
   useEffect(() => {
     const total = (cartItems || [])?.reduce((sum, item) => {
-      return sum + (item.isChecked ? Number(item.price) : 0);
+      return sum + (Number(item.price) || 0);
     }, 0);
     setSubtotal(total);
   }, [cartItems]);
 
   // Handler for checkbox changes
-  const handleCheckboxChange = (id) => {
-    setCartItems(prevItems => {
-      const nextItems = prevItems.map(item =>item.id === id ? { ...item, isChecked: !item.isChecked } : item);
+  // const handleCheckboxChange = (id) => {
+  //   setCartItems(prevItems => {
+  //     const nextItems = prevItems.map(item =>item.id === id ? { ...item, isChecked: !item.isChecked } : item);
 
-      localStorage.setItem("brandableCardData", JSON.stringify(nextItems));
-      return nextItems;
-    });
-  };
+  //     localStorage.setItem("brandableCardData", JSON.stringify(nextItems));
+  //     return nextItems;
+  //   });
+  // };
 
 
   // Handler for deleting an item from the cart
@@ -44,7 +44,6 @@ const Cart = ({ ref, setOpenCart }) => {
       setToLocalStorage("brandableCardData", JSON.stringify(updatedItems));
       return updatedItems;
     });
-    
     window.dispatchEvent(new Event("cartUpdated"));
     toast.success(`"${title}" removed from cart!`);
   };
@@ -90,12 +89,12 @@ const Cart = ({ ref, setOpenCart }) => {
               key={item.id + item.isChecked}
               className="flex mb-6 last:mb-0 border-b pb-4 border-gray-100 cart-item"
             >
-              <input
+              {/* <input
                 type="checkbox"
                 checked={item.isChecked || false}
                 onChange={() => handleCheckboxChange(item.id)}
                 className="custom-checkbox h-5 w-5 mr-2"
-              />
+              /> */}
               <div className="md:mr-4 mr-2.5 md:w-32 w-24 relative">
                 <img
                   src={item.logo}

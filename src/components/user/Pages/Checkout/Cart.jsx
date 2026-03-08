@@ -13,15 +13,15 @@ const Cart = ({ selectedMethod, setCheckoutPopup }) => {
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [cartItems, setCartItems] = useState(() => {
     const savedData = JSON.parse(getFromLocalStorage("brandableCardData") || '[]');
-    const data = savedData.filter(item => item.isChecked);;
-    return data;
+    // const data = savedData.filter(item => item.isChecked);
+    return savedData;
   });
   const [addOrder] = useAddOrderMutation()
 
   const [subtotal, setSubtotal] = useState(0);
   useEffect(() => {
     const total = cartItems?.reduce((sum, item) => {
-      return sum + (item.isChecked ? Number(item.price) : 0);
+      return sum + ( Number(item.price) || 0);
     }, 0);
     setSubtotal(total);
   }, [cartItems]);
@@ -33,6 +33,7 @@ const Cart = ({ selectedMethod, setCheckoutPopup }) => {
       setToLocalStorage("brandableCardData", JSON.stringify(updatedItems));
       return updatedItems;
     });
+    window.dispatchEvent(new Event("cartUpdated"));
     toast.success(`"${title}" removed from cart!`);
   };
 
@@ -85,17 +86,17 @@ const Cart = ({ selectedMethod, setCheckoutPopup }) => {
   };
 
   useEffect(() => {
-    const handleStorageChange = (e) => {
-      if (e.key === "brandableCardData") {
-        const saved = e.newValue;
-        const data = saved ? JSON.parse(saved) : [];
-        setCartItems(data.filter(item => item.isChecked));
-      }
+    const handleStorageChange = () => {
+      const rawData = getFromLocalStorage("brandableCardData");
+      const savedData = JSON.parse(rawData || '[]');
+
+      setCartItems(savedData);
     };
-    window.addEventListener('storage', handleStorageChange);
+
+    window.addEventListener('cartUpdated', handleStorageChange);
 
     return () => {
-      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('cartUpdated', handleStorageChange);
     };
   }, []);
 

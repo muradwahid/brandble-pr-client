@@ -4,10 +4,10 @@ import "./style.css";
 import { useMethodsQuery, useSetupIntentMutation } from "../../../../redux/api/stripepaymentApi";
 import { getUserInfo } from "../../../../helpers/user/user";
 import { useUserQuery } from "../../../../redux/api/authApi";
-import { loadStripe } from "@stripe/stripe-js";
 import toast from "react-hot-toast";
 import { Elements } from "@stripe/react-stripe-js";
 import PaymentFormContent from "../../../common/PaymentFormContent";
+import { stripe } from "../../../../utils/stripe";
 
 const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
     const [setupIntent] = useSetupIntentMutation();
@@ -15,6 +15,7 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
       const [isLoading, setIsLoading] = useState(false);
     const [clientSecret, setClientSecret] = useState('');
     const [showForm, setShowForm] = useState(false);
+  const [methodData, setMethodData] = useState({});
   
       const user = getUserInfo();
   const { data: userData } = useUserQuery(user?.id);
@@ -69,14 +70,20 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
     },
   };
 
-  const publishableKey = 'pk_test_51SBK3hPFRWrLO59dZexPgeb8vS4wShG8puLDduyFCecL3oU7cPmhVvvCOj7rDaNrfaOHkjZ3Dku0fhj79c4m8rGj00JPtghTVR';
-  const stripePromise = loadStripe(publishableKey);
+  const stripePromise = stripe;
 
 
 
   useEffect(() => { 
     setSelectedMethod(data?.filter(method => method?.isDefault)[0]?.stripePaymentMethodId)
+    setMethodData(data?.filter(method => method?.isDefault)[0])
+
   }, [data, setSelectedMethod])
+
+  const countryLongName = methodData?.country
+    ? new Intl.DisplayNames(['en'], { type: "region" }).of(methodData.country)
+    : "";
+  console.log(methodData);
   const inputCls = ` px-3 py-2 bg-[#F6F7F7] border border-[#DCDEDF] outline-none text-[#5F6368] placeholder-[#B2B5B8] placeholder:font-normal w-full`;
 
   return (
@@ -134,7 +141,7 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
           </div>
 
           {/* billing address */}
-           {/* <div className="border border-[#F2F2F3] p-3.5">
+           <div className="border border-[#F2F2F3] p-3.5">
             <div className="border-b border-[#DCDEDF] pb-3">
               <h3 className="text-[20px] text-[#222425] font-glare">
                 Billing Address
@@ -149,7 +156,7 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                 type="text"
                 id="address"
                 className={`${inputCls}`}
-                value="123 Main St, Anytown, USA"
+                value={methodData?.line1 || ''}
                 readOnly
               />
             </div>
@@ -166,7 +173,7 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                   type="text"
                   id="country"
                   className={`${inputCls}`}
-                  value="United States"
+                  value={countryLongName || ''}
                   readOnly
                 />
               </div>
@@ -178,7 +185,7 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                   type="text"
                   id="state"
                   className={`${inputCls}`}
-                  value="California"
+                  value={methodData?.state || methodData?.city || ''}
                   readOnly
                 />
               </div>
@@ -191,11 +198,11 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                 type="text"
                 id="zipCode"
                 className={`${inputCls}`}
-                value="12345"
+                value={ methodData?.postalCode || ''}
                 readOnly
               />
             </div>
-          </div>  */}
+          </div> 
 
           {/* payment method */}
           {
@@ -226,7 +233,10 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                         name="payment_card"
                         id={method?.stripePaymentMethodId}
                         checked={selectedMethod === method?.stripePaymentMethodId}
-                        onChange={() => setSelectedMethod(method?.stripePaymentMethodId)}
+                        onChange={() => {
+                          setSelectedMethod(method?.stripePaymentMethodId)
+                          setMethodData(method)
+                        }}
                         className="cursor-pointer accent-[#008CFF]"
                       />
                       <p className="text-[#222425] text-sm capitalize">
@@ -243,9 +253,14 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                           {method?.type}
                         </p>
                         {/* <img
-                          src="https://shorturl.at/gHTiX"
+                          src={`https://js.stripe.com/v3/fingerprinted/img/payment-methods/${method?.brand}.svg`}
                           alt="VISA"
                           className="w-14 h-auto mr-2"
+                          referrerPolicy="no-referrer"
+                          crossOrigin="anonymous"
+                          onError={(e) => {
+                            e.currentTarget.src = `https://js.stripe.com/v3/fingerprinted/img/payment-methods/${method?.brand}.svg`;
+                          }}
                         /> */}
                         <p className="text-[#5F6368] text-sm">******{method?.last4}</p>
                       </div>
@@ -267,7 +282,10 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
                         type="radio"
                         name="payment_card"
                           checked={selectedMethod === method?.stripePaymentMethodId}
-                              onChange={() => setSelectedMethod(method?.stripePaymentMethodId)}
+                              onChange={() => {
+                                setSelectedMethod(method?.stripePaymentMethodId)
+                                setMethodData(method)
+                              }}
                         className="cursor-pointer accent-[#008CFF]"
                       />
                       {/* <img
