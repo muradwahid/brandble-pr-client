@@ -2,52 +2,39 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import { Link } from "react-router";
 import { useRunningOrderQuery } from "../../../../../redux/api/orderApi";
 import { formattedDate } from "../../../../../utils/function";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useDebounced } from "../../../../../redux/hooks";
+import Pagination from "../../../../common/Pagination";
+import { useSocketListener } from "../../../../../hooks/useSocketListener";
 
 const RunningOrder = () => {
-  const { data, isLoading } = useRunningOrderQuery();
-  const [searchData, setSearchData] = useState([]);
+  const [searchData, setSearchData] = useState('');
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
   
-  const handleSearch = (searchTerm) => {
-    if (!searchTerm.trim()) {
-      setSearchData(data);
-      return;
+  const debouncedSearchTerm = useDebounced({
+    searchQuery: searchData,
+    delay: 500
+  });
+
+  const { data, isLoading,refetch } = useRunningOrderQuery({
+    searchTerm: debouncedSearchTerm,
+    page: currentPage,
+    limit: itemsPerPage
+  });
+
+  useSocketListener("order_updated", () => {
+    refetch();
+  }, [refetch]);
+
+  const { meta = {}, data: orderData = [] } = data || {}
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= meta?.totalPage) {
+      setCurrentPage(page);
     }
-
-    const filteredData = data.filter((order) => {
-      const searchLower = searchTerm.toLowerCase();
-
-      // Search in detailsSubmitted
-      if (order.detailsSubmitted?.toLowerCase().includes(searchLower)) {
-        return true;
-      }
-
-      // Search in amount
-      if (order.amount?.toString().includes(searchLower)) {
-        return true;
-      }
-
-      // Search in publication array (title and status)
-      if (order.publication && Array.isArray(order.publication)) {
-        const publicationMatch = order.publication.some((pub) => {
-          return (
-            pub.title?.toLowerCase().includes(searchLower) ||
-            pub.status?.toLowerCase().includes(searchLower)
-          );
-        });
-        if (publicationMatch) return true;
-      }
-
-      return false;
-    });
-
-    setSearchData(filteredData);
   };
 
-
-  useEffect(() => { 
-    setSearchData(data);
-  },[isLoading,data])
 
   if (isLoading) {
     return <div className="h-[70vh] w-full flex justify-center items-center">Loading...</div>;
@@ -63,7 +50,7 @@ const RunningOrder = () => {
   }
   return (
     <div>
-        {data?.length>0 ? <div className="overflow-x-auto">
+      {meta?.totalOrders>0 ? <div className="overflow-x-auto">
         <div className="flex justify-between items-center mb-5 border-b-2 border-[#DCDEDF] pb-3 flex-wrap gap-1.5">
           <h2 className="md:text-2xl text-[20px] text-[#222425] font-glare">
             Orders
@@ -73,7 +60,7 @@ const RunningOrder = () => {
               type="text"
               id="orderSearch"
               placeholder="Search Here..."
-              onChange={e => handleSearch(e.target.value)}
+              onChange={e => setSearchData(e.target.value)}
               className=" border border-[#DCDEDF] py-1 px-3 text-[14px] focus:outline-2 focus:outline-[#004A87] text-[#5F6368] placeholder-[#5F6368] bg-white rounded-sm w-full"
             />
             <button className="border border-[#DCDEDF] px-2 rounded-sm cursor-pointer">
@@ -102,7 +89,7 @@ const RunningOrder = () => {
             </tr>
           </thead>
           <tbody className=" text-[#36383A]">
-            {searchData?.map((item, index) => {
+            {orderData?.map((item, index) => {
               const hrefTo = item.orderType === 'wonArticle' ? `/user/orders/running/${item.id}` : `/user/orders/running/${item.id}/details`;
               return <tr
                 key={index}
@@ -150,7 +137,28 @@ const RunningOrder = () => {
               </tr>
             })}
           </tbody>
-        </table> 
+        </table>
+
+        <div className="sm:flex items-center justify-end md:gap-28 sm:gap-10 my-8">
+          <select
+            defaultValue="12"
+            className="text-[#878C91] text-[14px] border border-[#B2B5B8] px-2 py-[5.5px] focus:outline-2 focus:outline-[#004A87] md:mt-0 mt-1.5 sm:mb-0 mb-5 "
+            onChange={e => setItemsPerPage(e.target.value)}
+          >
+            <option value="5" defaultValue="5">
+              5 Result
+            </option>
+            <option value="10">10 Result</option>
+            <option value="15">15 Result</option>
+            <option value="20">20 Result</option>
+            <option value="30">30 Result</option>
+          </select>
+          <Pagination
+            totalPages={meta?.totalPage}
+            currentPage={meta?.page}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>:
         <div className="h-[50dvh] flex items-center justify-center ">
           <h1 className="text-3xl text-center leading-[150%]">Your running order is empty.</h1>

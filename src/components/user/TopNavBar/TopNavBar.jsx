@@ -12,6 +12,7 @@ import { useUserQuery } from "../../../redux/api/authApi";
 import NavBarNotification from "../Pages/NavBarNotification/NavBarNotification";
 import { getFromLocalStorage } from "../../../utils/local-storage";
 import { useGetUnreadCountQuery } from "../../../redux/api/notificationApi";
+import { useSocketListener } from "../../../hooks/useSocketListener";
 const TopNavBar = () => {
   const btnRef = useRef(null);
   const [openCart, setOpenCart] = useState(false);
@@ -24,7 +25,11 @@ const TopNavBar = () => {
   const user = getUserInfo();
   const { data } = useUserQuery(user?.id);
 
-  const { data: unreadCountData = 0, isLoading } = useGetUnreadCountQuery();
+  const { data: unreadCountData = 0, isLoading, refetch } = useGetUnreadCountQuery();
+
+    useSocketListener("order_updated", () => {
+      refetch();
+    }, [refetch]);
   
   const location = useLocation().pathname;
   const publication = location == "/user/publications"
@@ -99,7 +104,7 @@ const TopNavBar = () => {
             {toggleNotification &&<NavBarNotification ref={notificationRef} seToggleNotification={seToggleNotification} />}
           <div ref={btnRef} onClick={() => setOpenCart(!openCart)} className="relative">
             <CartIcon className="cursor-pointer" />
-            {savedData > 0&& <div className="absolute -top-3 -right-3 h-4 w-4 bg-blue-600 rounded-full  flex items-center justify-center text-[8px] text-white">
+            {savedData > 0 && <div className="absolute -top-3 -right-3 h-4 w-4 bg-blue-600 rounded-full  flex items-center justify-center text-[8px] text-white">
               {savedData}
             </div>}
           </div>

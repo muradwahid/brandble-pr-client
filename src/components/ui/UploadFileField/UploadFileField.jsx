@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ImagesIcon } from '../../../utils/icons';
 import { useController } from 'react-hook-form';
 
-const UploadFileField = ({ control, name, mimeType = "image/*", reset, isOptional = false, requiredMessage = '' }) => {
+const UploadFileField = ({ control, name, mimeType = "image/*", reset, isOptional = false, requiredMessage = '',className='' }) => {
     const [image, setImage] = useState('');
     const [isDragging, setIsDragging] = useState(false);
     const fileInputRef = useRef(null);
@@ -124,7 +124,7 @@ const UploadFileField = ({ control, name, mimeType = "image/*", reset, isOptiona
     const uploadAreaClasses = `flex flex-col items-center justify-center p-8 bg-[#F6F7F7] cursor-pointer text-center transition-colors duration-200 border border-dashed rounded-2xl ${isDragging
         ? 'border-[#0EA5E9] bg-[#E0F2FE]'
         : 'border-[#DCDEDF]'
-        }`;
+        } ${className}`;
 
     return (
         <div>

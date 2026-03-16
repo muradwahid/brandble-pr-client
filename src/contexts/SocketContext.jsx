@@ -106,6 +106,7 @@ import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { io } from "socket.io-client";
 import { SOCKET_EVENTS, SOCKET_URL } from "./socketEvents";
 import { SocketContext } from "./SocketContext";
+import { getUserInfo } from "../helpers/user/user";
 
 
 
@@ -160,8 +161,18 @@ export const SocketProvider = ({ children }) => {
   }, [socket]);
 
   useEffect(() => {
+    const user = getUserInfo();
+    if (user?.id && !socket && !connectionAttempted.current) {
+      connectSocket(user);
+    }
+  }, [socket, connectSocket]);
+
+  useEffect(() => {
     return () => {
-      if (socket) socket.disconnect();
+      if (socket) {
+        socket.disconnect()
+        connectionAttempted.current = false;
+      };
     };
   }, [socket]);
 

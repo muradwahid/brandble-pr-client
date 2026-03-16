@@ -105,10 +105,11 @@ export const orderApi = baseApi.injectEndpoints({
       invalidatesTags: ["all-orders", 'admin-orders','order'],
     }),
     runningOrder: build.query({
-      query: () => {
+      query: (arg) => {
         return {
           url: `${ORDER_URL}/running-orders`,
           method: "GET",
+          params: arg,
         };
       },
       providesTags: ["order"],
@@ -155,7 +156,7 @@ export const orderApi = baseApi.injectEndpoints({
         method: "PATCH",
         data: data.body,
       }),
-      invalidatesTags: ["order", 'admin-orders','notification'],
+      invalidatesTags: ["order"],
     }),
     deleteOrder: build.mutation({
       query: (id) => {

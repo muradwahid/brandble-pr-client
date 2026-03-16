@@ -274,7 +274,8 @@ import { SOCKET_EVENTS } from "../../../../contexts/socketEvents";
 const Chat = () => {
   const user = getUserInfo();
   const { data: admin, isLoading } = useGetAdminQuery();
-  const { socket, isConnected, connectSocket } = useSocket();
+  // const { socket, isConnected, connectSocket } = useSocket();
+  const { socket } = useSocket();
 
   const [selectedChat, setSelectedChat] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -321,10 +322,10 @@ const Chat = () => {
   // -------------------------
   // Socket connect (only once)
   // -------------------------
-  useEffect(() => {
-    if (!user?.id) return;
-    if (!isConnected) connectSocket(user);
-  }, [user?.id, isConnected, connectSocket, user]);
+  // useEffect(() => {
+  //   if (!user?.id) return;
+  //   if (!isConnected) connectSocket(user);
+  // }, [user?.id, isConnected, connectSocket, user]);
 
   // -------------------------
   // API: load messages

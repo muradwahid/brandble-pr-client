@@ -1,16 +1,17 @@
 import { PiMagnifyingGlassLight } from "react-icons/pi";
 import Table from "./Table";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import Pagination from "../../../common/Pagination";
 import Chat from "./Chat";
 import { useOrdersQuery } from "../../../../redux/api/orderApi";
 import { debounce } from "lodash";
+import { useSocketListener } from "../../../../hooks/useSocketListener";
 
 const DashboardPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState();
-  const [statusFilter, setStatusFilter] = useState();
+  const [statusFilter, setStatusFilter] = useState('');
 
   // Query parameters based on your server interface
   const queryParams = {
@@ -19,7 +20,10 @@ const DashboardPage = () => {
     ...(searchTerm && { searchTerm }),
     ...(statusFilter && { status: statusFilter }),
   };
-  const { data, isLoading } = useOrdersQuery(queryParams);
+  const { data, isLoading, refetch } = useOrdersQuery(queryParams);
+  useSocketListener("order_updated", () => {
+    refetch();
+  }, [refetch]);
 
   const meta = data?.orders?.meta || { page: 1, limit: 10, total: 0 };
   const ordersData = data?.orders?.data || [];
@@ -28,13 +32,10 @@ const DashboardPage = () => {
   const totalPages = Math.ceil(meta.total / meta.limit);
 
   // Debounced search function
-  const debouncedSearch = useCallback(
-    debounce((searchValue) => {
+  const debouncedSearch = debounce((searchValue) => {
       setSearchTerm(searchValue);
-      setCurrentPage(1); // Reset to first page when searching
-    }, 500),
-    []
-  );
+      setCurrentPage(1);
+    }, 500)
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
@@ -58,7 +59,6 @@ const DashboardPage = () => {
     }
   };
 
-
   if (isLoading) { 
     return <div className="h-[70vh] w-full flex justify-center items-center">Loading...</div>;
   } 
@@ -66,10 +66,10 @@ const DashboardPage = () => {
 
   return (
     <div className="w-full overflow-x-auto">
-      {meta.total < 1 ? <h3 className="text-2xl text-[#222425] font-glare">
+      {meta?.totalOrders < 1 ? <h3 className="text-2xl text-[#222425] font-glare">
         Dashboard
       </h3>:null}
-      {meta.total  ? <>
+      {meta?.totalOrders > 0 ? <>
       <div className="lg:flex justify-between items-center border-b border-[#DCDEDF] pb-4">
         <div className="md:flex gap-8 items-center w-full">
           <h3 className="text-2xl text-[#222425] font-glare">
@@ -77,7 +77,7 @@ const DashboardPage = () => {
           </h3>
           <div className="w-full flex items-center justify-between">
             <select value={statusFilter} onChange={handleStatusChange} className="text-[#878C91] text-[14px] border border-[#B2B5B8] lg:w-[180px] lg:h-[34px] w-[120px] h-[26px] px-2 rounded-[4px] focus:outline-2 focus:outline-[#004A87] md:mt-0 mt-1.5">
-              <option className="text-[#878C91]" disabled defaultValue="status">
+              <option className="text-[#878C91]" value='' disabled defaultValue="status" defaultChecked>
                 Status
               </option>
               <option value="published">Published</option>
@@ -108,10 +108,9 @@ const DashboardPage = () => {
         <select
           value={itemsPerPage}
           onChange={handleItemsPerPageChange}
-          defaultValue="10"
           className="text-[#878C91] text-[14px] border border-[#B2B5B8] sm:px-2 sm:py-[5.5px] focus:outline-2 focus:outline-[#004A87] sm:h-auto h-[27px]"
         >
-          <option value="5" defaultValue="5">
+          <option value="5">
             5 Result
           </option>
           <option value="10">10 Result</option>

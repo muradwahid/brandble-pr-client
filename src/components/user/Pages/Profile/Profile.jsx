@@ -88,8 +88,8 @@ const Profile = () => {
           form="brandable-profile-form"
           disabled={isLoading}
           className="bg-[#171819] hover:shadow-xl transition-all ease-in-out duration-300 text-[15px] text-white py-1.5 px-5 cursor-pointer flex items-center gap-3"
-        >Save Changes
-          {isLoading && <LoadingIcon fill='#fff' style={{ height: "20px" }} />}
+        >{isLoading ? 'Saving...' :'Save Changes'}
+          {/* {isLoading && <LoadingIcon fill='#fff' style={{ height: "20px" }} />} */}
         </button>
       </div>
       {/* profile image */}

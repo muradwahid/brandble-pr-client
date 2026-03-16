@@ -4,6 +4,7 @@ import { LuCheckCheck } from 'react-icons/lu';
 import { Link } from 'react-router';
 import { useGetNotificationsQuery, useMarkAllAsReadMutation } from '../../../../redux/api/notificationApi';
 import NotificationItem from './NotificationItem';
+import { useSocketListener } from '../../../../hooks/useSocketListener';
 
 const NavBarNotification = forwardRef(function NavBarNotification(
   { seToggleNotification },
@@ -11,16 +12,12 @@ const NavBarNotification = forwardRef(function NavBarNotification(
 ) {
   const notifArg = useMemo(() => ({ limit: 20 }), []);
 
-  const notifOptions = useMemo(
-    () => ({
-      pollingInterval: 3000000, 
-      skipPollingIfUnfocused: true,
-    }),
-    []
-  );
 
+  const { data: notificationsData, refetch } = useGetNotificationsQuery(notifArg);
 
-  const { data: notificationsData } = useGetNotificationsQuery(notifArg, notifOptions);
+  useSocketListener("order_updated", () => {
+    refetch();
+  }, [refetch]);
 
   const [markAllAsRead] = useMarkAllAsReadMutation();
 

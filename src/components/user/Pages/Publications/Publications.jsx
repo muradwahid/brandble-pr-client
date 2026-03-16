@@ -91,7 +91,6 @@ const Publications = () => {
   };
 
   const { data, isLoading, isFetching } = usePublicationsQuery(filters);
-  console.log(scope);
 
 
   const { meta = {} } = data || {}
@@ -189,7 +188,10 @@ const addToCard = (cardData) => {
                 <input
                   type="text"
                   placeholder="Search Here..."
-                  onChange={e => setSearch(e.target.value)}
+                onChange={e => {
+                  setSearch(e.target.value)
+                  setCurrentPage(1)
+                  }}
                   className="w-full lg:w-[498px] md:w-[250px] border border-[#B2B5B8] py-1.5 px-3 text-[14px] focus:outline-2 focus:outline-[#004A87] text-[#5F6368] placeholder-[#5F6368] bg-[#F6F7F7]"
                 />
               </div>

@@ -39,7 +39,7 @@ export default function LocationFilter({ locationRef, onChange = () => { }, scop
                     .map((country,idx) => (
                       <div
                         key={`${country?.name}-${idx}`}
-                        onClick={() => onChange({ ...filterData, country: country?.name })}
+                        onClick={() => onChange({ state: '', city: '', scope: '', country: country?.name })}
                         className={`px-2 mb-0.5 py-1 text-left text-[#5F6368] text-sm cursor-pointer hover:bg-[#DCDEDF] ${filterData?.country===country?.name ? "bg-[#DCDEDF]" : ""
                           }`}
                       >
@@ -74,7 +74,7 @@ export default function LocationFilter({ locationRef, onChange = () => { }, scop
                     )?.map((state,idx) => (
                       <div
                         key={`${state?.name}-${idx}`}
-                        onClick={() => onChange({ ...filterData, state: state?.name })}
+                        onClick={() => onChange({ country: '', city: '', scope: '', state: state?.name })}
                         className={`px-2 mb-0.5 py-1 text-left text-[#5F6368] text-sm cursor-pointer hover:bg-[#DCDEDF] ${filterData?.state===state?.name ? "bg-[#DCDEDF]" : ""
                           }`}
                       >
@@ -105,7 +105,7 @@ export default function LocationFilter({ locationRef, onChange = () => { }, scop
                   data?.cities.filter((city) => city?.name?.toLowerCase()?.includes(locationSearch?.toLowerCase()))?.map((city,idx) => (
                       <div
                         key={`${city?.name}-${idx}`}
-                        onClick={() =>onChange({ ...filterData, city: city?.name })}
+                      onClick={() => onChange({ country: '', state: '', scope: '', city: city?.name })}
                       className={`px-2 mb-0.5 py-1 text-left text-[#5F6368] text-sm cursor-pointer hover:bg-[#DCDEDF] ${filterData?.city ===city?.name ? "bg-[#DCDEDF]" : ""
                           }`}
                       >
@@ -128,7 +128,7 @@ export default function LocationFilter({ locationRef, onChange = () => { }, scop
                   scopeData.map((scopeName, idx) => (
                     <div
                       key={`${scopeName}-${idx}`}
-                      onClick={() => onChange({ ...filterData, scope: scopeName })}
+                      onClick={() => onChange({ country: '',  state: '', city: '', scope: scopeName })}
                       className={`px-2 mb-0.5 py-1 text-left capitalize text-[#5F6368] text-sm cursor-pointer hover:bg-[#DCDEDF] ${filterData?.scope === scopeName ? "bg-[#DCDEDF]" : ""
                         }`}
                     >

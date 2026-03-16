@@ -374,7 +374,8 @@ const MyMessages = () => {
   const user = getUserInfo();
   // eslint-disable-next-line no-unused-vars
   const { data: admin } = useGetAdminQuery();
-  const { socket, isConnected, connectSocket, emit } = useSocket();
+  // const { socket, isConnected, connectSocket, emit } = useSocket();
+  const { socket, emit } = useSocket();
 
   const [orderChats, setOrderChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
@@ -510,10 +511,10 @@ const MyMessages = () => {
   }, [user?.id, selectedChat, selectChat]);
 
   // ---------- connect socket ----------
-  useEffect(() => {
-    if (!user?.id) return;
-    if (!isConnected) connectSocket(user);
-  }, [user?.id, isConnected, connectSocket, user]);
+  // useEffect(() => {
+  //   if (!user?.id) return;
+  //   if (!isConnected) connectSocket(user);
+  // }, [user?.id, isConnected, connectSocket, user]);
 
   // ---------- initial load ----------
   useEffect(() => {

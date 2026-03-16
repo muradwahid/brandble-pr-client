@@ -1,27 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
-import {
-  AdultIcon,
-  ArrowDownIcon,
-  ArrowUploadCircleIcon,
-  BitcoinIcon,
-  CampaignIcon,
-  CardiologyIcon,
-  CasinoIcon,
-  ClearAllIcon,
-  CurrencyIcon,
-  DownloadDownIcon,
-  GenreIcon,
-  OrderIconCalender,
-  PublicationBadgeIcon,
-  ServicesIcon,
-  SpaIcon,
-  UserIcon,
-} from "../../../../utils/icons";
+import { AdultIcon, ArrowDownIcon, ArrowUploadCircleIcon, BitcoinIcon, CampaignIcon, CardiologyIcon, CasinoIcon, ClearAllIcon, CurrencyIcon, DownloadDownIcon, GenreIcon, OrderIconCalender, PublicationBadgeIcon, ServicesIcon, SpaIcon, UserIcon } from "../../../../utils/icons";
 import AdminPagination from "../../../common/AdminPagination";
 import Dropdown from "./Dropdown";
 import { useAdminOrdersQuery } from "../../../../redux/api/orderApi";
 import { formattedDate } from "../../../../utils/function";
+import { useSocketListener } from "../../../../hooks/useSocketListener";
 
 const TotalOrders = () => {
   const [queryParams, setQueryParams] = useState({});
@@ -47,7 +31,12 @@ const TotalOrders = () => {
     }),
   }
 
-  const {data, isLoading,} = useAdminOrdersQuery(queryOptions);
+  const { data, isLoading, refetch } = useAdminOrdersQuery(queryOptions);
+  
+    useSocketListener("order_updated", () => {
+      refetch();
+    }, [refetch]);
+
   const ordersData = data?.orders?.data || [];
   const meta = data?.orders?.meta || { page: 1, limit: 10, total: 0 };
   const totalPages = Math.ceil((meta.total || 0) / itemsPerPage);
@@ -61,6 +50,8 @@ const TotalOrders = () => {
       // window.scrollTo(0, 0);
     }
   };
+
+
 
   useEffect(() => {
     function handleClick(event) {
@@ -94,6 +85,7 @@ const TotalOrders = () => {
   if (isLoading) {
     return <div className="text-[#5F6368] flex items-center justify-center h-[60dvh] w-full">Loading...</div>
   }
+
   return (<>
     {
       meta?.total >0?
@@ -296,8 +288,8 @@ const TotalOrders = () => {
                   </td>
                   <td className="px-3 py-3 text-nowrap">{formattedDate(order?.createdAt)}</td>
                   <td className="px-3 py-3 text-nowrap">
-                    <button className={`rounded-sm px-3 py-1 text-white ${order?.status == 'processing'?'bg-[#36b37E]':order?.status=='published'?'bg-[#008cff]':'bg-[#FFAB00]'}`}>
-                      Pending
+                    <button className={`rounded-sm px-3 py-1 text-white capitalize ${order?.status == 'processing'?'bg-[#36b37E]':order?.status=='published'?'bg-[#008cff]':'bg-[#FFAB00]'}`}>
+                      {order?.status}
                     </button>
                   </td>
                 </tr>

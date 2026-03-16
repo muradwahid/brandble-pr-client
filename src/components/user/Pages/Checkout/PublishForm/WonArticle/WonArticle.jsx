@@ -5,6 +5,7 @@ import { LoadingIcon, UploadFileIcon } from '../../../../../../utils/icons';
 import { useState } from 'react';
 import { useUpdateOrderMutation } from '../../../../../../redux/api/orderApi';
 import { useParams } from 'react-router';
+import UploadFileField from '../../../../../ui/UploadFileField/UploadFileField';
 const WonArticle = ({ setPublishPopup }) => {
   const {id} = useParams()
   const [fileName, setFileName] = useState([])
@@ -12,7 +13,7 @@ const WonArticle = ({ setPublishPopup }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors }, reset
+    formState: { errors }, reset,control
   } = useForm();
 
   const [addWonArticle, { isLoading }] = useAddWonArticleMutation();
@@ -141,6 +142,18 @@ const WonArticle = ({ setPublishPopup }) => {
               className={`px-3 py-2 bg-[#F6F7F7] border border-[#DCDEDF] outline-none text-[#5F6368] placeholder-[#B2B5B8] placeholder:font-normal w-full resize-none`}
               placeholder="Type your message here..."
             />
+          </div>
+          <div className='mt-5'>
+            <label
+              htmlFor="message"
+              className="text-sm text-[#5F6368] mb-3 flex gap-1"
+            >
+              Attach image(s)
+              <span className="text-[#B2B5B8]">(optional)</span>
+            </label>
+          <UploadFileField register={register} name="firstImg" isOptional={true} control={control} className='rounded-none mt-5' />
+          <UploadFileField register={register} name="secondImg" isOptional={true} control={control} className='rounded-none mt-5' />
+          <UploadFileField register={register} name="thirdImg" isOptional={true} control={control} className='rounded-none mt-5' />
           </div>
           <div className="flex justify-end mt-10">
             <button

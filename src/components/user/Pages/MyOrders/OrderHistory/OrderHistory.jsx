@@ -4,6 +4,7 @@ import { CirclePen, CopyIcon } from "../../../../../utils/icons";
 import Pagination from "../../../../common/Pagination";
 import {  usePublishedOrdersQuery } from "../../../../../redux/api/orderApi";
 import { formattedDate } from "../../../../../utils/function";
+import { useSocketListener } from "../../../../../hooks/useSocketListener";
 
 const OrderHistory = () => {
 
@@ -26,12 +27,14 @@ const OrderHistory = () => {
     };
   }, [inputSearch]);
 
-  const { data, isLoading } = usePublishedOrdersQuery({
+  const { data, isLoading,refetch } = usePublishedOrdersQuery({
     page: currentPage,
     limit: itemsPerPage,
     ...(debouncedSearch && { searchTerm: debouncedSearch })
   });
-
+  useSocketListener("order_updated", () => {
+    refetch();
+  }, [refetch]);
   // Extract data from response
   const ordersData = data?.data || [];
   const meta = data?.meta || {
@@ -178,7 +181,7 @@ const OrderHistory = () => {
             value={itemsPerPage}
             onChange={(e) => setItemsPerPage(e.target.value)}
         >
-          <option value="5" defaultValue="5">
+          <option value="5">
             5 Result
           </option>
           <option value="10">10 Result</option>

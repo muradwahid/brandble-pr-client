@@ -89,7 +89,16 @@ const StepOne = ({ register,errorMessage,isLoading,data }) => {
           id="socialMediaLink"
           name="socialMediaLink"
           {...register("socialMediaLink", {
-            required: "website(s) and/or social media address is required.",
+            // required: "website(s) and/or social media address is required.",
+            validate: value => { 
+              if (!value?.trim()) return true;
+              try {
+                new URL(value);
+                return true;
+              } catch {
+                return "Please enter a valid URL";
+              }
+            }
           })}
           className={`${inputCls} mt-2`}
           placeholder="Link Here..."
@@ -105,7 +114,16 @@ const StepOne = ({ register,errorMessage,isLoading,data }) => {
           type="text"
           id="blockContentLink"
           {...register("blockContentLink", {
-            required: "Blog posts, Articles address is required.",
+            // required: "Blog posts, Articles address is required.",
+            validate: value => {
+              if (!value?.trim()) return true;
+              try {
+                new URL(value);
+                return true;
+              } catch {
+                return "Please enter a valid URL";
+              }
+            }
           })}
           className={`${inputCls} mt-2`}
           placeholder="Link Here..."
@@ -124,7 +142,16 @@ const StepOne = ({ register,errorMessage,isLoading,data }) => {
           type="text"
           id="additionalLink"
           {...register("additionalLink", {
-            required: "Blog posts, Articles address is required.",
+            // required: "Website/Social media address is required.",
+            validate: value => {
+              if (!value?.trim()) return true;
+              try {
+                new URL(value);
+                return true;
+              } catch {
+                return "Please enter a valid URL";
+              }
+            }
           })}
           className={`${inputCls} mt-2`}
           placeholder="Link Here..."

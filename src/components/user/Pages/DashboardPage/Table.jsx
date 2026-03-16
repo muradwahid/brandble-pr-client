@@ -59,7 +59,7 @@ const Table = ({ data }) => {
                       : "bg-[#008CFF]"
                   }`}
                 >
-                  {order.status}
+                  {order?.status ==='unabletopublish' ? 'unable to publish' : order.status}
                 </button>
               </td>
               <td className="px-3 py-3 cursor-pointer capitalize">
