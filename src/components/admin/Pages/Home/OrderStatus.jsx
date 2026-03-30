@@ -130,7 +130,7 @@ const OrderStatus = () => {
                         <p className="w-[16px] h-[16px] bg-[#7900FA] rounded-[6px]"></p>
                         <p className="text-[#5F6368] text-sm">New Client</p>
                       </div>
-                      <p className="text-[#5F6368] text-sm">{data?.currentPeriod?.newClient || 0}</p>
+                      <p className="text-[#5F6368] text-sm">{data?.currentPeriod?.newClients || 0}</p>
                     </div>
                     <div className="flex justify-between">
                       <div className="flex items-center gap-2">
@@ -192,7 +192,7 @@ const OrderStatus = () => {
                 <div className="flex mb-11 justify-between">
                   <p className="text-[#5F6368]">Publication</p>
                   <div>
-                    <p className="text-xl text-[#171819] font-medium">2024</p>
+                    <p className="text-xl text-[#171819] font-medium">2026</p>
                     <p className="text-[#5F6368] text-sm mt-1.5">
                       Total publication
                     </p>

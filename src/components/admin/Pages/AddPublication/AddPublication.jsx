@@ -446,7 +446,7 @@ const AddPublication = () => {
                 />
               </div>
             </label>
-            <label htmlFor="">
+            {/* <label htmlFor="">
               <p className="font-glare text-[#5F6368] font-normal tracking-[-0.1px] mb-1.5">
                 Location
               </p>
@@ -462,7 +462,7 @@ const AddPublication = () => {
                   {errors.location.message}
                 </span>
               )}
-            </label>
+            </label> */}
 
           </div>
           <div className="flex justify-end">
