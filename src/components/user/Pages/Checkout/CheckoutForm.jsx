@@ -83,7 +83,7 @@ const CheckoutForm = ({selectedMethod, setSelectedMethod }) => {
   const countryLongName = methodData?.country
     ? new Intl.DisplayNames(['en'], { type: "region" }).of(methodData.country)
     : "";
-  console.log(methodData);
+
   const inputCls = ` px-3 py-2 bg-[#F6F7F7] border border-[#DCDEDF] outline-none text-[#5F6368] placeholder-[#B2B5B8] placeholder:font-normal w-full`;
 
   return (
