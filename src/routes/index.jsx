@@ -6,14 +6,11 @@ import Favorite from "../components/user/Pages/Favorite/Favorite";
 import MyArticles from "../components/user/Pages/MyArticles/MyArticles";
 import MyMessages from "../components/user/Pages/MyMessages/MyMessages";
 import OrderHistory from "../components/user/Pages/MyOrders/OrderHistory/OrderHistory";
-import Details from "../components/user/Pages/MyOrders/RunningOrder/Order/Details/Details";
-import Order from "../components/user/Pages/MyOrders/RunningOrder/Order/Order";
 import RunningOrder from "../components/user/Pages/MyOrders/RunningOrder/RunningOrder";
 import Notification from "../components/user/Pages/Notification/Notification";
 import Payment from "../components/user/Pages/Payment/Payment";
 import Profile from "../components/user/Pages/Profile/Profile";
 import Publications from "../components/user/Pages/Publications/Publications";
-import RunningOrderLayout from "../layout/RunningOrderLayout";
 import UserLayout from "../layout/UserLayout";
 import UserMyOrderLayout from "../layout/UserMyOrderLayout";
 import AdminLayout from "../layout/AdminLayout";
@@ -32,6 +29,7 @@ import OrderDetails from "../components/admin/Pages/TotalOrders/OrderDetails";
 import Login from "../components/auth/Login";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 import RegisterForm from "../components/auth/RegisterForm";
+import OrderDetailsPage from "../components/user/Pages/MyOrders/OrderDetailsPage/OrderDetailsPage";
 
 
 const router = createBrowserRouter([
@@ -118,18 +116,8 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/user/orders/running/:id",
-    element:<PrivateRoute><RunningOrderLayout /></PrivateRoute> ,
-    children: [
-      {
-        index: true,
-        element:<PrivateRoute><Order /></PrivateRoute> ,
-      },
-      {
-        path: "/user/orders/running/:id/details",
-        element:<PrivateRoute><Details /></PrivateRoute>,
-      },
-    ],
+    path: "/user/orders/details/:id",
+    element: <PrivateRoute><OrderDetailsPage /></PrivateRoute> ,
   },
   {
     path: "/user/checkout/order-submit/:id",

@@ -23,7 +23,7 @@ const RunningOrder = () => {
     limit: itemsPerPage
   });
 
-  useSocketListener("order_updated", () => {
+  useSocketListener("new_notification", () => {
     refetch();
   }, [refetch]);
 
@@ -90,7 +90,7 @@ const RunningOrder = () => {
           </thead>
           <tbody className=" text-[#36383A]">
             {orderData?.map((item, index) => {
-              const hrefTo = item.orderType === 'wonArticle' ? `/user/orders/running/${item.id}` : `/user/orders/running/${item.id}/details`;
+              const hrefTo =`/user/orders/details/${item.id}`;
               return <tr
                 key={index}
                 className="border-t border-[#DCDEDF] hover:bg-[#DCDEDF] transition-all duration-300 "

@@ -21,7 +21,7 @@ const DashboardPage = () => {
     ...(statusFilter && { status: statusFilter }),
   };
   const { data, isLoading, refetch } = useOrdersQuery(queryParams);
-  useSocketListener("order_updated", () => {
+  useSocketListener("new_notification", () => {
     refetch();
   }, [refetch]);
 

@@ -73,7 +73,7 @@ const Cart = ({ selectedMethod, setCheckoutPopup }) => {
       }
 
       if (successItems.length > 0) {
-        toast.success('Order placed successfully for ');
+        // toast.success('Order placed successfully for ');
         setCheckoutPopup(true);
       }
 

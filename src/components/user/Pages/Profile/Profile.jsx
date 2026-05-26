@@ -1,10 +1,13 @@
-import {  useState } from "react";
+import { useState } from "react";
 import { AddImageIcon, LoadingIcon, PenIcon } from "../../../../utils/icons";
 import { RxCross2 } from "react-icons/rx";
 import { Link } from "react-router";
-import { useUpdateUserMutation, useUserQuery } from '../../../../redux/api/authApi';
-import toast from 'react-hot-toast';
-import { useForm } from 'react-hook-form';
+import {
+  useUpdateUserMutation,
+  useUserQuery,
+} from "../../../../redux/api/authApi";
+import toast from "react-hot-toast";
+import { useForm } from "react-hook-form";
 import { getUserInfo } from "../../../../helpers/user/user";
 import ResetPassword from "../../../common/ResetPassword/ResetPassword";
 
@@ -12,22 +15,20 @@ const Profile = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [general, setGeneral] = useState(true);
   const [security, setSecurity] = useState(true);
-  const [showResetModal, setShowResetModal] = useState(false)
-
+  const [showResetModal, setShowResetModal] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors }, setValue
+    formState: { errors },
+    setValue,
   } = useForm();
-
 
   const user = getUserInfo();
 
-  const { data = {},isLoading: isUserLoading} = useUserQuery(user?.id || '');
+  const { data = {}, isLoading: isUserLoading } = useUserQuery(user?.id || "");
 
   const [updateUser, { isLoading }] = useUpdateUserMutation();
-
 
   const onSubmit = async (d) => {
     const obj = { ...d };
@@ -39,9 +40,13 @@ const Profile = () => {
       formData.append("file", logo);
     }
 
-    const validData = {}
+    const validData = {};
     Object.keys(publicationData).forEach((key) => {
-      if (publicationData[key] !== '' && publicationData[key] !== undefined && publicationData[key] !== null) {
+      if (
+        publicationData[key] !== "" &&
+        publicationData[key] !== undefined &&
+        publicationData[key] !== null
+      ) {
         if (Array.isArray(publicationData[key])) {
           validData[key] = JSON.stringify(publicationData[key]);
         } else {
@@ -52,13 +57,11 @@ const Profile = () => {
 
     if (validData) {
       formData.append("data", JSON.stringify(validData));
-
     }
 
     if (formData) {
-
       try {
-        await updateUser({ id:user?.id, body: formData });
+        await updateUser({ id: user?.id, body: formData });
         toast.success("User profile updated successfully");
         setGeneral(true);
         setSecurity(true);
@@ -67,20 +70,25 @@ const Profile = () => {
         toast.error(err.message);
       }
     }
-  }
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setValue('image', file)
+    setValue("image", file);
     if (file) {
       setImagePreview(URL.createObjectURL(file));
     }
   };
 
-
   return (
-    <div className="xl:w-[650px] lg:w-full 2xl:ml-52 xl:ml-48 lg:ml-32 md:ml-6">
-      {showResetModal && <ResetPassword userInfo={data} key={isUserLoading} setShowResetModal ={setShowResetModal} /> }
+    <div className="xl:w-[650px] lg:w-full 2xl:ml-52 xl:ml-48 lg:ml-32 md:ml-6 max-w-[735px]">
+      {showResetModal && (
+        <ResetPassword
+          userInfo={data}
+          key={isUserLoading}
+          setShowResetModal={setShowResetModal}
+        />
+      )}
       <div className="border-b-[1px] border-[#b2b5b8] pb-5 flex items-center justify-between flex-wrap gap-3">
         <h3 className="text-[#222425] text-2xl">Profile</h3>
         <button
@@ -88,43 +96,39 @@ const Profile = () => {
           form="brandable-profile-form"
           disabled={isLoading}
           className="bg-[#171819] hover:shadow-xl transition-all ease-in-out duration-300 text-[15px] text-white py-1.5 px-5 cursor-pointer flex items-center gap-3"
-        >{isLoading ? 'Saving...' :'Save Changes'}
+        >
+          {isLoading ? "Saving..." : "Save Changes"}
           {/* {isLoading && <LoadingIcon fill='#fff' style={{ height: "20px" }} />} */}
         </button>
       </div>
       {/* profile image */}
-      <div className="lg:flex mt-4" >
-        <h4 className="text-[#36383A] text-[20px] flex-1 font-glare">
-          Image
-        </h4>
+      <div className="lg:flex mt-4">
+        <h4 className="text-[#36383A] text-[20px] flex-1 font-glare">Image</h4>
         <div className="flex-[1.5] w-fit mt-3 lg:mt-0">
-          <div className='xl:w-[125px] xl:h-[125px] lg:w-[100px] lg:h-[100px] md:w-[80px] h-[80px] w-[80px] bg-[#E6E6E6] relative'>
-            <label
-              className="w-fit flex cursor-pointer"
-              htmlFor="profileImage"
-            >
-              <div className='xl:w-[125px] xl:h-[125px] lg:w-[100px] lg:h-[100px] md:w-[80px] h-[80px] w-[80px] bg-[#E6E6E6] relative'>
+          <div className="xl:w-[125px] xl:h-[125px] lg:w-[100px] lg:h-[100px] md:w-[80px] h-[80px] w-[80px] bg-[#E6E6E6] relative">
+            <label className="w-fit flex cursor-pointer" htmlFor="profileImage">
+              <div className="xl:w-[125px] xl:h-[125px] lg:w-[100px] lg:h-[100px] md:w-[80px] h-[80px] w-[80px] bg-[#E6E6E6] relative">
                 <PenIcon className="absolute top-0 right-[0px] translate-x-[50%] translate-y-[-50%] bg-white rounded-full" />
-                {
-                  (imagePreview || data?.image) &&
+                {(imagePreview || data?.image) && (
                   <img
-                  className="w-full h-full object-contain"
-                  src={`${imagePreview || data?.image}`}
-                  alt=""
+                    className="w-full h-full object-contain"
+                    src={`${imagePreview || data?.image}`}
+                    alt=""
                   />
-                }
-                {
-                  data?.image ? "" : !imagePreview &&
-                    <AddImageIcon className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-                }
+                )}
+                {data?.image
+                  ? ""
+                  : !imagePreview && (
+                      <AddImageIcon className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+                    )}
                 <input
                   className="hidden"
                   type="file"
                   name="image"
-                  {...register('image')}
+                  {...register("image")}
                   id="profileImage"
                   onChange={(e) => {
-                    handleImageChange(e)
+                    handleImageChange(e);
                   }}
                   accept="image/*"
                 />
@@ -133,10 +137,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        id="brandable-profile-form"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} id="brandable-profile-form">
         {/* general Information */}
         <div className="lg:flex  items-start mt-16">
           <h4 className="text-[#36383A] text-[20px] flex-1 flex justify-between font-glare">
@@ -179,11 +180,11 @@ const Profile = () => {
                 className="w-full text-[#36383A] text-[15px] py-1.5 px-2 border-1 border-[#DCDEDF] focus:outline-2 focus:outline-[#004A87]"
                 defaultValue={data?.name}
               />
-             {errors?.name && (
+              {errors?.name && (
                 <span className="text-red-400 text-xs">
                   {errors?.name.message}
                 </span>
-              )} 
+              )}
             </div>
             <div className="flex flex-col gap-1.5 mt-5">
               <label className="text-[#878C91] text-[14px]" htmlFor="company">
@@ -235,7 +236,44 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        {/* security Information */}
+        {/* Notification */}
+        <div className="lg:flex items-start mt-16">
+          <h4 className="text-[#36383A] text-[20px] flex-1 flex justify-between font-glare">
+            Notification
+          </h4>
+          <div className="flex-[1.5] border-1 border-[#DCDEDF]">
+            <h4 className="text-[#5F6368] font-poppins font-medium leading-[140%] tracking-[0px] border-b border-[#DCDEDF] pb-2 mb-5 mx-4 pt-4">Get Updates</h4>
+            <label
+              htmlFor="notifyMail"
+              className="text-[#878C91] font-poppins flex items-start gap-4 px-4"
+            >
+              <input
+                type="checkbox"
+                id="notifyMail"
+                key={`notifyMail-${data?.notifyMail}`}
+                defaultChecked={data?.notifyMail}
+                {...register("notifyMail")}
+                className="cursor-pointer flex mt-0.5 h-[18px] w-[20px] appearance-none  border-1  rounded  checked:bg-[#36383A]  checked:border-[#36383A]  transition-all duration-200 relative after:absolute after:hidden checked:after:block after:left-[6px] after:top-[2px] after:w-[5px] after:h-[10px] after:border-white after:border-r-2 after:border-b-2 after:rotate-45"
+              />
+              Send order updates notification to my Email
+            </label>
+            <label
+              htmlFor="notifySMS"
+              className="text-[#878C91] font-poppins flex items-start gap-4 mt-5 px-4 mb-4"
+            >
+              <input
+                type="checkbox"
+                id="notifySMS"
+                key={`notifySMS-${data?.notifySMS}`}
+                defaultChecked={data?.notifySMS}
+                {...register("notifySMS")}
+                className="cursor-pointer mt-0.5 h-[18px] w-[18px] appearance-none  border-1  rounded  checked:bg-[#36383A]  checked:border-[#36383A]  transition-all duration-200 relative after:absolute after:hidden checked:after:block after:left-[6px] after:top-[2px] after:w-[5px] after:h-[10px] after:border-white after:border-r-2 after:border-b-2 after:rotate-45"
+              />
+              Send order updates SMS to my phone
+            </label>
+          </div>
+        </div>
+        {/* security */}
         <div className="lg:flex items-start mt-16">
           <h4 className="text-[#36383A] text-[20px] flex-1 flex justify-between font-glare">
             Security
@@ -290,7 +328,10 @@ const Profile = () => {
                 <label className="text-[#878C91] text-[14px]" htmlFor="company">
                   Password
                 </label>
-                <p onClick={() => setShowResetModal(true)} className="text-[#878C91] text-[14px] underline cursor-pointer">
+                <p
+                  onClick={() => setShowResetModal(true)}
+                  className="text-[#878C91] text-[14px] underline cursor-pointer"
+                >
                   Change Password
                 </p>
               </div>

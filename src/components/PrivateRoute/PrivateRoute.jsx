@@ -9,7 +9,7 @@ const PrivateRoute = ({ children }) => {
   const currentPath = location.pathname;
   const redirectToSignin = useRedirectSignin();
   // Redirect if not logged in
-  if (!userInfo || !loggedIn) {
+  if (!userInfo?.id || !loggedIn) {
     redirectToSignin()
     return;
     // return (
@@ -23,6 +23,9 @@ const PrivateRoute = ({ children }) => {
 
   const isAdmin = userInfo?.role === "admin" || userInfo?.role === "super-admin";
   const isClient = userInfo?.role === "client";
+
+
+  
 
   // Prevent redirect loop by checking current path
   if (isClient && currentPath.startsWith("/admin")) {

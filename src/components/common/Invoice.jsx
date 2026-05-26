@@ -1,106 +1,100 @@
-const formatCurrency = (amount) => {
-  // Ensure the amount is a number before formatting
-  const numericAmount = parseFloat(amount);
-  if (isNaN(numericAmount)) return '$0.00';
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(numericAmount);
-};
-
-
-
 /**
  * Main Invoice Component - Renders the invoice using provided data.
  */
 const Invoice = ({ data, ref }) => {
-  // Calculate totals
-  const subtotal = data.items.reduce((sum, item) => sum + (item.quantity * item.unitPrice), 0);
-  const taxAmount = subtotal * (data.taxRate / 100);
-  const totalDue = subtotal + taxAmount;
-
-  // Determine status styling
-  let statusClass = 'text-red-600';
-  if (data.paymentStatus.toUpperCase() === 'PAID') {
-    statusClass = 'text-green-600';
-  } else if (data.paymentStatus.toUpperCase() === 'PENDING') {
-    statusClass = 'text-orange-600';
-  }
-
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day}`;
+  const totalAmount = data?.reduce((sum, item) => sum + item.amount, 0);
   return (
     <div ref={ref} id="invoice-content" className="bg-white p-4 sm:p-10 rounded-xl shadow-2xl max-w-4xl mx-auto">
 
       {/* Header Section */}
-      <header className="flex justify-between items-start pb-6 border-b border-gray-200">
-        <div>
-          <h2 className="text-4xl font-extrabold text-indigo-700">INVOICE</h2>
-          <p className="text-sm text-gray-500">#{data.id}</p>
-        </div>
-        <div className="text-right">
-          <p className="font-semibold text-gray-800">{data.company.name}</p>
-          <p className="text-sm text-gray-600">{data.company.address}</p>
-          <p className="text-sm text-gray-600">{data.company.email}</p>
-        </div>
-      </header>
+      <div className="max-w-[700px] w-full mx-auto bg-white p-10">
 
-      {/* Billing & Date Section */}
-      <section className="flex justify-between mt-8 mb-10 text-sm">
-        <div>
-          <h3 className="font-bold text-gray-700 uppercase mb-2">Bill To:</h3>
-          <p className="font-semibold text-gray-800">{data.client.name}</p>
-          <p className="text-gray-600">{data.client.address}</p>
-          <p className="text-gray-600">{data.client.email}</p>
-        </div>
-        <div className="text-right space-y-1">
-          <p><span className="font-semibold text-gray-700">Issue Date:</span> {data.issueDate}</p>
-          <p><span className="font-semibold text-gray-700">Due Date:</span> {data.dueDate}</p>
-          <p><span className="font-semibold text-gray-700">Status:</span> <span className={`${statusClass} font-bold`}>{data.paymentStatus.toUpperCase()}</span></p>
-        </div>
-      </section>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" className="mb-4">
+          <tr>
+            <td valign="top" className="w-[60%]">
+              <img src="https://media.brandable-pr.com/upload/brandable-pr-mail-logo.png" alt="Brandable PR"  className="block h-[54px]" />
+              <p className="m-0 mt-5 text-[#222425] font-sans text-base font-medium leading-[140%]">Austin, Texas</p>
+              <p className="m-0 mt-2 text-[#222425] font-sans text-base font-normal leading-[140%]">&#9742; (512) 698-7373</p>
+              <p className="m-0 mt-2 text-[#222425] font-sans text-base font-normal leading-[140%]">&#9993; hello@brandable-pr.com</p>
+            </td>
+            <td valign="top" className="text-left">
+              <h3 className="m-0 uppercase text-[#222425] font-sans text-base font-semibold leading-[140%]">Invoice</h3>
+              <p className="m-0 mt-1 text-[#5F6368] font-sans text-sm font-medium leading-5">Date: {formattedDate}</p>
+            </td>
+          </tr>
+        </table>
 
-      {/* Items Table */}
-      <section>
-        <div className="bg-indigo-50 rounded-t-lg">
-          <div className="grid grid-cols-12 py-3 px-4 text-xs font-bold text-indigo-700 uppercase">
-            <div className="col-span-6">Description</div>
-            <div className="col-span-2 text-right">Qty</div>
-            <div className="col-span-2 text-right">Unit Price</div>
-            <div className="col-span-2 text-right">Amount</div>
-          </div>
-        </div>
-        <div className="border-b border-gray-200">
-          {data.items.map((item, index) => <div key={index} className="invoice-item-row grid grid-cols-12 py-3 px-4 border-t border-gray-100 text-sm hover:bg-gray-50 break-inside-avoid">
-            <div className="col-span-6 font-medium text-gray-800">{item.description}</div>
-            <div className="col-span-2 text-right text-gray-600">{item.quantity}</div>
-            <div className="col-span-2 text-right text-gray-600">{formatCurrency(item.unitPrice)}</div>
-            <div className="col-span-2 text-right font-semibold text-gray-800">{formatCurrency(item.quantity * item.unitPrice)}</div>
-          </div>)}
-        </div>
-      </section>
 
-      {/* Totals Section */}
-      <section className="flex justify-end mt-6">
-        <div className="w-full max-w-xs space-y-3 text-sm">
-          <div className="flex justify-between font-medium text-gray-700">
-            <span>Subtotal:</span>
-            <span className="font-semibold">{formatCurrency(subtotal)}</span>
-          </div>
-          <div className="flex justify-between font-medium text-gray-700 border-t pt-3">
-            <span>Tax ({data.taxRate}%):</span>
-            <span className="font-semibold">{formatCurrency(taxAmount)}</span>
-          </div>
-          <div className="flex justify-between font-bold text-2xl py-3 border-t-2 border-indigo-600 mt-4">
-            <span>Total Due:</span>
-            <span className="text-indigo-700">{formatCurrency(totalDue)}</span>
-          </div>
-        </div>
-      </section>
+        <div className="border-t border-[#B2B5B8] pt-6"></div>
 
-      {/* Notes and Footer */}
-      <footer className="mt-12 pt-6 border-t border-gray-200 text-center text-xs text-gray-500">
-        <p className="mb-2"><span className="font-semibold text-gray-700">Notes:</span> {data.notes}</p>
-        <p>Generated by React Solutions Co. - Thank you for your continued partnership.</p>
-      </footer>
+
+        <table width="100%" cellPadding="0" cellSpacing="0" border="0">
+          <tr>
+            <td>
+              <p className="m-0 uppercase text-[#004A87] font-sans text-base font-semibold leading-5">Bill to:</p>
+              <p className="m-0 mt-3 text-[#0A0A0A] font-sans text-sm font-semibold leading-5">{data?.[0]?.user?.name}</p>
+              <p className="m-0 mt-2 text-[#4A5565] font-sans text-sm font-normal leading-5">{data?.[0]?.user?.email}</p>
+              <p className="m-0 mt-1 text-[#4A5565] font-sans text-sm font-normal leading-5">{data?.[0]?.user?.phoneNumber}</p>
+            </td>
+          </tr>
+        </table>
+
+        <table width="100%" cellPadding="0" cellSpacing="0" border="0" className="mt-10 border-collapse">
+          <thead>
+            <tr className="bg-[#F2F2F3]">
+              <th className="px-3 py-2 text-[#36383A] font-sans text-sm font-semibold border border-[#DCDEDF] text-left">Publication</th>
+              <th className="px-3 py-2 text-[#36383A] font-sans text-sm font-semibold border border-[#DCDEDF] text-center">QTY</th>
+              <th className="px-3 py-2 text-[#36383A] font-sans text-sm font-semibold border border-[#DCDEDF] text-right">UNIT PRICE</th>
+              <th className="px-3 py-2 text-[#36383A] font-sans text-sm font-semibold border border-[#DCDEDF] text-right">AMOUNT</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data?.map((item, idx) => <tr key={idx}>
+              <td className="p-3 text-sm font-medium text-[#36383A] border border-[#DCDEDF] border-collapse">
+                {item.publication.title}
+              </td>
+              <td className="p-3 text-sm font-medium text-[#36383A] border border-[#DCDEDF] border-collapse">
+                1
+              </td>
+              <td className="p-3 text-sm font-medium text-[#36383A] border border-[#DCDEDF] border-collapse">
+                ${item.amount.toFixed(2)}
+              </td>
+              <td className="p-3 text-sm font-medium text-[#36383A] border border-[#DCDEDF] border-collapse">
+                ${item.amount.toFixed(2)}
+              </td>
+            </tr>)}
+          </tbody>
+        </table>
+
+        <table width="40%" cellPadding="0" cellSpacing="0" border="0" align="right" className="mt-[28px]">
+          <tr>
+            <td className="py-2 text-[#364153] font-sans text-sm font-normal leading-5 border-b border-[#E5E7EB]">Subtotal:</td>
+            <td className="py-2 text-[#36383A] font-sans text-sm font-semibold leading-5 border-b border-[#E5E7EB] text-right">${totalAmount}</td>
+          </tr>
+          <tr>
+            <td className="py-3 text-[#222425] font-sans text-base font-semibold leading-7">Total:</td>
+            <td className="py-3 text-[#222425] font-sans text-base font-semibold leading-7 text-right">{totalAmount}</td>
+          </tr>
+        </table>
+
+        <div className="clear-both"></div>
+
+
+        <table width="100%" cellPadding="0" cellSpacing="0" border="0" className="mt-14">
+          <tr>
+            <td className="p-5 text-center">
+              <p className="m-0 text-[#004A87] font-sans text-lg font-semibold leading-7">Thank you for your business!</p>
+              <p className="m-0 mt-2 text-[#364153] font-sans text-sm leading-5 font-normal">If you have any questions about this invoice, please contact us at <a href="mailto:hello@brandable-pr.com" className="text-[#006AC2] underline">hello@brandable-pr.com</a>.</p>
+            </td>
+          </tr>
+        </table>
+
+      </div>
     </div>
   );
 };

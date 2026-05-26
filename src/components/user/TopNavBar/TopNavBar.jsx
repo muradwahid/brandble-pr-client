@@ -2,75 +2,49 @@
 import { BellIcon, BellIconSecond, CartIcon } from "../../../utils/icons";
 
 //images from assets folder
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router";
 import siteLogo from "../../../assets/logo.png";
 import Cart from "../../ui/Card/Cart";
 import { FaUser } from "react-icons/fa";
 import { getUserInfo } from "../../../helpers/user/user";
 import { useUserQuery } from "../../../redux/api/authApi";
-import NavBarNotification from "../Pages/NavBarNotification/NavBarNotification";
 import { getFromLocalStorage } from "../../../utils/local-storage";
-import { useGetUnreadCountQuery } from "../../../redux/api/notificationApi";
+import { useGetNotificationsQuery, useGetUnreadCountQuery } from "../../../redux/api/notificationApi";
 import { useSocketListener } from "../../../hooks/useSocketListener";
+import NavBarNotification from "../../ui/NavBarNotification/NavBarNotification";
+import { useOutsideClickClose } from "../../../hooks/useOutsideClickClose";
 const TopNavBar = () => {
-  const btnRef = useRef(null);
+  // const btnRef = useRef(null);
   const [openCart, setOpenCart] = useState(false);
   const [toggleNotification, seToggleNotification] = useState(false);
   const [savedData, setSavedData] = useState(0);
-  const cartRef = useRef();
-  const notificationRef = useRef(null);
-  const bellIconRef = useRef(null);
+  // const cartRef = useRef();
+  // const notificationRef = useRef(null);
+  // const bellIconRef = useRef(null);
 
   const user = getUserInfo();
   const { data } = useUserQuery(user?.id);
 
   const { data: unreadCountData = 0, isLoading, refetch } = useGetUnreadCountQuery();
+    const notifArg = useMemo(() => ({ limit: 20 }), []);
+  
+  
+    const { data: notificationsData, refetch: refetchNotifications, isLoading: isLoadingNotifications } = useGetNotificationsQuery(notifArg);
 
-    useSocketListener("order_updated", () => {
+  useSocketListener("new_notification", () => {
       refetch();
     }, [refetch]);
   
   const location = useLocation().pathname;
   const publication = location == "/user/publications"
   
-
-  useEffect(() => {
-    function handleClick(event) {
-      if (
-        cartRef.current &&
-        !cartRef.current.contains(event.target) &&
-        btnRef.current &&
-        !btnRef.current.contains(event.target)
-      ) {
-        setOpenCart(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClick);
-    return () => {
-      document.removeEventListener("mousedown", handleClick);
-    };
-  }, [btnRef]);
-
-  useEffect(() => {
-    function handleClick(event) {
-      if (
-        notificationRef.current &&
-        !notificationRef.current.contains(event.target) &&
-        bellIconRef.current &&
-        !bellIconRef.current.contains(event.target)
-      ) {
-        seToggleNotification(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClick);
-    return () => {
-      document.removeEventListener("mousedown", handleClick);
-    };
-  }, [bellIconRef]);
-
+  const { btnRef: notificationRef, ref: bellIconRef } =useOutsideClickClose(() => {
+    seToggleNotification(false);
+  });
+  const { btnRef: btnRef, ref: cartRef } =useOutsideClickClose(() => {
+    setOpenCart(false);
+  });
 
   useEffect(() => {
     const updateCount = () => {
@@ -101,7 +75,7 @@ const TopNavBar = () => {
           <div key={JSON.stringify(unreadCountData + isLoading)} ref={bellIconRef} onClick={() => seToggleNotification(!toggleNotification)} className="relative">
             <BellIcon className="cursor-pointer" dotColor={unreadCountData > 0 ?"#FF5630"  :"#171819" } />
           </div>
-            {toggleNotification &&<NavBarNotification ref={notificationRef} seToggleNotification={seToggleNotification} />}
+          {toggleNotification && <NavBarNotification ref={notificationRef} seToggleNotification={seToggleNotification} unreadCount={unreadCountData} type="client" refetch={refetchNotifications} notificationsData={notificationsData} isLoading={isLoadingNotifications} />}
           <div ref={btnRef} onClick={() => setOpenCart(!openCart)} className="relative">
             <CartIcon className="cursor-pointer" />
             {savedData > 0 && <div className="absolute -top-3 -right-3 h-4 w-4 bg-blue-600 rounded-full  flex items-center justify-center text-[8px] text-white">

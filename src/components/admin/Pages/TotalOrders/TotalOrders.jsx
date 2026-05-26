@@ -33,7 +33,7 @@ const TotalOrders = () => {
 
   const { data, isLoading, refetch } = useAdminOrdersQuery(queryOptions);
   
-    useSocketListener("order_updated", () => {
+  useSocketListener("new_notification", () => {
       refetch();
     }, [refetch]);
 

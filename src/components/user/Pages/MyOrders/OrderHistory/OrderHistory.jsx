@@ -5,6 +5,8 @@ import Pagination from "../../../../common/Pagination";
 import {  usePublishedOrdersQuery } from "../../../../../redux/api/orderApi";
 import { formattedDate } from "../../../../../utils/function";
 import { useSocketListener } from "../../../../../hooks/useSocketListener";
+import { Link } from "react-router";
+import { Link2 } from "lucide-react";
 
 const OrderHistory = () => {
 
@@ -32,7 +34,7 @@ const OrderHistory = () => {
     limit: itemsPerPage,
     ...(debouncedSearch && { searchTerm: debouncedSearch })
   });
-  useSocketListener("order_updated", () => {
+  useSocketListener("new_notification", () => {
     refetch();
   }, [refetch]);
   // Extract data from response
@@ -129,6 +131,7 @@ const OrderHistory = () => {
                 {/* )} */}
                 </div>
               </div>
+              <div className="flex items-center gap-5">
               <p className={` text-white text-sm font-medium md:px-7 px-4 py-1 capitalize tracking-wide ${order.status === "pending"
                   ? "bg-[#FFAB00]"
                   : order.status == "processing"
@@ -138,6 +141,10 @@ const OrderHistory = () => {
                 {order.status}
                 
               </p>
+                <Link className="bg-[#F6F7F7] p-1.5 cursor-pointer tooltip" data-tip='Click to view the published article'>
+                  <Link2 className="text-[#008CFF] h-[15px] w-[15px] -rotate-45"/>
+                </Link>
+              </div>
             </div>
             <div className="flex gap-3">
               <CirclePen className="mt-[3px]" />

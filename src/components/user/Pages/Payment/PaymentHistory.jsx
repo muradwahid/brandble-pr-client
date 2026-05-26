@@ -1,11 +1,10 @@
-import {  useRef, useState } from "react";
-import { useUserOrdersQuery } from "../../../../redux/api/orderApi";
+import { useRef, useState } from "react";
+import { useGetOrderHistoryQuery, useUserOrdersQuery } from "../../../../redux/api/orderApi";
 import { formattedDate } from "../../../../utils/function";
 import { DownloadIcon, LoadingIcon } from "../../../../utils/icons";
 import Invoice from "../../../common/Invoice";
 import html2canvas from 'html2canvas-pro';
 import jsPDF from 'jspdf';
-import { createInvoiceDataFromOrder } from "../../../../utils/data";
 
 const PaymentHistory = ({ search }) => {
   const [selectedOrders, setSelectedOrders] = useState([]);
@@ -16,8 +15,10 @@ const PaymentHistory = ({ search }) => {
     ...(search && { searchTerm: search })
   });
 
+  const { data: invoiceData } = useGetOrderHistoryQuery(selectedOrders?.join(','));
+
   const orderData = data?.data;
-  // console.log(orderData);
+  const meta = data?.meta || { page: 1, limit: 10, total: 0 }
 
   const downloadPDF = async () => {
     if (selectedOrders.length === 0) {
@@ -101,110 +102,116 @@ const PaymentHistory = ({ search }) => {
     <div className="w-full">
       <div className="invisible overflow-hidden h-0">
         <div className="visible">
-          <Invoice ref={invoiceRef} data={createInvoiceDataFromOrder(selectedOrders)} />
+          <Invoice ref={invoiceRef} data={invoiceData} key={selectedOrders?.length} />
         </div>
       </div>
-      <div className="flex items-center justify-between mb-3 mt-6">
-        <p className="font-glare text-[#777980] font-normal">History</p>
-        <button onClick={downloadPDF} className="bg-[#24A4FF] flex cursor-pointer items-center gap-2.5 py-2.5 px-4 text-xs font-medium text-white">
-          <DownloadIcon className="fill-white w-2.5" /> {loadingDownload ?'Downloading...':'Download'}
-        </button>
+      {/* <Invoice ref={invoiceRef} data={invoiceData} key={selectedOrders?.length} /> */}
 
-      </div> 
-       <div className="overflow-x-auto">
-        <table className="min-w-full border-collapse border border-[#DCDEDF] payment-history-table">
-          <thead className="bg-[#DCDEDF]">
-            <tr>
-              <th
-                scope="col"
-                className="px-3 py-2.5 text-left text-sm text-[#5F6368]"
-              >
-                <input
-                  type="checkbox"
-                  checked={selectAll}
-                  onChange={handleSelectAll}
-                  className="accent-[#222425]  h-4 w-4 text-blue-600"
-                />
-              </th>
-              <th
-                scope="col"
-                className="px-3 py-2.5 text-left text-sm text-[#5F6368] font-normal"
-              >
-                Payment Invoice
-              </th>
-              <th
-                scope="col"
-                className="px-3 py-2.5 text-left text-sm text-[#5F6368] font-normal"
-              >
-                Service
-              </th>
-              <th
-                scope="col"
-                className="px-3 py-2.5 text-left text-sm text-[#5F6368] font-normal"
-              >
-                Amount
-              </th>
-              <th
-                scope="col"
-                className="px-3 py-2.5 text-left text-sm text-[#5F6368] font-normal"
-              >
-                Publication
-              </th>
-              <th
-                scope="col"
-                className="px-3 py-2.5 text-left text-sm text-[#5F6368] font-normal"
-              >
-                Method
-              </th>
-              <th
-                scope="col"
-                className="px-3 py-2.5 text-left text-sm text-[#5F6368] font-normal "
-              >
-                Date
-              </th>
-            </tr>
-          </thead>
-          {
-            orderData?.map(order => <tbody className="bg-white">
+      {meta?.total > 0 ? <>
+        <div className="flex items-center justify-between mb-3 mt-6">
+          <p className="font-glare text-[#777980] font-normal">History</p>
+          <button onClick={downloadPDF} className="bg-[#24A4FF] flex cursor-pointer items-center gap-2.5 py-2.5 px-4 text-xs font-medium text-white">
+            <DownloadIcon className="fill-white w-2.5" /> {loadingDownload ? 'Downloading...' : 'Download'}
+          </button>
+
+        </div>
+        <div className="overflow-x-auto">
+          <table className="min-w-full border-collapse border border-[#DCDEDF] payment-history-table">
+            <thead className="bg-[#DCDEDF]">
               <tr>
-                <td className="px-3 py-2.5 whitespace-nowrap">
+                <th
+                  scope="col"
+                  className="px-3 py-2.5 text-left text-sm text-[#5F6368]"
+                >
                   <input
                     type="checkbox"
-                    checked={selectedOrders.includes(order.id)}
-                    onChange={() => handleSelectRow(order.id)}
+                    checked={selectAll}
+                    onChange={handleSelectAll}
                     className="accent-[#222425]  h-4 w-4 text-blue-600"
                   />
-                </td>
-                <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                  {order.id}
-                </td>
-                <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                  {order.orderType === 'wonArticle' ? 'Won Article' :'Write & Publish'}
-                  
-                </td>
-                <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                  ${order.amount }
-                </td>
-                <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                  {order.publication?.title}
-                </td>
-                <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368] capitalize">
-                  {order.paymentMethod.type}
-                </td>
-                <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
-                  {formattedDate(order.createdAt)}
-                </td>
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-2.5 text-left text-sm text-[#5F6368] font-normal"
+                >
+                  Payment Invoice
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-2.5 text-left text-sm text-[#5F6368] font-normal"
+                >
+                  Service
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-2.5 text-left text-sm text-[#5F6368] font-normal"
+                >
+                  Amount
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-2.5 text-left text-sm text-[#5F6368] font-normal"
+                >
+                  Publication
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-2.5 text-left text-sm text-[#5F6368] font-normal"
+                >
+                  Method
+                </th>
+                <th
+                  scope="col"
+                  className="px-3 py-2.5 text-left text-sm text-[#5F6368] font-normal "
+                >
+                  Date
+                </th>
               </tr>
+            </thead>
+            <tbody className="bg-white">
+              {
+                orderData?.map(order =>
+                  <tr key={order.id}>
+                    <td className="px-3 py-2.5 whitespace-nowrap">
+                      <input
+                        type="checkbox"
+                        checked={selectedOrders.includes(order.id)}
+                        onChange={() => handleSelectRow(order.id)}
+                        className="accent-[#222425]  h-4 w-4 text-blue-600"
+                      />
+                    </td>
+                    <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
+                      {order.id}
+                    </td>
+                    <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
+                      {order.orderType === 'wonArticle' ? 'Won Article' : 'Write & Publish'}
 
-            </tbody>)
-          }
-        </table>
-      </div> 
+                    </td>
+                    <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
+                      ${order.amount}
+                    </td>
+                    <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
+                      {order.publication?.title}
+                    </td>
+                    <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368] capitalize">
+                      {order.paymentMethod.type}
+                    </td>
+                    <td className="px-3 py-2.5 whitespace-nowrap text-sm text-[#5F6368]">
+                      {formattedDate(order.createdAt)}
+                    </td>
+                  </tr>)
+              }
+            </tbody>
+          </table>
+        </div>
+      </> :
+        <div className="h-[50dvh] flex items-center justify-center ">
+          <h1 className="text-3xl text-center leading-[150%]">No payment history found.</h1>
+        </div>
 
-      <div className="h-[50dvh] flex items-center justify-center ">
-        <h1 className="text-3xl text-center leading-[150%]">No payment history found.</h1>
-      </div>
-      
+      }
+
+
 
     </div>
   );

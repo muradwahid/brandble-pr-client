@@ -1,52 +1,51 @@
-import React, { forwardRef, useMemo } from 'react';
-import { BellIconSecond, CancelIcon, CirclePen } from '../../../../utils/icons';
+import { forwardRef } from 'react';
 import { LuCheckCheck } from 'react-icons/lu';
 import { Link } from 'react-router';
-import { useGetNotificationsQuery, useMarkAllAsReadMutation } from '../../../../redux/api/notificationApi';
+
 import NotificationItem from './NotificationItem';
-import { useSocketListener } from '../../../../hooks/useSocketListener';
+import { useSocketListener } from '../../../hooks/useSocketListener';
+import { useMarkAllAsReadMutation, useMarkAsReadMutation } from '../../../redux/api/notificationApi';
+import { CancelIcon } from '../../../utils/icons';
+
 
 const NavBarNotification = forwardRef(function NavBarNotification(
-  { seToggleNotification },
+  { seToggleNotification, unreadCount, type="client",refetch,notificationsData, isLoading },
   ref
 ) {
-  const notifArg = useMemo(() => ({ limit: 20 }), []);
 
+  const [markAsRead] = useMarkAsReadMutation()
 
-  const { data: notificationsData, refetch } = useGetNotificationsQuery(notifArg);
-
-  useSocketListener("order_updated", () => {
+  useSocketListener("new_notification", () => {
     refetch();
   }, [refetch]);
 
   const [markAllAsRead] = useMarkAllAsReadMutation();
 
   const notifications = notificationsData?.data;
+  const meta = notificationsData?.meta || {};
 
   const handleMarkAllAsRead = async () => {
     try {
-      await markAllAsRead().unwrap();
+     await markAllAsRead({ type }).unwrap();
     } catch (error) {
       console.error("Failed to mark all as read:", error);
     }
   };
 
-  const allNotifications = notifications
-    ? [
-      ...(notifications.today || []),
-      ...(notifications.yesterday || []),
-      ...(notifications.thisWeek || []),
-      ...(notifications.older || []),
-    ]
-    : [];
-  
+  const handleRead = async (id) => { 
+    try {
+      await markAsRead({ id }).unwrap();
+    } catch {
+      console.error("Failed to mark as read");
+    }
+  }
+  // console.log(notificationsData);
 
-  
   return (
     <div ref={ref} className='absolute w-[450px] z-50 steperform-publish-formshadow right-0 top-[101%] bg-white '>
-      <div className='max-h-[600px] overflow-y-scroll'>
+      {isLoading ? <div className='h-52 flex items-center justify-center'><p className='text-[#878C91]'>Loading...</p></div>: <div className='max-h-[600px] overflow-y-scroll'>
       {
-          allNotifications.length > 0 ?
+          meta?.total > 0 ?
           <div className="w-full">
    
             <div className="bg-white">
@@ -57,7 +56,7 @@ const NavBarNotification = forwardRef(function NavBarNotification(
                 </h2>
                 <p
                     onClick={handleMarkAllAsRead}
-                  className="text-[#006AC2] hover:text-blue-800 text-[12px] font-medium flex gap-1 items-center"
+                    className={`${unreadCount > 0 ? 'text-[#006AC2] hover:text-blue-800' :'text-[#878C91]'}  text-[12px] font-medium flex gap-1 items-center cursor-pointer`}
                 >
                   <LuCheckCheck />
                   Mark all as read
@@ -74,6 +73,7 @@ const NavBarNotification = forwardRef(function NavBarNotification(
                     { 
                       notifications?.today?.map((notification => <NotificationItem key={notification.id}
                         notification={notification}
+                        onClick={() => handleRead(notification.id)}
                          />))
                     }
                   </div>
@@ -87,6 +87,7 @@ const NavBarNotification = forwardRef(function NavBarNotification(
                     { 
                       notifications?.yesterday?.map((notification => <NotificationItem key={notification.id}
                         notification={notification}
+                        onClick={() => handleRead(notification.id)}
                          />))
                     }
                   </div>
@@ -100,6 +101,7 @@ const NavBarNotification = forwardRef(function NavBarNotification(
                     { 
                       notifications?.thisWeek?.map((notification => <NotificationItem key={notification.id}
                         notification={notification}
+                        onClick={() => handleRead(notification.id)}
                          />))
                     }
                   </div>
@@ -113,6 +115,7 @@ const NavBarNotification = forwardRef(function NavBarNotification(
                     { 
                       notifications?.older?.map((notification => <NotificationItem key={notification.id}
                         notification={notification}
+                        onClick={() => handleRead(notification.id)}
                          />))
                     }
                   </div>
@@ -124,9 +127,9 @@ const NavBarNotification = forwardRef(function NavBarNotification(
           </div>
       }
 
-      </div>
+      </div>}
       <div className='border-t border-[#F2F2F3] flex items-center justify-between mx-4 py-4'>
-        {<Link to='user/notifications' onClick={() => seToggleNotification(false)} className='text-[#878C91] text-xs font-normal'>View all notification</Link>}
+        {<Link to='/user/notifications' onClick={() => seToggleNotification(false)} className='text-[#878C91] text-xs font-normal'>View all notification</Link>}
         <CancelIcon className='cursor-pointer' onClick={() => seToggleNotification(false)} />
       </div>
     </div>

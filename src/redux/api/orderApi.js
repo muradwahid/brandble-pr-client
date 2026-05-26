@@ -123,6 +123,15 @@ export const orderApi = baseApi.injectEndpoints({
       },
       providesTags: ["order"],
     }),
+    getOrderHistory: build.query({
+      query: (ids) => {
+        return {
+          url: `${ORDER_URL}/user/history/${ids}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["order"],
+    }),
     orderStatistics: build.query({
       query: (arg) => {
         return {
@@ -176,6 +185,7 @@ export const {
   useAdminOrdersQuery,
   useAdminHomeOrdersQuery,
   useUserOrdersQuery,
+  useGetOrderHistoryQuery,
   useAdminPaymentsStatisticQuery,
   useSpecificUserOrdersQuery,
   useAddOrderMutation,

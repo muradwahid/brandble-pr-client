@@ -1,18 +1,9 @@
-import React from "react";
 import { BsFileEarmarkText } from "react-icons/bs";
-import { Link, useParams } from "react-router";
-import { LeftArrowIcon } from "../../../../../../utils/icons";
+import { LeftArrowIcon } from "../../../../../utils/icons";
 import OrderStatusAndChat from "./OrderStatusAndChat";
-import { useOrderQuery } from "../../../../../../redux/api/orderApi";
-import { formattedDate } from "../../../../../../utils/function";
+import { formattedDate } from "../../../../../utils/function";
 
-const Order = () => {
-  const { id } = useParams();
-  const { data, isLoading } = useOrderQuery(id)
-
-  if (isLoading) {
-    return <div className="h-[70vh] w-full flex justify-center items-center">Loading...</div>;
-  }
+const Order = ({data}) => {
 
   return (
     <div className="w-full h-full">

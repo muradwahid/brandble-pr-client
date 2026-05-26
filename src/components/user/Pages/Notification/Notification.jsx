@@ -3,7 +3,7 @@ import { BellIconSecond, CirclePen } from "../../../../utils/icons";
 import Pagination from "../../../common/Pagination";
 import { useState } from "react";
 import { useGetNotificationsQuery, useMarkAllAsReadMutation } from "../../../../redux/api/notificationApi";
-import NotificationItemMain from "./NotificationItemMain";
+import NotificationItem from "../../../ui/NavBarNotification/NotificationItem";
 
 const Notification = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -91,7 +91,7 @@ const Notification = () => {
                   </h2>
 
                     {
-                      notifications?.today?.map(notification=><NotificationItemMain key={notification.id} notification={notification} />)
+                      notifications?.today?.map(notification=><NotificationItem key={notification.id} notification={notification} />)
                     }
                     
                 </div>
@@ -104,7 +104,7 @@ const Notification = () => {
                   </h2>
 
                     {
-                      notifications?.yesterday?.map(notification=><NotificationItemMain key={notification.id} notification={notification} />)
+                      notifications?.yesterday?.map(notification=><NotificationItem key={notification.id} notification={notification} />)
                     }
                     
                 </div>
@@ -117,7 +117,7 @@ const Notification = () => {
                   </h2>
 
                     {
-                      notifications?.thisWeek?.map(notification=><NotificationItemMain key={notification.id} notification={notification} />)
+                      notifications?.thisWeek?.map(notification=><NotificationItem key={notification.id} notification={notification} />)
                     }
                     
                 </div>
@@ -130,7 +130,7 @@ const Notification = () => {
                   </h2>
 
                     {
-                      notifications?.older?.map(notification=><NotificationItemMain key={notification.id} notification={notification} />)
+                      notifications?.older?.map(notification=><NotificationItem key={notification.id} notification={notification} />)
                     }
                     
                 </div>

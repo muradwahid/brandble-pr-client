@@ -1,6 +1,6 @@
 import React from 'react';
-import Chat from './Chat';
-import { formattedDate } from '../../../../../../utils/function';
+import Chat from '../RunningOrder/Order/Chat';
+import { formattedDate } from '../../../../../utils/function';
 
 const OrderStatusAndChat = ({ orderDetails }) => {
   return (

@@ -5,7 +5,7 @@ const Table = ({ data }) => {
   const detailsSubmitted = (val, id) => {
     const isDetailSubmitted = val === 'not-yet'
 
-    return isDetailSubmitted ? <Link className={`bg-[#FF5630] text-white text-sm font-medium font-poppins shadow py-1 px-3 rounded-[8px] tracking-[0px]`} to={`/user/checkout/order-submit/${id}`} >
+    return isDetailSubmitted ? <Link className={`bg-[#FF5630] text-white text-sm font-medium font-poppins shadow py-1 px-3 rounded-[8px] tracking-[0px] whitespace-nowrap`} to={`/user/checkout/order-submit/${id}`} >
       Submit Information
     </Link> : <span className="text-[#00875A]">Submitted</span>
   }

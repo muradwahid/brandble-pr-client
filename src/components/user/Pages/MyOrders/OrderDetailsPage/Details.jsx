@@ -1,18 +1,11 @@
-import { Link, useParams } from 'react-router';
-import { LeftArrowIcon } from '../../../../../../../utils/icons';
-import OrderStatusAndChat from '../OrderStatusAndChat';
+import { Link } from 'react-router';
+import { LeftArrowIcon } from '../../../../../utils/icons';
+import OrderStatusAndChat from './OrderStatusAndChat';
 import { MdAttachFile, MdOutlineAddLink } from 'react-icons/md';
-import { useOrderQuery } from '../../../../../../../redux/api/orderApi';
 
-const Details = () => {
-  const { id } = useParams();
-  const { data, isLoading } = useOrderQuery(id);
+const Details = ({data}) => {
 
   const writeArticle = data?.writeArticle
-
-  if (isLoading) {
-    return <div className="h-[70vh] w-full flex justify-center items-center">Loading...</div>;
-  }
   return <div className="w-full h-full">
       {/* back button */}
       <button
