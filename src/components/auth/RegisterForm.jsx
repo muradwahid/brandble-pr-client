@@ -96,7 +96,7 @@ const RegisterForm = () => {
                   { isLoading && <LoadingIcon fill='#fff' style={{ height: "20px" }} />}</button>
               </form>
               <div className='flex justify-end mt-4'>
-                <p className='text-[#2B3D39] text-[16px]'>Already have an account? <Link to={'/auth/login'} className='text-[#008CFF] underline'>Sign In</Link></p>
+                <p className='text-[#2B3D39] text-[16px]'>Already have an account? <Link to={'/signin'} className='text-[#008CFF] underline'>Sign In</Link></p>
               </div>
                 </div>
               </div>

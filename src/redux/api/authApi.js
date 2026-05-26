@@ -19,7 +19,7 @@ export const authApi = baseApi.injectEndpoints({
     userLogin: build.mutation({
       query: (loginData) => ({
         url: `${AUTH_URL}/signin`,
-        method: "POST",
+        method: "POST", 
         data: loginData,
       }),
       invalidatesTags: ["auth"],
@@ -102,6 +102,14 @@ export const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["auth"],
     }),
+    forgotPassword: build.mutation({
+      query: (data) => ({
+        url: `${AUTH_URL}/forgot-password`,
+        method: "PATCH",
+        data: data,
+      }),
+      invalidatesTags: ["auth"],
+    }),
     deleteUser: build.mutation({
       query: (id) => {
         return {
@@ -128,6 +136,7 @@ export const { useUsersQuery,
   useUserLoginMutation,
   useCreateUserMutation,
   useUserAllInfoQuery,
+  useForgotPasswordMutation,
   useUserQuery,
   useGetAdminQuery,
   useSendEmailOtpMutation,

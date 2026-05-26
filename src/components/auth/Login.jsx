@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
+import { jwtDecode } from "jwt-decode";
 import { useUserLoginMutation } from "../../redux/api/authApi";
 import { LoadingIcon } from "../../utils/icons";
 import toast from "react-hot-toast";
 import { storeUserInfo } from "../../helpers/user/user";
-import { Link, Navigate, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const Login = () => {
   const navigate = useNavigate()
@@ -19,7 +20,6 @@ const Login = () => {
       password: ''
     }
   });
-
   const [userLogin, { isLoading }] = useUserLoginMutation();
 
   const onSubmit = async (data) => {
@@ -27,7 +27,6 @@ const Login = () => {
     try {
       const result = await userLogin(data);
       // Handle successful login (redirect, store token, etc.)
-
       if (result?.error) {
         const err = result.error;
         if (err.message == 'User not found') {
@@ -41,27 +40,34 @@ const Login = () => {
         return;
       }
       if (result.data?.accessToken) {
-        storeUserInfo({ accessToken: result.data.accessToken });
+        const decodedUser = jwtDecode(result.data?.accessToken);
+        storeUserInfo({ accessToken: result.data.accessToken })
+        if (decodedUser?.role === 'client') {
+          navigate(`/user/publications`);
+        } else if (decodedUser?.role === 'admin' || decodedUser?.role === 'super-admin') {
+          navigate(`/admin/dashboard`);
+        }
         // Reset form on success
         reset();
-        toast.success('Login successful!');
-        time = setTimeout(() => {
-          navigate("/admin/dashboard", { replace: true });
-        }, 500);
+        // time = setTimeout(() => {
+        //   navigate("/admin/dashboard", { replace: true });
+        // }, 500);
       } else {
+        console.log('else error :');
         toast.error('Login failed. Please try again.');
       }
 
 
       // eslint-disable-next-line no-unused-vars
     } catch (error) {
+      console.log("try error:", error);
       toast.error('Login failed. Please try again.');
     }
     return () => clearTimeout(time);
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen fixed inset-0 backdrop-blur-xs">
       <div className="max-w-[846px] w-full mx-auto border-l border-t border-b-[5px] border-r-[5px] py-14">
         <div className="w-full">
           <div className="mb-14 text-center">
@@ -78,24 +84,25 @@ const Login = () => {
               <form onSubmit={handleSubmit(onSubmit)} className="w-full">
                 <div className="mb-4">
                   <label htmlFor="email" className="block text-sm font-poppins text-[#5F6368] mb-2">Email</label>
-                  <input type="email" id="email" {...register('email', { required: 'Email is required.', pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Invalid email address.' } })} className="w-full text-sm bg-[#F6F7F7] border border-[#DCDEDF] p-3 outline-0" placeholder="Enter email" />
+                  <input autoComplete="username" type="email" id="email" {...register('email', { required: 'Email is required.', pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, message: 'Invalid email address.' } })} className="w-full text-sm bg-[#F6F7F7] border border-[#DCDEDF] p-3 outline-0" placeholder="Enter email" />
                   {errors.email && (
                     <span className="text-red-400 text-xs">{errors.email.message}</span>
                   )}
                 </div>
-                <div className="mb-4">
+                <div className="mb-2">
                   <label htmlFor="password" className="block text-sm font-poppins text-[#5F6368] mb-2">Password</label>
-                  <input type="password" id="password" {...register('password', {
+                  <input autoComplete="current-password" type="password" id="password" {...register('password', {
                     required: 'Password is required'
                   })} className="w-full text-sm bg-[#F6F7F7] border border-[#DCDEDF] p-3 outline-0" placeholder="Enter password" />
                   {errors.password && (
                     <span className="text-red-400 text-xs">{errors.password.message}</span>
                   )}
                 </div>
+                <Link to='/forgot-password' className='mb-2 text-[#008CFF] float-end hover:opacity-80 transition duration-200'>Forgot password?</Link>
                 <button type="submit" disabled={isLoading} className="w-full flex gap-3 justify-center cursor-pointer bg-[#002447] px-2.5 py-3 text-white hover:bg-[#0c3761] transition duration-300">Sign In {isLoading && <LoadingIcon fill='#fff' style={{ height: "20px" }} />}</button>
               </form>
               <div className='flex justify-end mt-4'>
-                <p className='text-[#2B3D39] text-[16px]'>Don't have an account? <Link to='/auth/signup' className='text-[#008CFF] underline'>Sign Up</Link></p>
+                <p className='text-[#2B3D39] text-[16px]'>Don't have an account? <Link to='/signup' className='text-[#008CFF] underline'>Sign Up</Link></p>
               </div>
             </div>
           </div>
@@ -104,5 +111,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;

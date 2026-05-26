@@ -30,21 +30,33 @@ import Login from "../components/auth/Login";
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 import RegisterForm from "../components/auth/RegisterForm";
 import OrderDetailsPage from "../components/user/Pages/MyOrders/OrderDetailsPage/OrderDetailsPage";
+import EmailForm from "../components/auth/ResetPassword/EmailForm";
+import VerifyOtp from "../components/auth/ResetPassword/VerifyOtp";
+import ResetPassFields from "../components/auth/ResetPassword/ResetPassFields";
 
 
 const router = createBrowserRouter([
   {
-    path: "/auth/login",
+    path: "/signin",
     element: <Login/>,
   },
   {
-    path: "/auth/signup",
+    path: "/signup",
     element: <RegisterForm/>,
   },
-  // {
-  //   path: "/auth/forgot-password",
-  //   element: <ResetPassFields />,
-  // },
+  {
+    path: "/forgot-password",
+    element: <EmailForm />,
+  },
+  {
+    path: "/forgot-password/verify",
+    element: <VerifyOtp />,
+  },
+  {
+    path: "/forgot-password/new-password",
+    element: <ResetPassFields />,
+  },
+
   {
     path: "/",
     errorElement: <div></div>,

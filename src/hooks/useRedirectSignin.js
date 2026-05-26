@@ -1,9 +1,8 @@
-import config from "../config";
-
+import { useNavigate } from "react-router";
 export const useRedirectSignin = () => {
+  const navigation = useNavigate();
   const redirectToSignin = () => {
-    const baseUrl = config.rootClientUrl
-    window.location.replace(`${baseUrl}/signin`);
+    navigation(`/signin`);
   };
 
   return redirectToSignin;
